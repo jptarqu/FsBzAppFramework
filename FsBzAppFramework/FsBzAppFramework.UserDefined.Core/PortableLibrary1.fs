@@ -1,0 +1,3 @@
+﻿namespace FsBzAppFramework.UserDefined.Core
+
+
