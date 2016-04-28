@@ -11,6 +11,7 @@ module UiTypes =
             Balance: IUiReadOnlyNumberElement
         }
 
-
+    type BzScreen = 
+        | CustomerPersonalUpdateUi of CustomerPersonalUpdateUi
 
 

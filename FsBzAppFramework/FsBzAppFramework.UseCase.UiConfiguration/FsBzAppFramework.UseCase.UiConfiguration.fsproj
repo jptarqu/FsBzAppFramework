@@ -53,6 +53,11 @@
       <Project>{cbc1025c-21f2-46be-a3fa-c01be9017183}</Project>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\FsBzAppFramework.UseCase\FsBzAppFramework.UseCase.fsproj">
+      <Name>FsBzAppFramework.UseCase</Name>
+      <Project>{38dd2b3f-9005-42ef-a44e-d9a1b0906964}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\FsBzAppFramework.UserDefined.Core\FsBzAppFramework.UserDefined.Core.fsproj">
       <Name>FsBzAppFramework.UserDefined.Core</Name>
       <Project>{27c1f357-bccd-4fd4-a187-b2cc697bfc4b}</Project>

@@ -75,8 +75,16 @@ module UiConfiguration =
             BuildTimeInput : ( UiLabel-> UiTextValue -> IUiTimeElement)
             BuildIntInput : ( UiLabel-> UiTextValue -> IUiIntElement)
             BuildDecimalInput : ( UiLabel-> UiTextValue -> IUiDecimalElement)
+
         }
     
+    type MessageRaiser<'a> = unit -> 'a
+
+    type NavBuilder =
+        {
+            BuildBtn : (UiLabel -> (UiBuilder -> unit) -> unit)        
+        }
+
     let TestIdea () =
         let wpfTextInputBuilder id label initVal =  
             let newWidget = {
