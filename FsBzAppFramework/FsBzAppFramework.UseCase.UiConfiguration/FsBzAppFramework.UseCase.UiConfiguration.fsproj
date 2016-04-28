@@ -5,16 +5,16 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>27c1f357-bccd-4fd4-a187-b2cc697bfc4b</ProjectGuid>
+    <ProjectGuid>6e056776-6e81-4e06-bfee-87d64c23b537</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>FsBzAppFramework.UserDefined.Core</RootNamespace>
-    <AssemblyName>FsBzAppFramework.UserDefined.Core</AssemblyName>
+    <RootNamespace>FsBzAppFramework.UseCase.UiConfiguration</RootNamespace>
+    <AssemblyName>FsBzAppFramework.UseCase.UiConfiguration</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetProfile>netcore</TargetProfile>
     <TargetFSharpCoreVersion>3.7.4.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Name>FsBzAppFramework.UserDefined.Core</Name>
+    <Name>FsBzAppFramework.UseCase.UiConfiguration</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +24,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\FsBzAppFramework.UserDefined.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\FsBzAppFramework.UseCase.UiConfiguration.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -33,7 +33,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\FsBzAppFramework.UserDefined.Core.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\FsBzAppFramework.UseCase.UiConfiguration.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">
@@ -44,16 +44,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="PortableLibrary1.fs" />
-    <Compile Include="QueryTypes.fs" />
-    <Compile Include="CommandTypes.fs" />
-    <Compile Include="OperationTypes.fs" />
-    <Compile Include="ExceptionTypes.fs" />
+    <Compile Include="UiTypes.fs" />
+    <Compile Include="UiConfiguration.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FsBzAppFramework.Utilities.Contracts\FsBzAppFramework.Utilities.Contracts.fsproj">
-      <Name>FsBzAppFramework.Utilities.Contracts</Name>
-      <Project>{b73e27b6-2ae8-4869-b75c-e934a16f036c}</Project>
+    <ProjectReference Include="..\FsBzAppFramework.Ui.Contracts\FsBzAppFramework.Ui.Contracts.fsproj">
+      <Name>FsBzAppFramework.Ui.Contracts</Name>
+      <Project>{cbc1025c-21f2-46be-a3fa-c01be9017183}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\FsBzAppFramework.UserDefined.Core\FsBzAppFramework.UserDefined.Core.fsproj">
+      <Name>FsBzAppFramework.UserDefined.Core</Name>
+      <Project>{27c1f357-bccd-4fd4-a187-b2cc697bfc4b}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
