@@ -42,5 +42,5 @@ module UiConfiguration =
         member this.BuildNavButtons(navBuilder:NavBuilder) =
             do 
                 navBuilder.BuildBtn "Get Juan" (fun childUiBuilder -> 
-                                                    this.BuildChildUiFromMessage(childUiBuilder, ({ Id = 5 }) ))
+                                                    this.BuildChildUiFromMessage(childUiBuilder, CustomerQryRequest { Id = 5 } ))
              

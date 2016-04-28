@@ -78,11 +78,13 @@ module UiConfiguration =
 
         }
     
-    type MessageRaiser<'a> = unit -> 'a
+    type Message<'a> = 'a
+    type MessageRaiser<'a> = unit -> Message<'a>
+    type UiBtn<'a> = {Label: UiLabel; Fields: unit -> Message<'a>} // TODO use this or NavBuilder???
 
-    type NavBuilder =
+    type NavBuilder<'a> =
         {
-            BuildBtn : (UiLabel -> (UiBuilder -> unit) -> unit)        
+            BuildBtn : (UiLabel -> MessageRaiser<'a> -> unit)     //(UiLabel -> (UiBuilder -> unit) -> unit)        
         }
 
     let TestIdea () =
