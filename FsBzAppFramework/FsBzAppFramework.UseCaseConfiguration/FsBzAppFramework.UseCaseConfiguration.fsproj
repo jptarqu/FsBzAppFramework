@@ -44,7 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="PortableLibrary1.fs" />
+    <Compile Include="Configuration.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FsBzAppFramework.UseCase\FsBzAppFramework.UseCase.fsproj">

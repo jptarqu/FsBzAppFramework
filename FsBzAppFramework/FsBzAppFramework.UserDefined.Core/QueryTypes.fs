@@ -4,6 +4,8 @@
 module QueryRequestTypes =
     type CustomerQryRequest = { Id: int }
 
+    type QryRequest =
+        | CustomerQryRequest of CustomerQryRequest
     
 module QueryResultTypes =
     type CustomerQryResult = { Name: string; Id: int; Balance: decimal }

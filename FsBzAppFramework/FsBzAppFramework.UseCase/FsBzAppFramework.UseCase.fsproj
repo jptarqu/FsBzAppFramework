@@ -41,10 +41,10 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.Portable.FSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <None Include="Script.fsx" />
     <Compile Include="Query.fs" />
     <Compile Include="EditValidation.fs" />
     <Compile Include="Command.fs" />
+    <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FsBzAppFramework.UserDefined.Core\FsBzAppFramework.UserDefined.Core.fsproj">
@@ -57,10 +57,12 @@
       <Project>{b73e27b6-2ae8-4869-b75c-e934a16f036c}</Project>
       <Private>True</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="ChessiePcl">
-      <HintPath>..\..\..\Cheesie\Chessie\ChessiePcl\bin\Debug\ChessiePcl.dll</HintPath>
+      <HintPath>..\..\..\..\Cheesie\Chessie\ChessiePcl\bin\Debug\ChessiePcl.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\packages\FSharp.Core.4.0.0.1\lib\portable-net45+netcore45\FSharp.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
