@@ -1,0 +1,9 @@
+{
+	"outDir": "../Fable/fableOutput/CommonViewEditors",
+	"projFile": "./CommonViewEditors.fsproj",
+	"refs": {
+				"FsharpCommonTypes": "../FsharpCommonTypes/FsharpCommonTypes.fsproj"
+			  },
+	"module": "commonjs",
+	"plugins": ["../Fable/plugins/try-parse/Fable.Plugins.IntTryParse.dll", "../Fable/plugins/decimals/Fable.Plugins.Decimals.dll"]
+}
