@@ -2,6 +2,7 @@
 
 open FsharpCommonTypes.InterfaceTypes
 open CommonValidations
+open FsharpCommonTypes
 
 type DocumentUpdate< 'PrimitiveType, 'ParentType> = ('PrimitiveType -> 'ParentType ->  'ParentType)
 
@@ -28,7 +29,7 @@ type ConstraintedInputDefinition< 'PropType , 'ParentType> =
     {PropDisplayName: string; DocumentPull: DocumentPull<'ParentType,'PropType> ; DocumentUpdate: DocumentUpdate< 'PropType, 'ParentType>; Constraint: ConstraintFieldDefinition }
     
 type TextInputDefinition<  'ParentType> = 
-    {PropDisplayName: string; DocumentPull: DocumentPull<'ParentType,string> ; DocumentUpdate: DocumentUpdate< string, 'ParentType> }
+    {PropDisplayName: string; DocumentPull: DocumentPull<'ParentType,string> ; DocumentUpdate: DocumentUpdate< string, 'ParentType>; Constraint: TextType.TextPropertyDefinition }
     
 type BooleanInputDefinition<  'ParentType> = 
     {PropDisplayName: string; DocumentPull: DocumentPull<'ParentType,bool> ; DocumentUpdate: DocumentUpdate< bool, 'ParentType> }

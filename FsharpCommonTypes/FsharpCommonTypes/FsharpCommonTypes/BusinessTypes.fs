@@ -58,5 +58,8 @@ module BusinessTypes =
         {Id : IdNumber; Entity: 'Entity} with
         member this.GetValidationErrors () = 
             [ this.Id.GetValidationErrors();  ] |> CollectAllError // TODO should Entity also validate??, maybe not becuase it would almost alwasy be the result of a lookup. we are not editing the associated relation
+            
+    let NewIdWrapper entity idValue =
+         {Entity= entity; Id = idValue }
         
 
