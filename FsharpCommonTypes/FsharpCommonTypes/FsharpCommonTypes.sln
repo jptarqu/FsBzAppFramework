@@ -25,6 +25,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SampleModel.Core", "SampleM
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SampleModel.View", "SampleModel.View\SampleModel.View.fsproj", "{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleModel.WpfApp", "SampleModel.WpfApp\SampleModel.WpfApp.csproj", "{15B5E753-3992-4D7E-A97A-58E4876A479A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15B5E753-3992-4D7E-A97A-58E4876A479A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15B5E753-3992-4D7E-A97A-58E4876A479A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15B5E753-3992-4D7E-A97A-58E4876A479A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15B5E753-3992-4D7E-A97A-58E4876A479A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,5 +80,6 @@ Global
 		{8F44DFB1-00F0-4F3E-8866-5FD2131B0DA7} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
 		{39815D25-C33C-4E8B-8F87-B76CFE75221E} = {3CC87B6B-BE8F-4C9B-9566-33DC32045097}
 		{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8} = {3CC87B6B-BE8F-4C9B-9566-33DC32045097}
+		{15B5E753-3992-4D7E-A97A-58E4876A479A} = {3CC87B6B-BE8F-4C9B-9566-33DC32045097}
 	EndGlobalSection
 EndGlobal

@@ -134,6 +134,15 @@ module ViewComponents =
                 let newVal = docPull vm
                 updateField newVal
             member this.IsValid () = isValid
+            
+    type ContainerComponent<'ViewModel>( wpfElementService:WpfElementInterfaces.IElementService ) =
+        interface IViewComponent<'ViewModel> with
+            member this.Init<'ViewModel> vm = 
+                ()
+
+            member this.OnDocUpdated<'ViewModel> vm = 
+                ()
+            member this.IsValid () = true
 //
 //    type ConstraintTextInputViewComponent<'ViewModel>( addFieldCall:(string->WpfElementInterfaces.TextChangedCallback<'FieldType>->'FieldType), 
 //        inputDef:ConstraintedInputDefinition< 'PropType , 'ParentType> , 

@@ -38,12 +38,16 @@ module WpfElementInterfaces =
         abstract member SetChangeCallback:TextChangedCallback<IBooleanField>->unit
         abstract member SetErrors:string seq->unit
     
+    type IContainer =
+        abstract member SetErrors:string seq->unit
+
     type IElementService =
         abstract member AddTextField:string->string->int->int->ITextField
         abstract member AddIntegerField:string->TextChangedCallback<IIntegerField>->int->int->int->IIntegerField
         abstract member AddDecimalField:string->TextChangedCallback<IDecimalField>->decimal->decimal->decimal->IDecimalField
         abstract member AddChoicesField:string->IChoicesField
         abstract member AddBooleanField:string->IBooleanField
+        abstract member AddContainerComponent:unit->IContainer
 
     type IDataService =
         abstract member CallExternalCommand<'CmdType> : string->'CmdType->CommandResult

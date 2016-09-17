@@ -34,4 +34,4 @@ module ViewBuilder =
                 | BooleanInputDefinition b ->
                 | ExternalChoicesInputDefinition c -> *)
             member this.CreateContainerWrapper< 'ViewModel> viewContainerDefinition = 
-                ViewComponents IViewComponent<'ViewModel>
+                ViewComponents.ContainerComponent(this.ElementService) :> IViewComponent<'ViewModel>
