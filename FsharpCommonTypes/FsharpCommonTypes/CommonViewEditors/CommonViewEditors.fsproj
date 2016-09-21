@@ -5,12 +5,14 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>eacffed2-3cff-4b09-b401-d680f09d8a67</ProjectGuid>
+    <ProjectGuid>d60858bf-d9f4-4607-aae2-35ac84e512d1</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>CommonViewEditors</RootNamespace>
     <AssemblyName>CommonViewEditors</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <TargetFSharpCoreVersion>4.4.0.0</TargetFSharpCoreVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetProfile>netcore</TargetProfile>
+    <TargetFSharpCoreVersion>3.7.4.0</TargetFSharpCoreVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Name>CommonViewEditors</Name>
   </PropertyGroup>

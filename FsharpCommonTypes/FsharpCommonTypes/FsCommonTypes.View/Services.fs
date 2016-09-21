@@ -4,7 +4,7 @@ open FsharpCommonTypes.InterfaceTypes
 open CommonValidations
 open FsharpCommonTypes
 
-type DocumentUpdate< 'PrimitiveType, 'ParentType> = ('ParentType -> 'PrimitiveType ->  'ParentType)
+type DocumentUpdate< 'PrimitiveType, 'ParentType> = ('ParentType -> 'PrimitiveType ->   'ParentType)
 
 type DocumentPull<'ParentType,'PrimitiveType> = ('ParentType  -> 'PrimitiveType)
 
@@ -39,6 +39,7 @@ type IViewComponent<'ViewModel> =
     abstract OnDocUpdated<'ViewModel> : 'ViewModel -> unit
     abstract IsValid:unit->bool
     abstract Init<'ViewModel> : 'ViewModel -> unit
+    abstract Label:string
 
 type IScreen<'ViewModel> =
     abstract UpdateDoc<'ViewModel> : 'ViewModel -> unit

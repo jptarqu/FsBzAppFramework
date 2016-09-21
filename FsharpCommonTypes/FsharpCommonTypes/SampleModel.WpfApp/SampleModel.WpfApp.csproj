@@ -114,10 +114,6 @@
       <Project>{eacffed2-3cff-4b09-b401-d680f09d8a67}</Project>
       <Name>CommonViewEditors</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FsharpCommonTypes\FsharpCommonTypes.fsproj">
-      <Project>{7bbfe8c4-c3ee-4078-b347-c9910e8c483b}</Project>
-      <Name>FsharpCommonTypes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SampleModel.Core\SampleModel.Core.fsproj">
       <Project>{39815d25-c33c-4e8b-8f87-b76cfe75221e}</Project>
       <Name>SampleModel.Core</Name>

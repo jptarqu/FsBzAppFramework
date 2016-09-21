@@ -55,11 +55,6 @@
       <Project>{eacffed2-3cff-4b09-b401-d680f09d8a67}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\FsharpCommonTypes\FsharpCommonTypes.fsproj">
-      <Name>FsharpCommonTypes</Name>
-      <Project>{7bbfe8c4-c3ee-4078-b347-c9910e8c483b}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
