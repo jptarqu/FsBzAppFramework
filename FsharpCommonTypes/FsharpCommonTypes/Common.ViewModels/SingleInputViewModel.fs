@@ -6,7 +6,7 @@ open FsharpCommonTypes
 
 type SingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'PrimitiveType, 
                                                         docUpdate:string->'ParentType, 
-                                                        pushUpdatedDoc: 'ParentType->unit,
+                                                        pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
                                                         propConstraint: TextType.TextPropertyDefinition,
                                                         propName: string) as self = 
     inherit ViewModelBase()
@@ -23,14 +23,16 @@ type SingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'Pri
         currErrors |> Seq.isEmpty
     let alertParentOfDocChg newVal =
         let newDoc = docUpdate newVal
-        pushUpdatedDoc newDoc
+        pushUpdatedDoc self newDoc
 
     member self.Value with get() = txtValue.Value 
                         and set value = 
-                            txtValue.Value <- value
-                            validate()
-                            if (isValueValid) then
-                               alertParentOfDocChg txtValue.Value
+                            if (value <> txtValue.Value) then
+                                txtValue.Value <- value
+                                validate()
+                                if (isValueValid) then
+                                   alertParentOfDocChg txtValue.Value
+
     member self.PropName with get() = propName
 
     interface CommonViewEditors.IViewComponent<'ParentType> with

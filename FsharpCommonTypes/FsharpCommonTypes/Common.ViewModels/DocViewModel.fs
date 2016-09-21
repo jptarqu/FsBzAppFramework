@@ -6,8 +6,14 @@ open FsharpCommonTypes
 type DocViewModel<'ParentType>(intialDoc:'ParentType) =
     let mutable myDoc = intialDoc
     let mutable childViewModels:List<CommonViewEditors.IViewComponent<'ParentType>> = List.empty
-    let updateDoc newDoc =
+    let notifyChange childView newDoc =
+        childViewModels |> Seq.filter ((<>) childView)  |> Seq.iter (fun x -> x.OnDocUpdated newDoc) 
+
+    let updateDoc childView newDoc =
         myDoc <-  newDoc
+        notifyChange childView newDoc
+        ()
+
     member this.AddTextInput(definition:TextInputDefinition< 'ParentType>) =
         let docUpdate = definition.DocumentUpdate myDoc
         let docPull = definition.DocumentPull
