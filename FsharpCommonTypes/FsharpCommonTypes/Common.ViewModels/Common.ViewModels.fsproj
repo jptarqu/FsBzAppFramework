@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SingleInputViewModel.fs" />
+    <Compile Include="ExternalChoicesViewModel.fs" />
     <Compile Include="DocViewModel.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />

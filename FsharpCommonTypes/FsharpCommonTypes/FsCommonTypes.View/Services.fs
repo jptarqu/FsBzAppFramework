@@ -16,6 +16,16 @@ type ExternalChoicesQueryResult<'Result> = {ResultId: string; ResultLabel: strin
 
 type ExternalChoicesQueryExecutor<'ParentType, 'Result > = 'ParentType -> string -> seq<ExternalChoicesQueryResult<'Result>>
 
+type IIntExternalChoicesQry =
+    abstract QueryExecutor:string->seq<ExternalChoicesQueryResult<int>>
+
+type IntExternalChoicesInputDefinition< 'ViewModel > = 
+    {
+        PropDisplayName: string; 
+        DocumentPull: DocumentPull<'ViewModel, int > ; 
+        DocumentUpdate: DocumentUpdate< int, 'ViewModel> ; 
+        ExternalChoicesQueryExecutor: ExternalChoicesQueryExecutor< 'ViewModel, int > ; 
+    }
 
 type ExternalChoicesInputDefinition< 'ViewModel, 'Result > = 
     {
@@ -40,6 +50,7 @@ type IViewComponent<'ViewModel> =
     abstract IsValid:unit->bool
     abstract Init<'ViewModel> : 'ViewModel -> unit
     abstract Label:string
+    abstract UiHint:string
 
 type IScreen<'ViewModel> =
     abstract UpdateDoc<'ViewModel> : 'ViewModel -> unit
