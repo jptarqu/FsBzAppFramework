@@ -20,6 +20,13 @@ module BusinessTypes =
 
     type PropFactoryMethod<'Primitive> =
         'Primitive->BzProp<'Primitive>
+        
+    let GetStrErrors (propFactory:PropFactoryMethod<'Primitive>) (newPrimitiveVal:'Primitive) =
+        let newPropState = propFactory newPrimitiveVal
+        let strErrors = match newPropState with
+                        | ValidProp primtive -> Seq.empty
+                        | InvalidProp (badPrimitive, errors) -> errors |> Seq.map string
+        strErrors |> Seq.toList
 
     let LongName (newValue:string) =
         if (newValue.Length < 3) then

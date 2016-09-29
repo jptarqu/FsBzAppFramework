@@ -16,6 +16,10 @@ type ExternalChoicesQueryResult<'Result> = {ResultId: string; ResultLabel: strin
 
 type ExternalChoicesQueryExecutor<'ParentType, 'Result > = 'ParentType -> string -> seq<ExternalChoicesQueryResult<'Result>>
 
+type SimpleExternalChoicesQueryResult<'PrimitiveType> = {ResultId: 'PrimitiveType; ResultLabel: string; }
+type IExternalChoicesQry<'PrimitiveType when 'PrimitiveType: equality> =
+    abstract QueryExecutor:string->seq<SimpleExternalChoicesQueryResult<'PrimitiveType>>
+
 type IIntExternalChoicesQry =
     abstract QueryExecutor:string->seq<ExternalChoicesQueryResult<int>> //unit //seq<ExternalChoicesQueryResult<int>>
 
