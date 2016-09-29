@@ -13,12 +13,18 @@ type SingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'Pri
     let defaultValue = ""
 //    let mutable txtValue = defaultValue
     let mutable currErrors:seq<CommonValidations.PropertyError> = Seq.empty
-
-    let txtValue = self.Factory.Backing(<@ self.Value @>, "")
-
-    // ...
+    
     let validate () = 
         currErrors <- propConstraint.GetPropertyValidationErrors propName self.Value
+
+    let getValErrors newVal =
+        validate()
+        let strErrors = currErrors |> Seq.map (fun e -> e.Description) |> Seq.toList
+        strErrors
+
+    let txtValue = self.Factory.Backing(<@ self.Value @>, "", getValErrors)
+
+    // ...
     let isValueValid = 
         currErrors |> Seq.isEmpty
     let alertParentOfDocChg newVal =

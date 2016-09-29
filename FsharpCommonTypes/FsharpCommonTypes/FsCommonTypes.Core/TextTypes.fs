@@ -16,7 +16,7 @@ module TextType =
         member this.MaxLen = maxLen
         member this.IsRequired = isRequired
         member this.RegexPattern = regexPattern
-        member this.UsesRegex = String.IsNullOrEmpty(regexPattern)
+        member this.UsesRegex = not(String.IsNullOrEmpty(regexPattern))
 
 
     let TextProp regexPattern isRequired minLen maxLen =

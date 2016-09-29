@@ -3,6 +3,7 @@
 open CommonViewEditors
 open FsharpCommonTypes
 open FSharp.ViewModule
+open System.Collections.ObjectModel
 
 type ExternalChoicesViewModel<'ParentType>(docPull:'ParentType->int, 
                                                         docUpdate: int->'ParentType, 
@@ -15,6 +16,8 @@ type ExternalChoicesViewModel<'ParentType>(docPull:'ParentType->int,
     let mutable currErrors:seq<CommonValidations.PropertyError> = Seq.empty
 
     let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue)
+    let possibleChoices = ObservableCollection<int>()
+
 
     // ...
     let validate () = 
@@ -25,14 +28,22 @@ type ExternalChoicesViewModel<'ParentType>(docPull:'ParentType->int,
         let newDoc = docUpdate newVal
         pushUpdatedDoc self newDoc
 
+    let limitChoices newFilter =
+        let newChoices = queryExecutor (newFilter.ToString())
+        possibleChoices.Clear()
+        newChoices |> Seq.iter (fun item -> possibleChoices.Add(item.Content))
+        ()
+        
     member self.Value with get() = txtValue.Value 
                         and set value = 
                             if (value <> txtValue.Value) then
                                 txtValue.Value <- value
+                                //limitChoices txtValue.Value
                                 validate()
                                 if (isValueValid) then
                                    alertParentOfDocChg txtValue.Value
-
+                                   
+    member self.PossibleChoices with get() = possibleChoices
     member self.PropName with get() = propName
 
     interface CommonViewEditors.IViewComponent<'ParentType> with
@@ -48,6 +59,7 @@ type ExternalChoicesViewModel<'ParentType>(docPull:'ParentType->int,
         member this.Label = propName
         member this.UiHint = "ExternalChoices"
     interface IIntExternalChoicesQry with
-        member this.QueryExecutor filterStr = queryExecutor filterStr
+        member this.QueryExecutor filterStr = 
+            queryExecutor filterStr
     
 

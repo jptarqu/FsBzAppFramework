@@ -17,7 +17,7 @@ type ExternalChoicesQueryResult<'Result> = {ResultId: string; ResultLabel: strin
 type ExternalChoicesQueryExecutor<'ParentType, 'Result > = 'ParentType -> string -> seq<ExternalChoicesQueryResult<'Result>>
 
 type IIntExternalChoicesQry =
-    abstract QueryExecutor:string->seq<ExternalChoicesQueryResult<int>>
+    abstract QueryExecutor:string->seq<ExternalChoicesQueryResult<int>> //unit //seq<ExternalChoicesQueryResult<int>>
 
 type IntExternalChoicesInputDefinition< 'ViewModel > = 
     {

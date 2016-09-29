@@ -11,7 +11,7 @@ type DocViewModel<'ParentType>(intialDoc:'ParentType) =
 
     let updateDoc childView newDoc =
         myDoc <-  newDoc
-        notifyChange childView newDoc
+        notifyChange childView myDoc
         ()
 
     let choicesExecInt (qryExecutor:ExternalChoicesQueryExecutor< 'ParentType, int >) =
@@ -19,13 +19,17 @@ type DocViewModel<'ParentType>(intialDoc:'ParentType) =
         
 
     member this.AddTextInput(definition:TextInputDefinition< 'ParentType>) =
-        let docUpdate = definition.DocumentUpdate myDoc
+        let docUpdate = (fun newVal ->  
+            definition.DocumentUpdate myDoc newVal
+            )
         let docPull = definition.DocumentPull
         let newField = SingleInputViewModel<string, 'ParentType>(docPull, docUpdate,  updateDoc, definition.Constraint, definition.PropDisplayName ) :> CommonViewEditors.IViewComponent<'ParentType>
         childViewModels <- newField :: childViewModels
 
     member this.AddExternalChoicesInput(definition:IntExternalChoicesInputDefinition< 'ParentType>) =
-        let docUpdate = definition.DocumentUpdate myDoc
+        let docUpdate = (fun newVal -> 
+            definition.DocumentUpdate myDoc newVal
+            )
         let docPull = definition.DocumentPull
         let qry = choicesExecInt definition.ExternalChoicesQueryExecutor
         let newField = ExternalChoicesViewModel<'ParentType>(docPull, docUpdate,  updateDoc, qry,  definition.PropDisplayName, 0 ) :> CommonViewEditors.IViewComponent<'ParentType>
@@ -33,6 +37,10 @@ type DocViewModel<'ParentType>(intialDoc:'ParentType) =
 
     member this.GetChildViews() =
         childViewModels |> Seq.rev
+
+    member this.Init() =
+        childViewModels |> Seq.iter (fun x -> x.Init myDoc)
+        
 
 [<CLIMutable>]
 type SampleDoc = 
@@ -44,7 +52,7 @@ type SampleDoc =
 
 module Sample =
     let CreateSampleDoc () =
-        let model ={Name= (BusinessTypes.NewShortName "Alabama" "Name"); SalesRegion = 0 } 
+        let model ={Name= (BusinessTypes.NewShortName "Name" "Alabama" ); SalesRegion = 0 } 
         let doc = DocViewModel(model)
         let txtInput = {
                         TextInputDefinition.PropDisplayName = "Name"; 
@@ -55,15 +63,15 @@ module Sample =
         doc.AddTextInput(txtInput)
 
         let choicesInput = {
-                        IntExternalChoicesInputDefinition.PropDisplayName = "Name"; 
+                        IntExternalChoicesInputDefinition.PropDisplayName = "Sales Region"; 
                         DocumentPull = (fun x -> x.SalesRegion) ; 
                         DocumentUpdate = (fun doc x -> {doc with SalesRegion =  x });
                         ExternalChoicesQueryExecutor = (fun doc filterStr -> 
                                                             let results:list<ExternalChoicesQueryResult<int>> = 
                                                                             [ {ResultId= "1"; ResultLabel= "Test 1"; Content= 1  };
-                                                                            {ResultId= "1"; ResultLabel= "Test 1"; Content= 1  } ;
-                                                                            {ResultId= "1"; ResultLabel= "Test 1"; Content= 1  }  ]
-                                                            results |> List.toSeq
+                                                                            {ResultId= "2"; ResultLabel= "Test 2"; Content= 2  } ;
+                                                                            {ResultId= "3"; ResultLabel= "Test 3"; Content= 3  }  ]
+                                                            results |> Seq.filter (fun x -> x.ResultId = filterStr) 
                                                          )
                         }
         doc.AddExternalChoicesInput(choicesInput)
