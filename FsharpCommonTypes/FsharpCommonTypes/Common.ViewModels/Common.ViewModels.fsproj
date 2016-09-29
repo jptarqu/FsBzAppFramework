@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d60858bf-d9f4-4607-aae2-35ac84e512d1</ProjectGuid>
+    <ProjectGuid>{5e5bf92d-9586-40a4-9549-3bb8bfc87838}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Common.ViewModels</RootNamespace>
     <AssemblyName>Common.ViewModels</AssemblyName>
@@ -59,12 +59,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\public\FsBzApp\FsharpCommonTypes\FsharpCommonTypes\FsCommonTypes.Core\FsCommonTypes.Core.fsproj">
+    <ProjectReference Include="..\FsCommonTypes.Core\FsCommonTypes.Core.fsproj">
       <Name>FsCommonTypes.Core</Name>
       <Project>{2b69a3c1-3f5b-42c2-89d9-1529ecb70b84}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\public\FsBzApp\FsharpCommonTypes\FsharpCommonTypes\FsCommonTypes.View\FsCommonTypes.View.fsproj">
+    <ProjectReference Include="..\FsCommonTypes.View\FsCommonTypes.View.fsproj">
       <Name>FsCommonTypes.View</Name>
       <Project>{5a30afdb-f3a7-40e5-8e64-537ff2ca1746}</Project>
       <Private>True</Private>

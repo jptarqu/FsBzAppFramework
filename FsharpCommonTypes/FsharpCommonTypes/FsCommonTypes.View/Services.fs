@@ -47,7 +47,7 @@ type BooleanInputDefinition<  'ParentType> =
 
 type IViewComponent<'ViewModel> =
     abstract OnDocUpdated<'ViewModel> : 'ViewModel -> unit
-    abstract IsValid:unit->bool
+    //abstract IsValid:unit->bool we migth not need this, validation check should be at doc level only when submitting command
     abstract Init<'ViewModel> : 'ViewModel -> unit
     abstract Label:string
     abstract UiHint:string
