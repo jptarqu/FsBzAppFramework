@@ -93,8 +93,6 @@ type OldSingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'
             self.Value <- (docPull vm).ToString()
             ()
 
-        member this.IsValid () = 
-            isValueValid
         member this.Label = propName
         member this.UiHint = "SingleInput"
 

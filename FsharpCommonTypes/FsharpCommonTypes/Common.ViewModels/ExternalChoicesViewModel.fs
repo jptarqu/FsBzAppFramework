@@ -20,7 +20,7 @@ type ExternalChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: 
     let getStrErrors = BusinessTypes.GetStrErrors propFactory
 
     let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue, getStrErrors)
-    let txtLabel = self.Factory.Backing(<@ self.Label @>, "")
+    let txtLabel = self.Factory.Backing(<@ self.ResultLabel @>, "")
 
 
     let isValueValid = 
@@ -37,10 +37,10 @@ type ExternalChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: 
                                 let newPropState = propFactory value
                                 alertParentOfDocChg newPropState 
 
-    member self.Label with get() = txtLabel.Value 
-                        and set value = 
-                            if (value <> txtLabel.Value) then
-                                txtLabel.Value <- value
+    member self.ResultLabel with get() = txtLabel.Value 
+                            and set value = 
+                                if (value <> txtLabel.Value) then
+                                    txtLabel.Value <- value
                                    
     member self.PropName with get() = propName
 
@@ -48,12 +48,12 @@ type ExternalChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: 
         member this.Init<'ParentType> vm = 
             let primitiveVal = BusinessTypes.ToPrimitive (refreshValFromDoc vm)
             self.Value <- primitiveVal
-            self.Label <- labelLkup primitiveVal
+            self.ResultLabel <- labelLkup primitiveVal
 
         member this.OnDocUpdated<'ParentType> vm = 
             let primitiveVal = BusinessTypes.ToPrimitive (refreshValFromDoc vm)
             self.Value <- primitiveVal
-            self.Label <- labelLkup primitiveVal
+            self.ResultLabel <- labelLkup primitiveVal
 
         member this.Label = propName
         member this.UiHint = "ExternalChoices"
