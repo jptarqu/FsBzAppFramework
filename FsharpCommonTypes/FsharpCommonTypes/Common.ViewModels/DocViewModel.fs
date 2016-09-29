@@ -64,7 +64,7 @@ type SampleDoc =
 
 module Sample =
     let CreateSampleDoc () =
-        let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 0 } 
+        let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1 } 
         let doc = DocViewModel(model)
         let docUpdateName = doc.GetDocAccessor((fun doc x -> {doc with Name = x }))
         let txtInput = SingleInputViewModel(BusinessTypes.LongName, (fun x -> x.Name), docUpdateName,  doc.UpdateDoc, "Name", "")
@@ -79,7 +79,9 @@ module Sample =
                                                                             {ResultId= 3; ResultLabel= "Test 3";  }  ]
                                                             results |> Seq.filter (fun x -> x.ResultId.ToString() = filterStr) 
                                                          ) 
-        let lblLkp = (fun index -> "DUMMY Test 2") 
+        let lblLkp = (fun index -> 
+                "DUMMY Test 2"
+                ) 
         let choicesInput = ExternalChoicesViewModel(BusinessTypes.IdNumber, (fun x -> x.SalesRegion), docUpdateSalesRegion,  doc.UpdateDoc, qryExec, lblLkp,  "SalesRegion", 0)
        
         doc.AddVhild(choicesInput)
