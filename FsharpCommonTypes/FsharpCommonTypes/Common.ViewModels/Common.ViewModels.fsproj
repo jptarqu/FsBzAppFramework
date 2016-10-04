@@ -42,10 +42,11 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SingleInputViewModel.fs" />
-    <Compile Include="ExternalChoicesViewModel.fs" />
+    <Compile Include="SimpleChoicesViewModel.fs" />
     <Compile Include="DocViewModel.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
+    <Compile Include="ExternalChoicesViewModel.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

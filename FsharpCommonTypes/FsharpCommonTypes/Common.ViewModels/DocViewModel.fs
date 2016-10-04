@@ -82,7 +82,10 @@ module Sample =
         let lblLkp = (fun index -> 
                 "DUMMY Test 2"
                 ) 
-        let choicesInput = ExternalChoicesViewModel(BusinessTypes.IdNumber, (fun x -> x.SalesRegion), docUpdateSalesRegion,  doc.UpdateDoc, qryExec, lblLkp,  "SalesRegion", 0)
+        let simpleChoices =  [ {ResultId= 1; ResultLabel= "Test 1";  };
+                                {ResultId= 2; ResultLabel= "Test 2";  } ;
+                                {ResultId= 3; ResultLabel= "Test 3";  }  ]
+        let choicesInput = SimpleChoicesViewModel(BusinessTypes.IdNumber, (fun x -> x.SalesRegion), docUpdateSalesRegion,  doc.UpdateDoc, simpleChoices,   "SalesRegion", 0)
        
         doc.AddVhild(choicesInput)
         doc
