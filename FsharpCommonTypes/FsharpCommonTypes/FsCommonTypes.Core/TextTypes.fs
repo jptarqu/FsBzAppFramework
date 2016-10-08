@@ -2,7 +2,6 @@
 
 module TextType =
     open System
-    open CommonValidations
     
     type TextPropertyStates =
         | RequiredButBlank of string

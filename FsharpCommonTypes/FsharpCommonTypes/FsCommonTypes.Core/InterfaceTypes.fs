@@ -1,7 +1,6 @@
 ﻿namespace FsharpCommonTypes
 
 module InterfaceTypes =
-    open CommonValidations
 
     type ConstraintFieldDefinition =
         | TextPropertyDefinition of TextType.TextPropertyDefinition

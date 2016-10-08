@@ -4,22 +4,11 @@ module BusinessTypes =
     open TextType
     open InterfaceTypes
 
-    type ErrorMessage = string
-    
-    // with types like this, validation occurs at the moment of creation. A prop is either valid or invlid based on 
-    //  the construction parameters
-    // do we need     [<CLIMutable>] here??
-    type BzProp<'Primitive> = 
-        | ValidProp of 'Primitive
-        | InvalidProp of 'Primitive * seq<ErrorMessage>
-    
+   
     let ToPrimitive propState =
         match propState with
         | ValidProp primitive -> primitive
         | InvalidProp (badPrimitive, errors) -> badPrimitive
-
-    type PropFactoryMethod<'Primitive> =
-        'Primitive->BzProp<'Primitive>
         
     let GetStrErrors (propFactory:PropFactoryMethod<'Primitive>) (newPrimitiveVal:'Primitive) =
         let newPropState = propFactory newPrimitiveVal
@@ -27,20 +16,25 @@ module BusinessTypes =
                         | ValidProp primtive -> Seq.empty
                         | InvalidProp (badPrimitive, errors) -> errors |> Seq.map string
         strErrors |> Seq.toList
+       
+    let GetValidationErrors doc (propDef:#seq<#IPropValidator<'ParentType>>) =
+         propDef |> Seq.collect (fun p -> p.GetValidationErrors doc)
+         
+//    type PropNameValuePair =   
 
+    type LongNameType =  BzProp<string> 
     let LongName (newValue:string) =
         if (newValue.Length < 3) then
             InvalidProp (newValue , ["too short"])
         else
             ValidProp newValue
-    type LongNameType = BzProp<string> 
-
+    
+    type IdNumberType = BzProp<int> 
     let IdNumber (newValue:int) =
         if (newValue < 0) then
             InvalidProp (newValue , ["invalid id"])
         else
             ValidProp newValue
-    type IdNumberType = BzProp<int> 
     // LongName wuld then be called by the ViewModel onChnage (maybe at the validation func passed to FSharp.ViewModule)
     //   where the validation would check if the creation method returned InvalidProp.
     //   SO, ViewModel needs to get passed the creation method as in creationMethod:'Primitive->BzProp<'Primitive>

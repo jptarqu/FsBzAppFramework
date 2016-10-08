@@ -44,7 +44,7 @@ type DocViewModel<'ParentType>(intialDoc:'ParentType) =
     member this.UpdateDoc =
         updateDoc 
 
-    member this.AddVhild( newChild:CommonViewEditors.IViewComponent<'ParentType>) =
+    member this.AddChild( newChild:CommonViewEditors.IViewComponent<'ParentType>) =
         childViewModels <- newChild :: childViewModels
 
     member this.GetChildViews() =
@@ -53,25 +53,48 @@ type DocViewModel<'ParentType>(intialDoc:'ParentType) =
     member this.Init() =
         childViewModels |> Seq.iter (fun x -> x.Init myDoc)
         
-
+        
+        
 [<CLIMutable>]
 type SampleDoc = 
     {Name: BusinessTypes.LongNameType; SalesRegion: BusinessTypes.IdNumberType } 
     with
+        static member DefinitionName = { PropDefinition.Name ="Name"; Factory = BusinessTypes.LongName; Setter = (fun doc newValue -> {doc with SampleDoc.Name = newValue }); Getter = (fun doc -> doc.Name )}
+        static member DefinitionSalesRegion = { PropDefinition.Name ="Sales Region"; Factory = BusinessTypes.IdNumber; Setter = (fun doc newValue -> {doc with SampleDoc.SalesRegion = newValue }); Getter = (fun doc -> doc.SalesRegion )}
+            
+//        static member Definitions = 
+//            {
+//                Name = { PropDefinition.Name ="Name"; Factory = BusinessTypes.LongName; Setter = (fun doc newValue -> {doc with SampleDoc.Name = newValue }); Getter = (fun doc -> doc.Name )}
+//                SalesRegion = { PropDefinition.Name ="Sales Region"; Factory = BusinessTypes.IdNumber; Setter = (fun doc newValue -> {doc with SampleDoc.SalesRegion = newValue }); Getter = (fun doc -> doc.SalesRegion )}
+//            }
+//        member this.Definitions = SampleDoc.Definitions
+//        static member PopNameSalesRegion = "Sales Region"
+//        static member SetSalesRegion doc newValue = {doc with SampleDoc.SalesRegion = newValue }
         interface InterfaceTypes.ICanValidate with 
             member this.GetValidationErrors () = 
-                Seq.empty //TODO check for invlaid states //[ this.Name.GetValidationErrors() ] |> InterfaceTypes.CollectAllError
+                [ SampleDoc.DefinitionName.GetValidationErrors(this) ; 
+                   SampleDoc.DefinitionSalesRegion.GetValidationErrors(this) ] 
+                |> Seq.collect (fun x -> x)
+                
+
+//
+//type SampleDocDefinition =
+//    {PropertyDefintions:PropDefinition<LanguagePrimitives.> }
 
 module Sample =
+    let singleInputViewModel docViewModel (propDef:PropDefinition)  =
+        let docUpdateName = docViewModel.GetDocAccessor(propDef.Setter)
+        SingleInputViewModel(propDef.Factory, propDef.Getter, docUpdateName,  docViewModel.UpdateDoc, propDef.Name, "")
+    
     let CreateSampleDoc () =
         let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1 } 
         let doc = DocViewModel(model)
-        let docUpdateName = doc.GetDocAccessor((fun doc x -> {doc with Name = x }))
-        let txtInput = SingleInputViewModel(BusinessTypes.LongName, (fun x -> x.Name), docUpdateName,  doc.UpdateDoc, "Name", "")
+//        let docUpdateName = doc.GetDocAccessor(SampleDoc.SetName)
+        let txtInput = singleInputViewModel doc SampleDoc.DefinitionName 
 
-        doc.AddVhild(txtInput)
-        
-        let docUpdateSalesRegion = doc.GetDocAccessor((fun doc x -> {doc with SalesRegion = x })) // diff SalesRegion
+        doc.AddChild(txtInput)
+       
+        let docUpdateSalesRegion = doc.GetDocAccessor(SampleDoc.SetSalesRegion) // diff SalesRegion
         let qryExec = doc.AddMyDocToFunc (fun doc filterStr -> 
                                                             let results:list<SimpleExternalChoicesQueryResult<int>> = 
                                                                             [ {ResultId= 1; ResultLabel= "Test 1";  };
@@ -87,5 +110,5 @@ module Sample =
                                 {ResultId= 3; ResultLabel= "Test 3";  }  ]
         let choicesInput = SimpleChoicesViewModel(BusinessTypes.IdNumber, (fun x -> x.SalesRegion), docUpdateSalesRegion,  doc.UpdateDoc, simpleChoices,   "SalesRegion", 0)
        
-        doc.AddVhild(choicesInput)
+        doc.AddChild(choicesInput)
         doc

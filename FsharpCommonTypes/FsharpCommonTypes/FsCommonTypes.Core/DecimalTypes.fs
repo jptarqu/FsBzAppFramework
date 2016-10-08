@@ -2,7 +2,6 @@
 
 module DecimalTypes =
     open System
-    open CommonValidations
 
     type DecimalPropertyStates =
         | LessThanMinimum of string*decimal

@@ -2,7 +2,6 @@
 
 module IntegerTypes =
     open System
-    open CommonValidations
 
     type IntegerPropertyStates =
         | LessThanMinimum of string*int
