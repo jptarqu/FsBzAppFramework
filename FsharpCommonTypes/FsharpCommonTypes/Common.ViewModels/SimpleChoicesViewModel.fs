@@ -9,17 +9,18 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
                                                             refreshValFromDoc:'ParentType->BzProp<'PrimitiveType>, 
                                                             refreshDocFromVal:BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
                                                             pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
-                                                            choices: seq<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
+                                                            choicesQry: 'ParentType->list<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
                                                             propName: string,
                                                             defaultValue: 'PrimitiveType) as self = 
     inherit ViewModelBase()
-//    let mutable txtValue = defaultValue
     let mutable currErrors:seq<PropertyError> = Seq.empty
+    let mutable currPossibleChoicesRaw:list<SimpleExternalChoicesQueryResult<'PrimitiveType>> = List.empty
     
 
     let getStrErrors = BusinessTypes.GetStrErrors propFactory
     
     let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue, getStrErrors)
+    let possibleChoices = ObservableCollection<SimpleExternalChoicesQueryResult<'PrimitiveType>>()
 
 
     let isValueValid = 
@@ -27,7 +28,17 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
     let alertParentOfDocChg newVal =
         let newDoc = refreshDocFromVal newVal
         pushUpdatedDoc self newDoc
+    let refreshObservableCollection () =
+        possibleChoices.Clear()
+        for item in currPossibleChoicesRaw do
+            possibleChoices.Add item
 
+    let refreshPossibleChoice newDoc =
+        let newChoices = choicesQry newDoc
+        let comparisonResult = newChoices |> List.compareWith (fun x y -> if (x = y) then 0 else 1) currPossibleChoicesRaw 
+        if (comparisonResult <> 0) then
+            currPossibleChoicesRaw <- newChoices
+            refreshObservableCollection ()
         
     member self.Value with get() = txtValue.Value 
                         and set value = 
@@ -36,7 +47,7 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
                                 let newPropState = propFactory value
                                 alertParentOfDocChg newPropState 
 
-    member self.PossibleChoices with get() = choices
+    member self.PossibleChoices with get() = possibleChoices
                                    
     member self.PropName with get() = propName
 
@@ -44,10 +55,12 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
         member this.Init<'ParentType> vm = 
             let primitiveVal = BusinessTypes.ToPrimitive (refreshValFromDoc vm)
             self.Value <- primitiveVal
+            refreshPossibleChoice vm
 
         member this.OnDocUpdated<'ParentType> vm = 
             let primitiveVal = BusinessTypes.ToPrimitive (refreshValFromDoc vm)
             self.Value <- primitiveVal
+            refreshPossibleChoice vm
 
         member this.Label = propName
         member this.UiHint = "SimpleChoices"

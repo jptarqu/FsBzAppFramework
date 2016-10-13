@@ -84,14 +84,18 @@ module Sample =
     let CreateSampleDoc () =
         let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1 } 
         model
-    let BuildViewModels () =
-        let simpleChoices =  [ {ResultId= 1; ResultLabel= "Test 1";  };
-                                {ResultId= 2; ResultLabel= "Test 2";  } ;
-                                {ResultId= 3; ResultLabel= "Test 3";  }  ]
+    let BuildViewModels model =
+        let simpleChoices (doc:SampleDoc) = 
+                                let newRand = System.Random().Next(1,6).ToString()
+                                [ {ResultId= 1; ResultLabel= "Test 1";  };
+                                {ResultId= 2; ResultLabel= "Test " + newRand ;  } ;
+                                {ResultId= 3; ResultLabel= "Test 3 " + doc.Name.ToString();  }  ]
         let doc = DocViewModel(model)
         SingleInputViewModel.AddSingleInputViewModel doc SampleDoc.DefinitionName 
         SimpleChoicesViewModel.AddSimpleChoicesViewModel doc SampleDoc.DefinitionSalesRegion simpleChoices 
         doc
+    let Cmd doc =
+        { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
     let CreateSample () =
-        let model = CreateSampleDoc()
-        let screen = CommandScreen.CreateScreen ()
+        let screen = CommandScreen.CreateScreen CreateSampleDoc BuildViewModels "Sales Person" Cmd
+        screen
