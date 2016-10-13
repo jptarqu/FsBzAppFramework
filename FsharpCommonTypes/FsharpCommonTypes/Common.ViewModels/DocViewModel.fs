@@ -68,15 +68,30 @@ type SampleDoc =
                    SampleDoc.DefinitionSalesRegion.GetValidationErrors(this) ] 
                 |> Seq.collect (fun x -> x)
                 
-
+type CommandScreen<'ModelType> =
+    {DocViewModel: DocViewModel<'ModelType>; CommandToExec:'ModelType->CommandResult; Name: string} //Maybe we don't need the query here only in constructor; QueryForInitialization:unit->'ModelType } 
+    
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module CommandScreen =
+    let CreateScreen queryForInitialization viewModelBuilder screenName cmdToExec = 
+        let initDoc = queryForInitialization ()
+        let viewModelDoc = viewModelBuilder initDoc
+        { CommandScreen.DocViewModel = viewModelDoc; CommandToExec =cmdToExec; Name=screenName}
+        
+    
 module Sample =
     
     let CreateSampleDoc () =
+        let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1 } 
+        model
+    let BuildViewModels () =
         let simpleChoices =  [ {ResultId= 1; ResultLabel= "Test 1";  };
                                 {ResultId= 2; ResultLabel= "Test 2";  } ;
                                 {ResultId= 3; ResultLabel= "Test 3";  }  ]
-        let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1 } 
         let doc = DocViewModel(model)
         SingleInputViewModel.AddSingleInputViewModel doc SampleDoc.DefinitionName 
         SimpleChoicesViewModel.AddSimpleChoicesViewModel doc SampleDoc.DefinitionSalesRegion simpleChoices 
         doc
+    let CreateSample () =
+        let model = CreateSampleDoc()
+        let screen = CommandScreen.CreateScreen ()
