@@ -5,46 +5,25 @@ open FsharpCommonTypes
 
 type DocViewModel<'ParentType>(intialDoc:'ParentType) =
     let mutable myDoc = intialDoc
-    let mutable childViewModels:List<CommonViewEditors.IViewComponent<'ParentType>> = List.empty
+    let root:Interfaces.IPanelViewModel<'ParentType> = RowsPanelViewModel("root") :> Interfaces.IPanelViewModel<'ParentType>
+//    let mutable childViewModels:List<CommonViewEditors.IViewComponent<'ParentType>> = List.empty
     let notifyChange childView newDoc =
-        childViewModels |> Seq.filter ((<>) childView)  |> Seq.iter (fun x -> x.OnDocUpdated newDoc) 
-
+        root.GetChildren() |> Seq.filter ((<>) childView)  |> Seq.iter (fun x -> x.OnDocUpdated newDoc) 
     let updateDoc childView newDoc =
         myDoc <-  newDoc
         notifyChange childView myDoc
         ()
-
     let choicesExecInt (qryExecutor:ExternalChoicesQueryExecutor< 'ParentType, int >) =
         qryExecutor myDoc
-        
-
-//    member this.AddTextInput(definition:TextInputDefinition< 'ParentType>) =
-//        let docUpdate = (fun newVal ->  
-//            definition.DocumentUpdate myDoc newVal
-//            )
-//        let docPull = definition.DocumentPull
-//        let newField = SingleInputViewModel<string, 'ParentType>(docPull, docUpdate,  updateDoc, definition.Constraint, definition.PropDisplayName ) :> CommonViewEditors.IViewComponent<'ParentType>
-//        childViewModels <- newField :: childViewModels
-//
-//    member this.AddExternalChoicesInput(definition:IntExternalChoicesInputDefinition< 'ParentType>) =
-//        let docUpdate = (fun newVal -> 
-//            definition.DocumentUpdate myDoc newVal
-//            )
-//        let docPull = definition.DocumentPull
-//        let qry = choicesExecInt definition.ExternalChoicesQueryExecutor
-//        let newField = ExternalChoicesViewModel<'ParentType>(docPull, docUpdate,  updateDoc, qry,  definition.PropDisplayName, 0 ) :> CommonViewEditors.IViewComponent<'ParentType>
-//        childViewModels <- newField :: childViewModels
-    
     member this.AddMyDocToFunc funcNeedeingDoc =
         funcNeedeingDoc myDoc 
-
-
-
     member this.GetChildViews() =
-        childViewModels |> Seq.rev
-
+        root.GetChildren() |> Seq.rev
     member this.Init() =
-        childViewModels |> Seq.iter (fun x -> x.Init myDoc)
+        root.GetChildren() |> Seq.iter (fun x -> x.Init myDoc)
+    member this.GetRootView () =
+            root
+
     interface Interfaces.IDocViewModel<'ParentType> with 
         member this.GetDocAccessor docUpdate =
             (fun newVal -> 
@@ -52,8 +31,8 @@ type DocViewModel<'ParentType>(intialDoc:'ParentType) =
             )
         member this.UpdateDoc childView newDoc =
             updateDoc childView newDoc
-        member this.AddChild( newChild:CommonViewEditors.IViewComponent<'ParentType>) =
-            childViewModels <- newChild :: childViewModels
+        member this.GetRootView () =
+            root
         
         
 [<CLIMutable>]
@@ -70,6 +49,8 @@ type SampleDoc =
                 
 type CommandScreen<'ModelType> =
     {DocViewModel: DocViewModel<'ModelType>; CommandToExec:'ModelType->CommandResult; Name: string} //Maybe we don't need the query here only in constructor; QueryForInitialization:unit->'ModelType } 
+    with
+        member this.Init () = this.DocViewModel.Init()
     
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module CommandScreen =
@@ -91,8 +72,8 @@ module Sample =
                                 {ResultId= 2; ResultLabel= "Test " + newRand ;  } ;
                                 {ResultId= 3; ResultLabel= "Test 3 " + doc.Name.ToString();  }  ]
         let doc = DocViewModel(model)
-        SingleInputViewModel.AddSingleInputViewModel doc SampleDoc.DefinitionName 
-        SimpleChoicesViewModel.AddSimpleChoicesViewModel doc SampleDoc.DefinitionSalesRegion simpleChoices 
+        SingleInputViewModel.AddSingleInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionName 
+        SimpleChoicesViewModel.AddSimpleChoicesViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
         doc
     let Cmd doc =
         { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }

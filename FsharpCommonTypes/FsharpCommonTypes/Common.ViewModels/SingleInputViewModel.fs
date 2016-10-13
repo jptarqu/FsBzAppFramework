@@ -98,7 +98,7 @@ type OldSingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module SingleInputViewModel =
-    let AddSingleInputViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>)  =
+    let AddSingleInputViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>)  =
         let docUpdateName = docViewModel.GetDocAccessor(propDef.Setter)
         let txtInput = SingleInputViewModel(propDef.Factory, propDef.Getter, docUpdateName,  docViewModel.UpdateDoc, propDef.Name, "")
-        docViewModel.AddChild(txtInput)
+        intoPanelViewModel.AddChild(txtInput)

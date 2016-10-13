@@ -45,6 +45,7 @@
     <Compile Include="SingleInputViewModel.fs" />
     <Compile Include="SimpleChoicesViewModel.fs" />
     <Compile Include="ExternalChoicesViewModel.fs" />
+    <Compile Include="RowsPanelViewModel.fs" />
     <Compile Include="DocViewModel.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />

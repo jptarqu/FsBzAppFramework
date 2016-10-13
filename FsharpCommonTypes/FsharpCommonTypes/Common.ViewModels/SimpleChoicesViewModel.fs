@@ -67,7 +67,7 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
     
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module SimpleChoicesViewModel =
-    let AddSimpleChoicesViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>) simpleChoices  =
+    let AddSimpleChoicesViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>) simpleChoices  =
         let docUpdate = docViewModel.GetDocAccessor(propDef.Setter)
         let choicesInput = SimpleChoicesViewModel(propDef.Factory, propDef.Getter, docUpdate,  docViewModel.UpdateDoc, simpleChoices, propDef.Name, 0)
-        docViewModel.AddChild(choicesInput)
+        intoPanelViewModel.AddChild(choicesInput)
