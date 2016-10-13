@@ -4,16 +4,16 @@ open FSharp.ViewModule
 open FsharpCommonTypes
 
 
-type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType: equality>(propFactory:BusinessTypes.PropFactoryMethod<'PrimitiveType>,
-                                                        refreshValFromDoc:'ParentType->BusinessTypes.BzProp<'PrimitiveType>, 
-                                                        refreshDocFromVal:BusinessTypes.BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
+type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType: equality>(propFactory:PropFactoryMethod<'PrimitiveType>,
+                                                        refreshValFromDoc:'ParentType->BzProp<'PrimitiveType>, 
+                                                        refreshDocFromVal:BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
                                                         pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
                                                         propName: string,
                                                         defaultValue: 'PrimitiveType) as self = 
     inherit ViewModelBase()
     
 //    let mutable txtValue = defaultValue
-    let mutable currErrors:seq<BusinessTypes.ErrorMessage> = Seq.empty
+    let mutable currErrors:seq<ErrorMessage> = Seq.empty
     
     //let validate () = 
     //    currErrors <- propConstraint.GetPropertyValidationErrors propName self.Value
@@ -56,7 +56,7 @@ type OldSingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'
     inherit ViewModelBase()
     let defaultValue = ""
 //    let mutable txtValue = defaultValue
-    let mutable currErrors:seq<CommonValidations.PropertyError> = Seq.empty
+    let mutable currErrors:seq<PropertyError> = Seq.empty
     
     let validate () = 
         currErrors <- propConstraint.GetPropertyValidationErrors propName self.Value
@@ -96,4 +96,9 @@ type OldSingleInputViewModel<'PrimitiveType, 'ParentType>(docPull:'ParentType->'
         member this.Label = propName
         member this.UiHint = "SingleInput"
 
-
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module SingleInputViewModel =
+    let AddSingleInputViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>)  =
+        let docUpdateName = docViewModel.GetDocAccessor(propDef.Setter)
+        let txtInput = SingleInputViewModel(propDef.Factory, propDef.Getter, docUpdateName,  docViewModel.UpdateDoc, propDef.Name, "")
+        docViewModel.AddChild(txtInput)

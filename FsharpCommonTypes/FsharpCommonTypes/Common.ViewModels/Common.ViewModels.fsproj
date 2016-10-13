@@ -41,6 +41,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.Portable.FSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="Interfaces.fs" />
     <Compile Include="SingleInputViewModel.fs" />
     <Compile Include="SimpleChoicesViewModel.fs" />
     <Compile Include="ExternalChoicesViewModel.fs" />

@@ -5,9 +5,9 @@ open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
 
-type ExternalChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: equality >(propFactory:BusinessTypes.PropFactoryMethod<'PrimitiveType>,
-                                                            refreshValFromDoc:'ParentType->BusinessTypes.BzProp<'PrimitiveType>, 
-                                                            refreshDocFromVal:BusinessTypes.BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
+type ExternalChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: equality >(propFactory:PropFactoryMethod<'PrimitiveType>,
+                                                            refreshValFromDoc:'ParentType->BzProp<'PrimitiveType>, 
+                                                            refreshDocFromVal:BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
                                                             pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
                                                             queryExecutor: string -> seq<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
                                                             labelLkup: 'PrimitiveType -> string,
@@ -15,7 +15,7 @@ type ExternalChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: 
                                                             defaultValue: 'PrimitiveType) as self = 
     inherit ViewModelBase()
 //    let mutable txtValue = defaultValue
-    let mutable currErrors:seq<CommonValidations.PropertyError> = Seq.empty
+    let mutable currErrors:seq<PropertyError> = Seq.empty
     
     let getStrErrors = BusinessTypes.GetStrErrors propFactory
 
@@ -69,7 +69,7 @@ type OldExternalChoicesViewModel<'ParentType>(docPull:'ParentType->int,
                                                         defaultValue: int) as self = 
     inherit ViewModelBase()
 //    let mutable txtValue = defaultValue
-    let mutable currErrors:seq<CommonValidations.PropertyError> = Seq.empty
+    let mutable currErrors:seq<PropertyError> = Seq.empty
 
     let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue)
     let possibleChoices = ObservableCollection<int>()
@@ -117,3 +117,26 @@ type OldExternalChoicesViewModel<'ParentType>(docPull:'ParentType->int,
             queryExecutor filterStr
     
 
+//    
+//[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+//module SimpleChoicesViewModel =
+//    let AddSimpleChoicesViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>)  =
+//        let docUpdate = docViewModel.GetDocAccessor(propDef.Setter)
+//        let txtInput = SingleInputViewModel(propDef.Factory, propDef.Getter, docUpdateName,  docViewModel.UpdateDoc, propDef.Name, "")
+//        
+//        let qryExec = doc.AddMyDocToFunc (fun doc filterStr -> 
+//                                                            let results:list<SimpleExternalChoicesQueryResult<int>> = 
+//                                                                            [ {ResultId= 1; ResultLabel= "Test 1";  };
+//                                                                            {ResultId= 2; ResultLabel= "Test 2";  } ;
+//                                                                            {ResultId= 3; ResultLabel= "Test 3";  }  ]
+//                                                            results |> Seq.filter (fun x -> x.ResultId.ToString() = filterStr) 
+//                                                         ) 
+//        let lblLkp = (fun index -> 
+//                "DUMMY Test 2"
+//                ) 
+//        let simpleChoices =  [ {ResultId= 1; ResultLabel= "Test 1";  };
+//                                {ResultId= 2; ResultLabel= "Test 2";  } ;
+//                                {ResultId= 3; ResultLabel= "Test 3";  }  ]
+//        let choicesInput = SimpleChoicesViewModel(propDef.Factory, propDef.Getter, docUpdate,  docViewModel.UpdateDoc, simpleChoices,   "SalesRegion", 0)
+//       
+//        doc.AddChild(choicesInput)

@@ -5,16 +5,16 @@ open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
 
-type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: equality >(propFactory:BusinessTypes.PropFactoryMethod<'PrimitiveType>,
-                                                            refreshValFromDoc:'ParentType->BusinessTypes.BzProp<'PrimitiveType>, 
-                                                            refreshDocFromVal:BusinessTypes.BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
+type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: equality >(propFactory:PropFactoryMethod<'PrimitiveType>,
+                                                            refreshValFromDoc:'ParentType->BzProp<'PrimitiveType>, 
+                                                            refreshDocFromVal:BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
                                                             pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
                                                             choices: seq<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
                                                             propName: string,
                                                             defaultValue: 'PrimitiveType) as self = 
     inherit ViewModelBase()
 //    let mutable txtValue = defaultValue
-    let mutable currErrors:seq<CommonValidations.PropertyError> = Seq.empty
+    let mutable currErrors:seq<PropertyError> = Seq.empty
     
 
     let getStrErrors = BusinessTypes.GetStrErrors propFactory
@@ -52,3 +52,9 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
         member this.Label = propName
         member this.UiHint = "SimpleChoices"
     
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module SimpleChoicesViewModel =
+    let AddSimpleChoicesViewModel (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>) simpleChoices  =
+        let docUpdate = docViewModel.GetDocAccessor(propDef.Setter)
+        let choicesInput = SimpleChoicesViewModel(propDef.Factory, propDef.Getter, docUpdate,  docViewModel.UpdateDoc, simpleChoices, propDef.Name, 0)
+        docViewModel.AddChild(choicesInput)

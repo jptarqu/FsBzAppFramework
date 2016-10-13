@@ -1,7 +1,6 @@
 ﻿namespace CommonViewEditors
 
 open FsharpCommonTypes.InterfaceTypes
-open CommonValidations
 open FsharpCommonTypes
 
 type DocumentUpdate< 'PrimitiveType, 'ParentType> = ('ParentType -> 'PrimitiveType ->   'ParentType)
