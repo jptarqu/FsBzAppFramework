@@ -42,8 +42,9 @@ module Sample =
         SingleInputViewModel.AddSingleInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionName 
         SimpleChoicesViewModel.AddSimpleChoicesViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
         doc
-    let CreateSample () =
+    let CreateSample (screenManager:ScreenManager) =
         let afterSuccess doc cmdResult =
+            screenManager.RemoveScreen screen
             ()
             
         let afterFailure doc cmdResult =
