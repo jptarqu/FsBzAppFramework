@@ -49,6 +49,8 @@
     <Compile Include="DocViewModel.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
+    <Compile Include="Screens.fs" />
+    <Compile Include="SampleViewModel.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

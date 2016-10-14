@@ -14,6 +14,9 @@ type QueryResult<'QueryType> =
 type CommandResult =
     { Message:string; Errors: PropertyError seq}
 
+type CommandDefinition<'ModelType>  =
+    { CmdName:string; CmdExecuter: 'ModelType->Async<CommandResult>}
+
 type ErrorMessage = string
     
 type IPropValidator<'ParentType> =

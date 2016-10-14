@@ -3,7 +3,7 @@
 open FSharp.ViewModule
 open FsharpCommonTypes
 
-type RowsPanelViewModel<'ParentType >(groupName: string) as self = 
+type RowsPanelViewModel<'ParentType >(groupName: string) = 
 
     let mutable childViewModels:List<CommonViewEditors.IViewComponent<'ParentType>> = List.empty
     

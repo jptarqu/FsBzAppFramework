@@ -1,0 +1,90 @@
+﻿<UserControl x:Class="FsCommonTypes.Views.ExternalChoicesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FsCommonTypes.Views"
+                 xmlns:fsvm="clr-namespace:CommonViewEditors;assembly=FsCommonTypes.View"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:wpf="http://wpfcontrols.com/"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300" DataContextChanged="UserControl_DataContextChanged">
+    <UserControl.Resources>
+        <DataTemplate x:Key="choiceTemplate" DataType="fsvm:ExternalChoicesQueryResult">
+            <Border Padding="5">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="{Binding Path=ResultId}"
+                               FontWeight="Bold" 
+                               Grid.Column="0" 
+                               Grid.Row="0"
+                               FontFamily="Segoe UI"
+                               VerticalAlignment="Bottom"/>
+                    <TextBlock Text="{Binding Path=ResultLabel}"
+                               Grid.Column="1"
+                               Grid.Row="0"
+                               VerticalAlignment="Bottom"/>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <StackPanel>
+        <!--<ComboBox materialDesign:HintAssist.Hint="(editable)" 
+                          MinWidth="72"
+                          Margin="16 0 0 0"
+                          VerticalAlignment="Bottom" 
+                          IsEditable="True"             
+                   x:Name="choicesBox"
+                                 x:FieldModifier="private"
+                  ItemsSource="{Binding PossibleChoices}"
+                  SelectedValue="{Binding Value}"
+                  TextInput="choicesBox_TextInput"
+                          >
+            <ComboBox.Text>
+                <Binding Path="SelectedTextTwo" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                    <Binding.ValidationRules>
+                    </Binding.ValidationRules>
+                </Binding>
+            </ComboBox.Text>
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>-->
+        <wpf:AutoCompleteTextBox VerticalAlignment="Top"
+                                 Height="25"
+                                 DisplayMember="ResultLabel"
+                                 Margin="0 8 0 8"
+                                 Watermark="Search here"
+                                 IconPlacement="Left"
+                                 IconVisibility="Visible"
+                                 x:Name="choicesBox"
+                                 x:FieldModifier="private"
+                                 
+                                
+                                 ItemTemplate="{StaticResource ResourceKey=choiceTemplate}"
+                                 >
+            <!-- need to figure out how the selected value is being set , do we assume that we need to use SimpleExternalChoicesQueryResult in the viewmodle as the currSelected Prop INPC?? -->
+            <wpf:AutoCompleteTextBox.SelectedItem>
+                <Binding Path="ResultId" Mode="TwoWay">
+                    <Binding.ValidationRules>
+                    </Binding.ValidationRules>
+                </Binding>
+            </wpf:AutoCompleteTextBox.SelectedItem>
+            <wpf:AutoCompleteTextBox.LoadingContent>
+                <TextBlock Text="Loading..."
+                           Margin="5"
+                           FontSize="14" />
+            </wpf:AutoCompleteTextBox.LoadingContent>
+           
+        </wpf:AutoCompleteTextBox>
+    </StackPanel>
+</UserControl>
