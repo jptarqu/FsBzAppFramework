@@ -20,7 +20,6 @@ type CommandViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
             else
                 onFailure currCmdResult
             ()
-            //updateEntityErrorsFromResult result
         }
     let primaryCmd = self.Factory.CommandAsyncChecked(execCmd, isValid)
     member self.Cmd with get() = primaryCmd
@@ -30,14 +29,23 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate >(
     inherit ViewModelBase() 
     let mutable myDoc = intialDoc
     let currEntityErrors = ObservableCollection<PropertyError>()
+    let mutable docIsValid = true
     let isValid () =
+        docIsValid 
+    let updateValidationErrors () =
 //        currEntityErrors.Clear()
         let newErrors = (myDoc :> InterfaceTypes.ICanValidate).GetValidationErrors()
-//        newErrors |> Seq.iter (fun i -> currEntityErrors.Add(i)) // Only if want to show entity level errors
-        newErrors |> Seq.isEmpty
+        let entityErros = newErrors 
+                          |> Seq.filter (fun e -> e.PropertyName = "")
+        currEntityErrors.Clear()
+        entityErros |> Seq.iter (fun i -> currEntityErrors.Add(i))
+        docIsValid <- (newErrors |> Seq.isEmpty)
+
     let updateEntityErrorsFromResult result =
         currEntityErrors.Clear()
         result.Errors |> Seq.iter (fun i -> currEntityErrors.Add(i))
+        docIsValid <- (result.Errors |> Seq.isEmpty)
+
     let primaryCmd = CommandViewModel(isValid, commandToExec, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc))
     let root:Interfaces.IPanelViewModel<'ParentType> = RowsPanelViewModel("root") :> Interfaces.IPanelViewModel<'ParentType>
     let notifyChange childView newDoc =
@@ -45,6 +53,8 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate >(
     let updateDoc childView newDoc =
         myDoc <-  newDoc
         notifyChange childView myDoc
+        updateValidationErrors ()
+        primaryCmd.Cmd.RaiseCanExecuteChanged() 
         ()
     let choicesExecInt (qryExecutor:ExternalChoicesQueryExecutor< 'ParentType, int >) =
         qryExecutor myDoc

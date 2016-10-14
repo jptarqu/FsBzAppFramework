@@ -49,13 +49,6 @@
     <Compile Include="JsBuilder.fs" />
     <None Include="Script.fsx" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CommonViewEditors\CommonViewEditors.fsproj">
-      <Name>CommonViewEditors</Name>
-      <Project>{eacffed2-3cff-4b09-b401-d680f09d8a67}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
   </PropertyGroup>

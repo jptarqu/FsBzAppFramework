@@ -48,11 +48,6 @@
     <Compile Include="ViewTypes.fs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CommonViewEditors\CommonViewEditors.fsproj">
-      <Name>CommonViewEditors</Name>
-      <Project>{eacffed2-3cff-4b09-b401-d680f09d8a67}</Project>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\SampleModel.Core\SampleModel.Core.fsproj">
       <Name>SampleModel.Core</Name>
       <Project>{39815d25-c33c-4e8b-8f87-b76cfe75221e}</Project>

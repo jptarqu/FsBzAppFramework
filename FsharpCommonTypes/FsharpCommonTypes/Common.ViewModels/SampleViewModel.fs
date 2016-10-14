@@ -13,8 +13,14 @@ type SampleDoc =
             { PropDefinition.Name ="Sales Region"; Factory = BusinessTypes.IdNumber; Setter = (fun d v -> {d with SampleDoc.SalesRegion = v }); Getter = (fun d -> d.SalesRegion )}
         interface InterfaceTypes.ICanValidate with 
             member this.GetValidationErrors () = 
+                let isObjValid () = 
+                    if this.Name = BusinessTypes.LongName "Looper" then  
+                        seq [ { PropertyError.ErrorCode ="YY"; Description ="TestError"; PropertyName=""; } ] 
+                    else 
+                        Seq.empty
                 [ SampleDoc.DefinitionName.GetValidationErrors(this) ; 
-                   SampleDoc.DefinitionSalesRegion.GetValidationErrors(this) ] 
+                   SampleDoc.DefinitionSalesRegion.GetValidationErrors(this);
+                   isObjValid(); ] 
                 |> Seq.collect (fun x -> x)
 
 module Sample =

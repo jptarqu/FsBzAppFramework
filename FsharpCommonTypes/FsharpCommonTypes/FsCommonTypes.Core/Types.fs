@@ -7,6 +7,7 @@ type PropertyError =
     { ErrorCode:string; Description:string; PropertyName:string; }
     member this.DisplayAsPropErrorString () =
         sprintf "%s: %s"  this.Description this.PropertyName
+    member this.PropOrEntityName = if this.PropertyName = "" then "Entity" else this.PropertyName 
  
 type QueryResult<'QueryType> =
     { Content: 'QueryType; Errors: PropertyError seq}
