@@ -6,17 +6,15 @@ open FSharp.ViewModule
 open System.Collections.ObjectModel
 
 type IScreen =
-    abstract Name:string
+    abstract ScreenId:string
 //    abstract Doc: DocViewModel<InterfaceTypes.ICanValidate>
-    abstract Init:unit->unit
+    abstract DisplayName:string
     abstract Init:unit->unit
 
-type CommandScreen<'ModelType  when 'ModelType :> InterfaceTypes.ICanValidate>(  name)  =
-    let mutable _docViewModel:DocViewModel<'ModelType> = null
-    member this.DocViewModel = _docViewModel
-    member this.Init(docViewModel:DocViewModel<'ModelType>) = 
-        _docViewModel <- docViewModel
-        _docViewModel.Init()
+type CommandScreen<'ModelType  when 'ModelType :> InterfaceTypes.ICanValidate>(
+        docViewModel:DocViewModel<'ModelType>,   displayName, screenId)  =
+    member this.DocViewModel = docViewModel
+
 //    {DocViewModel: DocViewModel<'ModelType>; 
 ////    CommandToExec:CommandDefinition<'ModelType>; 
 //    AfterSuccessfulCmd:'ModelType->CommandResult->unit; 
@@ -25,15 +23,19 @@ type CommandScreen<'ModelType  when 'ModelType :> InterfaceTypes.ICanValidate>( 
         interface IScreen with
 //            member this.Doc = 
 //                docViewModel :> DocViewModel<#InterfaceTypes.ICanValidate>
-            member this.Name = name
-            member this.Init() = docViewModel.Init()
+            member this.DisplayName = displayName
+            member this.ScreenId = screenId
+            member this.Init() = this.DocViewModel.Init()
     
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module CommandScreen =
-    let CreateScreen queryForInitialization viewModelBuilder screenName  =  
+    let GenerateId screenName = 
+        let timeStamp = System.DateTime.Now.Ticks.ToString("0")
+        screenName + timeStamp
+    let CreateScreen queryForInitialization viewModelBuilder screenName screenId  =  
         let initDoc = queryForInitialization ()
         let viewModelDoc = viewModelBuilder initDoc
-        CommandScreen(viewModelDoc,  screenName)
+        CommandScreen(viewModelDoc,  screenName, screenId)
 
 type ScreenManager() as self =
     inherit ViewModelBase() 
@@ -41,5 +43,12 @@ type ScreenManager() as self =
     member self.CurrentScreens with get() = currScreens
     member self.AddScreen newScreen = 
         currScreens.Add(newScreen) 
-    member self.RemoveScreen screen = 
-        currScreens.Remove(screen)
+    member self.RemoveScreen screenId = 
+        currScreens 
+        |> Seq.tryFind (fun i -> i.ScreenId = screenId)
+        |> Option.iter (fun screenToRemove -> 
+            currScreens.Remove(screenToRemove) |> ignore
+
+            )
+
+        

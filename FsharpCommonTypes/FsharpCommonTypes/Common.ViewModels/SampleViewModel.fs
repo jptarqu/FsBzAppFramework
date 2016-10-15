@@ -43,11 +43,13 @@ module Sample =
         SimpleChoicesViewModel.AddSimpleChoicesViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
         doc
     let CreateSample (screenManager:ScreenManager) =
+        let screenName = "Sales Person" 
+        let screenId = CommandScreen.GenerateId screenName
         let afterSuccess doc cmdResult =
-            screenManager.RemoveScreen screen
+            screenManager.RemoveScreen screenId
             ()
             
         let afterFailure doc cmdResult =
             ()
-        let screen = CommandScreen.CreateScreen afterSuccess CreateSampleDoc (BuildViewModels afterSuccess) "Sales Person" 
+        let screen = CommandScreen.CreateScreen CreateSampleDoc (BuildViewModels afterSuccess) screenName screenId
         screen
