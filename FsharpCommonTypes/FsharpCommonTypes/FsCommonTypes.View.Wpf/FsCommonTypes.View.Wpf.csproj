@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dragablz, Version=0.0.3.173, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\Repos\Common\CommonLists\WpfTest\packages\Dragablz.0.0.3.173\lib\net45\Dragablz.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\Repos\Common\CommonLists\WpfTest\packages\FSharp.Core.4.0.0.1\lib\net40\FSharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -91,6 +95,9 @@
     <Compile Include="Views\RowsPanelView.xaml.cs">
       <DependentUpon>RowsPanelView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ScreenManagerView.xaml.cs">
+      <DependentUpon>ScreenManagerView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SimpleChoicesView.xaml.cs">
       <DependentUpon>SimpleChoicesView.xaml</DependentUpon>
     </Compile>
@@ -121,6 +128,10 @@
     <Page Include="Views\RowsPanelView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\ScreenManagerView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SimpleChoicesView.xaml">
       <Generator>MSBuild:Compile</Generator>

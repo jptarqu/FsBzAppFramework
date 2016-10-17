@@ -1,5 +1,4 @@
 ﻿using Common.ViewModels;
-using Common.ViewModels.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,23 +17,26 @@ using System.Windows.Shapes;
 namespace FsCommonTypes.View.Wpf.Views
 {
     /// <summary>
-    /// Interaction logic for DocView.xaml
+    /// Interaction logic for ScreenManagerView.xaml
     /// </summary>
-    public partial class DocView : UserControl
+    public partial class ScreenManagerView : UserControl
     {
-        public DocView()
+        private ScreenManager viewModel; 
+        public ScreenManagerView()
         {
+            viewModel = new ScreenManager();
+            DataContext = viewModel;
             InitializeComponent();
         }
-        
 
-        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        public ScreenManager GetScreenManager()
         {
-            var newDoc = e.NewValue as IDocViewModel;
-            if (newDoc != null)
-            {
-                fieldsContainer.SetViewComponent(newDoc.GetRootView());
-            }
+            return this.viewModel;
+        }
+
+        public void SetManager()
+        {
+
         }
     }
 }

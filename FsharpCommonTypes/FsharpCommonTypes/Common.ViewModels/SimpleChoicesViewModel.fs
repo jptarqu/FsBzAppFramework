@@ -61,7 +61,8 @@ type SimpleChoicesViewModel<'PrimitiveType , 'ParentType when 'PrimitiveType: eq
             let primitiveVal = BusinessTypes.ToPrimitive (refreshValFromDoc vm)
             self.Value <- primitiveVal
             refreshPossibleChoice vm
-
+            
+    interface Interfaces.IViewComponent with 
         member this.Label = propName
         member this.UiHint = "SimpleChoices"
     

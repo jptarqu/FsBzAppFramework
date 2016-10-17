@@ -27,7 +27,7 @@ namespace FsCommonTypes.Views
             InitializeComponent();
         }
 
-        public void SetViewComponent<ParentType>(IPanelViewModel<ParentType> panelView)
+        public void SetViewComponent(IPanelViewModel panelView)
         {
             this.DataContext = panelView;
             var children = panelView.GetChildren();
@@ -41,13 +41,13 @@ namespace FsCommonTypes.Views
                 currRow += 2;
             }
         }
-        private void AddFieldView<ParentType>(int currRow, CommonViewEditors.IViewComponent<ParentType> childView)
+        private void AddFieldView(int currRow, IViewComponent childView)
         {
             
             if (childView.UiHint == "RowsPanel")
             {
                 var newCtrl = new RowsPanelView();
-                newCtrl.SetViewComponent<ParentType>((IPanelViewModel<ParentType>) childView);
+                newCtrl.SetViewComponent((IPanelViewModel) childView);
                 Grid.SetRow(newCtrl, currRow);
                 Grid.SetColumn(newCtrl, 1);
                 Grid.SetColumnSpan(newCtrl, 4);
@@ -81,7 +81,7 @@ namespace FsCommonTypes.Views
 
         }
 
-        private void AddLabelView<ParentType>(int currRow, CommonViewEditors.IViewComponent<ParentType> childView)
+        private void AddLabelView(int currRow, IViewComponent childView)
         {
             var label = new TextBlock() { Text = childView.Label };
             Grid.SetRow(label, currRow);

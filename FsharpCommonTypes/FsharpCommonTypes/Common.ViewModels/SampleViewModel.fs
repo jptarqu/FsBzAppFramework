@@ -52,4 +52,5 @@ module Sample =
         let afterFailure doc cmdResult =
             ()
         let screen = CommandScreen.CreateScreen CreateSampleDoc (BuildViewModels afterSuccess) screenName screenId
+        screenManager.AddScreen screen // TODO should this be here or boorstrapper??
         screen

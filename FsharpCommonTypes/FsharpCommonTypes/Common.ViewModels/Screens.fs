@@ -4,28 +4,23 @@ open CommonViewEditors
 open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
+open Common.ViewModels.Interfaces
 
 type IScreen =
     abstract ScreenId:string
-//    abstract Doc: DocViewModel<InterfaceTypes.ICanValidate>
     abstract DisplayName:string
+    abstract DocModel:IDocViewModel
     abstract Init:unit->unit
 
 type CommandScreen<'ModelType  when 'ModelType :> InterfaceTypes.ICanValidate>(
         docViewModel:DocViewModel<'ModelType>,   displayName, screenId)  =
     member this.DocViewModel = docViewModel
-
-//    {DocViewModel: DocViewModel<'ModelType>; 
-////    CommandToExec:CommandDefinition<'ModelType>; 
-//    AfterSuccessfulCmd:'ModelType->CommandResult->unit; 
-//    Name: string} //Maybe we don't need the query here only in constructor; QueryForInitialization:unit->'ModelType } 
     with
         interface IScreen with
-//            member this.Doc = 
-//                docViewModel :> DocViewModel<#InterfaceTypes.ICanValidate>
             member this.DisplayName = displayName
             member this.ScreenId = screenId
             member this.Init() = this.DocViewModel.Init()
+            member this.DocModel = this.DocViewModel :> IDocViewModel
     
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module CommandScreen =

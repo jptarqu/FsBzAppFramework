@@ -49,7 +49,7 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate >(
     let primaryCmd = CommandViewModel(isValid, commandToExec, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc))
     let root:Interfaces.IPanelViewModel<'ParentType> = RowsPanelViewModel("root") :> Interfaces.IPanelViewModel<'ParentType>
     let notifyChange childView newDoc =
-        root.GetChildren() |> Seq.filter ((<>) childView)  |> Seq.iter (fun x -> x.OnDocUpdated newDoc) 
+        root.GetTypedChildren() |> Seq.filter ((<>) childView)  |> Seq.iter (fun x -> x.OnDocUpdated newDoc) 
     let updateDoc childView newDoc =
         myDoc <-  newDoc
         notifyChange childView myDoc
@@ -62,9 +62,9 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate >(
     member this.AddMyDocToFunc funcNeedeingDoc =
         funcNeedeingDoc myDoc 
     member this.GetChildViews() =
-        root.GetChildren() |> Seq.rev
+        root.GetTypedChildren() |> Seq.rev
     member this.Init() =
-        root.GetChildren() |> Seq.iter (fun x -> x.Init myDoc)
+        root.GetTypedChildren() |> Seq.iter (fun x -> x.Init myDoc)
     member this.GetRootView () =
             root
     member self.CurrEntityErrors with get() = currEntityErrors
@@ -78,8 +78,11 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate >(
             )
         member this.UpdateDoc childView newDoc =
             updateDoc childView newDoc
-        member this.GetRootView () =
+        member this.GetTypedRootView () =
             root
+    interface Interfaces.IDocViewModel with
+        member this.GetRootView () =
+            root :> Common.ViewModels.Interfaces.IPanelViewModel
        
         
      
