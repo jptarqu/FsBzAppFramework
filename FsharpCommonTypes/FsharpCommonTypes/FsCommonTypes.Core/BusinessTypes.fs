@@ -28,10 +28,10 @@ module BusinessTypes =
         match  newValue with
         | Some newDateVal ->
             if (newDateVal > now) then
-                InvalidProp (newDateVal , ["date is in the future"])
+                InvalidProp (newValue , ["date is in the future"])
             else
-                ValidProp newDateVal
-        | None -> InvalidProp (System.DateTime.MinValue , ["date is required"])
+                ValidProp newValue
+        | None -> InvalidProp (newValue , ["date is required"])
             
     type ShortNameType =  BzProp<string> 
     let ShortName (newValue:string) =

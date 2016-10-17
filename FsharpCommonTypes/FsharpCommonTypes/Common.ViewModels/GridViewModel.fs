@@ -2,66 +2,82 @@
 
 open FSharp.ViewModule
 open FsharpCommonTypes
+open System.Collections.ObjectModel
+
+type PivotDimensionDefinition =
+    {Header:string; FieldName:string; TotalsHeader:string}
+
+type PivotFactDefinition =
+    {Header:string; FieldName:string; AggregationType: string}
+
+type PivotGridDefinition =
+    { RowDimensionDefinitions: PivotDimensionDefinition seq; ColumnDimensionDefinitions: PivotDimensionDefinition seq; FactDefinitions: PivotFactDefinition seq; }
+    
+type PivotGridPropDefinition<'ParentType,'RecordType> =
+    { PivotSettings: PivotGridDefinition; RefreshValFromDoc:'ParentType->seq<'RecordType>; OnSelectedItem: 'RecordType->unit; PropName:string}
+
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module PivotGridDefinition =
+    let CreatePivotDimension header fieldName =
+        let headerTotals = header + " Totals"
+        {Header = header;  FieldName =fieldName; TotalsHeader = headerTotals}
+    let CreateFactDimension header fieldName =
+        {Header = header;  FieldName =fieldName; AggregationType = "MAX"}
+        
+
+type IPivotGridViewModel =
+    abstract PivotSettings:PivotGridDefinition
+    abstract OnSelectedItem:System.Object->unit
 
 
-type GridViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType: equality>(propFactory:PropFactoryMethod<'PrimitiveType>,
-                                                        refreshValFromDoc:'ParentType->BzProp<'PrimitiveType>, 
-                                                        refreshDocFromVal:BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
-                                                        pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
+type PivotGridViewModel<'RecordType, 'ParentType>(
+                                                        refreshValFromDoc:'ParentType->seq<'RecordType>, 
+                                                        onSelectedItem: 'RecordType->unit,
                                                         propName: string,
-                                                        defaultValue: 'PrimitiveType,
-                                                        uiHint: string) as self = 
+                                                        pivotSettings: PivotGridDefinition,
+                                                        uiHint: string)  = 
     inherit ViewModelBase()
         
-    let getStrErrors = BusinessTypes.GetStrErrors propFactory
-
-    let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue, getStrErrors)
         
-    let alertParentOfDocChg newVal =
-        let newDoc = refreshDocFromVal newVal
-        pushUpdatedDoc self newDoc
-
-    member self.Value with get() = txtValue.Value 
-                        and set value = 
-                            if (value <> txtValue.Value) then
-                                txtValue.Value <- value
-                                let newPropState = propFactory value
-                                alertParentOfDocChg newPropState // always send to doc, even if invalid state?
-
-    member self.PropName with get() = propName
+    let dataCollection = ObservableCollection<'RecordType>() //TODO, should we use ObServable COllections for large sets?
+    let refreshObservableCollection vm =
+        dataCollection.Clear()
+        let rawList = refreshValFromDoc vm
+        for item in rawList do
+            dataCollection.Add item
+            
+    member self.PivotSettings with get() = pivotSettings
+    member self.DataCollection with get() = dataCollection
 
     interface CommonViewEditors.IViewComponent<'ParentType> with
         member this.Init<'ParentType> vm = 
-            self.Value <- BusinessTypes.ToPrimitive (refreshValFromDoc vm)
+            refreshObservableCollection vm
 
         member this.OnDocUpdated<'ParentType> vm = 
-            self.Value <- BusinessTypes.ToPrimitive (refreshValFromDoc vm)
-            ()
+            refreshObservableCollection vm //TODO, should we only explicitely listen for requests for list refresh?
 
     interface Interfaces.IViewComponent with 
         member this.Label = propName
         member this.UiHint = uiHint 
+    interface IPivotGridViewModel with 
+        member this.PivotSettings = pivotSettings
+        member this.OnSelectedItem obj = onSelectedItem (obj :?> 'RecordType)
 
 
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module GridViewModel =
+module PivotGridViewModel =
     
     module UIHints =
-        let SingleTextInput = "SingleInput"
-        let DateInput = "DateInput"
-        let DateTimeInput = "DateTimeInput"
+        let PivotGrid = "PivotGridList"
 
-    let AddSingleInputViewModel uiHint defVal (docViewModel:#Interfaces.IDocViewModel<'ParentType>) (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (propDef:PropDefinition<'ParentType, 'Primitive>)  =
-        let docUpdateName = docViewModel.GetDocAccessor(propDef.Setter)
-        let txtInput = SingleInputViewModel(propDef.Factory, propDef.Getter, docUpdateName,  docViewModel.UpdateDoc, propDef.Name, defVal, uiHint )
+    let AddGridViewModel uiHint 
+                        (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (pivotPropDef:PivotGridPropDefinition<'ParentType, 'RecordType>)  =
+        let txtInput = PivotGridViewModel(pivotPropDef.RefreshValFromDoc, pivotPropDef.OnSelectedItem, pivotPropDef.PropName, pivotPropDef.PivotSettings, uiHint )
         intoPanelViewModel.AddChild(txtInput)
 
-    let AddTextInputViewModel docViewModel intoPanelViewModel  propDef =
-        AddSingleInputViewModel UIHints.SingleTextInput "" docViewModel intoPanelViewModel  propDef
+    let AddPivotGridViewModel  
+                        (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (pivotPropDef:PivotGridPropDefinition<'ParentType, 'RecordType>)  =
+        let txtInput = PivotGridViewModel(pivotPropDef.RefreshValFromDoc, pivotPropDef.OnSelectedItem, pivotPropDef.PropName, pivotPropDef.PivotSettings, UIHints.PivotGrid )
+        intoPanelViewModel.AddChild(txtInput)
 
-    let AddDateInputViewModel docViewModel intoPanelViewModel  propDef =
-        AddSingleInputViewModel UIHints.DateInput System.DateTime.Today docViewModel intoPanelViewModel  propDef
-
-    let AddDateTimeInputViewModel docViewModel intoPanelViewModel  propDef =
-        AddSingleInputViewModel UIHints.DateTimeInput System.DateTime.Now docViewModel intoPanelViewModel  propDef

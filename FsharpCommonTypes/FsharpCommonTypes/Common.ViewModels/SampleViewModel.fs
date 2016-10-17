@@ -28,7 +28,7 @@ type SampleDoc =
 
 module Sample =
     let CreateSampleDoc () =
-        let now = System.DateTime.Now
+        let now = Some System.DateTime.Now
         let model ={Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1; SalesDate =  BusinessTypes.PastDateTime now} 
         model
     let SampleCmd doc =
