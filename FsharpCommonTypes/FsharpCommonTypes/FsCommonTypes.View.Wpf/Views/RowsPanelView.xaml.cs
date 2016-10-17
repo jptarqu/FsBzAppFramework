@@ -1,5 +1,6 @@
 ﻿using Common.ViewModels;
 using Common.ViewModels.Interfaces;
+using FsCommonTypes.View.Wpf.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,9 +57,14 @@ namespace FsCommonTypes.Views
             else
             {
                 UserControl newCtrl = null;
-                if (childView.UiHint == "SingleInput")
+                if (childView.UiHint == SingleInputViewModelModule.UIHints.SingleTextInput)
                 {
                     newCtrl = new SingleTextInputView();
+                    newCtrl.DataContext = childView;
+                }
+                else if (childView.UiHint == SingleInputViewModelModule.UIHints.DateInput)
+                {
+                    newCtrl = new DateInputView();
                     newCtrl.DataContext = childView;
                 }
                 else if (childView.UiHint == "ExternalChoices")

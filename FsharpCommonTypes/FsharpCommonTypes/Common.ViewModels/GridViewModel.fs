@@ -4,7 +4,7 @@ open FSharp.ViewModule
 open FsharpCommonTypes
 
 
-type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType: equality>(propFactory:PropFactoryMethod<'PrimitiveType>,
+type GridViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType: equality>(propFactory:PropFactoryMethod<'PrimitiveType>,
                                                         refreshValFromDoc:'ParentType->BzProp<'PrimitiveType>, 
                                                         refreshDocFromVal:BzProp<'PrimitiveType>->'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
                                                         pushUpdatedDoc: CommonViewEditors.IViewComponent<'ParentType> ->'ParentType->unit,
@@ -45,7 +45,7 @@ type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType: equal
 
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
-module SingleInputViewModel =
+module GridViewModel =
     
     module UIHints =
         let SingleTextInput = "SingleInput"

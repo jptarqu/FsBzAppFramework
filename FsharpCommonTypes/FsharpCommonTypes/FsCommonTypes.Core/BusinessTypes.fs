@@ -22,6 +22,26 @@ module BusinessTypes =
          
 //    type PropNameValuePair =   
 
+    type PastDateTimeType =  BzProp<Option<System.DateTime>> 
+    let PastDateTime (newValue:Option<System.DateTime>) =
+        let now = System.DateTime.Now
+        match  newValue with
+        | Some newDateVal ->
+            if (newDateVal > now) then
+                InvalidProp (newDateVal , ["date is in the future"])
+            else
+                ValidProp newDateVal
+        | None -> InvalidProp (System.DateTime.MinValue , ["date is required"])
+            
+    type ShortNameType =  BzProp<string> 
+    let ShortName (newValue:string) =
+        if (newValue.Length < 1) then
+            InvalidProp (newValue , ["too short"])
+        else if (newValue.Length > 30) then
+            InvalidProp (newValue , ["too long"])
+        else
+            ValidProp newValue
+
     type LongNameType =  BzProp<string> 
     let LongName (newValue:string) =
         if (newValue.Length < 3) then
@@ -40,19 +60,19 @@ module BusinessTypes =
     //   SO, ViewModel needs to get passed the creation method as in creationMethod:'Primitive->BzProp<'Primitive>
 
 
-    [<CLIMutable>]
-    type ShortName =
-        {Value : string; PropName: string}
-        with
-        static member private _fieldDefinition = RequiredTextProp 1 20
-        member this.GetValidationErrors () = ShortName._fieldDefinition.GetPropertyValidationErrors this.PropName this.Value 
-        member this.GetDefinition () = ShortName._fieldDefinition 
-        member this.WithValue newValue = { this with Value = newValue}
-        interface ITextEditableProperty with 
-            member this.GetFieldDefinition () = ShortName._fieldDefinition 
-
-    let NewShortName propName name =
-        {Value = name; PropName = propName}
+//    [<CLIMutable>]
+//    type ShortName =
+//        {Value : string; PropName: string}
+//        with
+//        static member private _fieldDefinition = RequiredTextProp 1 20
+//        member this.GetValidationErrors () = ShortName._fieldDefinition.GetPropertyValidationErrors this.PropName this.Value 
+//        member this.GetDefinition () = ShortName._fieldDefinition 
+//        member this.WithValue newValue = { this with Value = newValue}
+//        interface ITextEditableProperty with 
+//            member this.GetFieldDefinition () = ShortName._fieldDefinition 
+//
+//    let NewShortName propName name =
+//        {Value = name; PropName = propName}
 
     
     [<CLIMutable>]

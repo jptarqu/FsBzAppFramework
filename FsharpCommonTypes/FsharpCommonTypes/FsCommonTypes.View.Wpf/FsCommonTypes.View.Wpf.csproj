@@ -86,6 +86,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\ChoiceItemsFuncProvider.cs" />
+    <Compile Include="Views\DateInputView.xaml.cs">
+      <DependentUpon>DateInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DateTimeInputView.xaml.cs">
+      <DependentUpon>DateTimeInputView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DocView.xaml.cs">
       <DependentUpon>DocView.xaml</DependentUpon>
     </Compile>
@@ -117,6 +123,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\DateInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DateTimeInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DocView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
