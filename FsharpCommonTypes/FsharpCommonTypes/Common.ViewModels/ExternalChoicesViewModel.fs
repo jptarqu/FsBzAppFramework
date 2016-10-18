@@ -52,3 +52,8 @@ type ExternalChoicesViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType : 
     
     interface IExternalChoicesQry<'PrimitiveType> with
         member this.QueryExecutor filterStr = queryExecutor filterStr
+
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module ExternalChoicesViewModel = 
+    module UIHints = 
+        let ExternalChoices = "ExternalChoices"

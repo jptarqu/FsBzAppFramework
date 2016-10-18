@@ -33,6 +33,7 @@ module BusinessTypes =
                 ValidProp newValue
         | None -> InvalidProp (newValue , ["date is required"])
             
+
     type ShortNameType =  BzProp<string> 
     let ShortName (newValue:string) =
         if (newValue.Length < 1) then

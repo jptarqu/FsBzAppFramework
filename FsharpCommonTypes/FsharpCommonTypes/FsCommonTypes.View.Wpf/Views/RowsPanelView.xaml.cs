@@ -1,5 +1,6 @@
 ﻿using Common.ViewModels;
 using Common.ViewModels.Interfaces;
+using FsCommonTypes.View.Wpf.Builders;
 using FsCommonTypes.View.Wpf.Views;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace FsCommonTypes.Views
             InitializeComponent();
         }
 
-        public void SetViewComponent(IPanelViewModel panelView)
+        public void SetViewComponent(IPanelViewModel panelView, ViewBuildersCollection viewBuilders)
         {
             this.DataContext = panelView;
             var children = panelView.GetChildren();
@@ -38,17 +39,17 @@ namespace FsCommonTypes.Views
                 AddRow();
                 AddRow();
                 AddLabelView(currRow, childView);
-                AddFieldView(currRow, childView);
+                AddFieldView(currRow, childView, viewBuilders);
                 currRow += 2;
             }
         }
-        private void AddFieldView(int currRow, IViewComponent childView)
+        private void AddFieldView(int currRow, IViewComponent childView, ViewBuildersCollection viewBuilders)
         {
             
             if (childView.UiHint == "RowsPanel")
             {
                 var newCtrl = new RowsPanelView();
-                newCtrl.SetViewComponent((IPanelViewModel) childView);
+                newCtrl.SetViewComponent((IPanelViewModel) childView, viewBuilders);
                 Grid.SetRow(newCtrl, currRow);
                 Grid.SetColumn(newCtrl, 1);
                 Grid.SetColumnSpan(newCtrl, 4);
@@ -56,27 +57,7 @@ namespace FsCommonTypes.Views
             }
             else
             {
-                UserControl newCtrl = null;
-                if (childView.UiHint == SingleInputViewModelModule.UIHints.SingleTextInput)
-                {
-                    newCtrl = new SingleTextInputView();
-                    newCtrl.DataContext = childView;
-                }
-                else if (childView.UiHint == SingleInputViewModelModule.UIHints.DateInput)
-                {
-                    newCtrl = new DateInputView();
-                    newCtrl.DataContext = childView;
-                }
-                else if (childView.UiHint == "ExternalChoices")
-                {
-                    newCtrl = new ExternalChoicesView();
-                    newCtrl.DataContext = childView;
-                }
-                else if (childView.UiHint == "SimpleChoices")
-                {
-                    newCtrl = new SimpleChoicesView();
-                    newCtrl.DataContext = childView;
-                }
+                UserControl newCtrl = viewBuilders.GetBuilder(childView.UiHint).ViewFactory(childView);
                 if (newCtrl != null)
                 {
                     Grid.SetRow(newCtrl, currRow);

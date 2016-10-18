@@ -10,17 +10,17 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
         <dockablz:Layout>
-          
-            <dragablz:TabablzControl BorderThickness="0"
-                                 Margin="0,-1,0,1" ItemsSource="{Binding CurrentScreens}" >
+
+            <dragablz:TabablzControl x:Name="tabsManager" BorderThickness="0" 
+                                 Margin="0,-1,0,1"  >
                 <dragablz:TabablzControl.InterTabController >
                     <dragablz:InterTabController />
                 </dragablz:TabablzControl.InterTabController>
-                <dragablz:TabablzControl.ContentTemplate >
+                <!--<dragablz:TabablzControl.ContentTemplate >
                     <DataTemplate>
                         <local:DocView DataContext="{Binding DocViewModel}" />
                     </DataTemplate>
-                </dragablz:TabablzControl.ContentTemplate>
+                </dragablz:TabablzControl.ContentTemplate>-->
             </dragablz:TabablzControl>
         </dockablz:Layout>
     </StackPanel>

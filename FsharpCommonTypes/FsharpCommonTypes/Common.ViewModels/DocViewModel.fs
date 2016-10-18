@@ -5,6 +5,7 @@ open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
 
+
 type CommandViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(isValid, commandToExec : CommandDefinition<'ParentType>, onSuccess : 'ParentType -> CommandResult -> unit, onFailure : CommandResult -> unit, getLatestDoc) as self = 
     inherit ViewModelBase()
     
@@ -27,7 +28,7 @@ type CommandViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
     member self.Cmd = primaryCmd
     member self.Name = commandToExec.CmdName
 
-type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(intialDoc : 'ParentType, commandToExec : CommandDefinition<'ParentType>, onSuccess)  = 
+type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(intialDoc : 'ParentType, commandToExec : CommandDefinition<'ParentType>, onSuccess, cancelCommand : CommandDefinition<'ParentType>, onCancel)  = 
     inherit ViewModelBase()
     let mutable myDoc = intialDoc
     let currEntityErrors = ObservableCollection<PropertyError>()
@@ -49,6 +50,9 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
     
     let primaryCmd = 
         CommandViewModel(isValid, commandToExec, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc))
+    let cancelCmd = 
+        CommandViewModel((fun _ -> true), cancelCommand, onCancel, updateEntityErrorsFromResult, (fun () -> myDoc))
+
     let root : Interfaces.IPanelViewModel<'ParentType> = 
         RowsPanelViewModel("root") :> Interfaces.IPanelViewModel<'ParentType>
     
@@ -72,6 +76,9 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
     member self.CurrEntityErrors = currEntityErrors
     member self.PrimaryCommand = primaryCmd.Cmd
     member self.PrimaryCommandName = primaryCmd.Name
+    member self.CancelCommand = cancelCmd.Cmd
+    member self.CancelCommandName = cancelCmd.Name
+    member self.GetCurrentDoc = myDoc
     
     interface Interfaces.IDocViewModel<'ParentType> with
         member this.GetDocAccessor docUpdate = (fun newVal -> docUpdate myDoc newVal)

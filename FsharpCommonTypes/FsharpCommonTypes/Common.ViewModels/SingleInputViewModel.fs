@@ -43,10 +43,10 @@ module SingleInputViewModel =
     let AddSingleInputViewModel uiHint defVal (docViewModel : #Interfaces.IDocViewModel<'ParentType>) 
         (intoPanelViewModel : #Interfaces.IPanelViewModel<'ParentType>) 
         (propDef : PropDefinition<'ParentType, 'Primitive>) = 
-        let docUpdateName = docViewModel.GetDocAccessor(propDef.Setter)
+        let docUpdateFunc = docViewModel.GetDocAccessor(propDef.Setter)
         let txtInput = 
             SingleInputViewModel
-                (propDef.Factory, propDef.Getter, docUpdateName, docViewModel.UpdateDoc, propDef.Name, defVal, uiHint)
+                (propDef.Factory, propDef.Getter, docUpdateFunc, docViewModel.UpdateDoc, propDef.Name, defVal, uiHint)
         intoPanelViewModel.AddChild(txtInput)
     
     let AddTextInputViewModel docViewModel intoPanelViewModel propDef = 

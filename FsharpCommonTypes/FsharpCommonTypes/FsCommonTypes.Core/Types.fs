@@ -18,6 +18,16 @@ type CommandResult =
 type CommandDefinition<'ModelType>  =
     { CmdName:string; CmdExecuter: 'ModelType->Async<CommandResult>}
 
+    
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module CommandDefinition =
+    let AlwaysSucessCmd doc = 
+        async {
+            return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
+        }
+    let CancelCmdDefinition = 
+        { CommandDefinition.CmdName = "Cancel"; CommandDefinition.CmdExecuter = AlwaysSucessCmd}
+
 type ErrorMessage = string
     
 type IPropValidator<'ParentType> =
@@ -25,6 +35,7 @@ type IPropValidator<'ParentType> =
 // with types like this, validation occurs at the moment of creation. A prop is either valid or invlid based on 
 //  the construction parameters
 // do we need     [<CLIMutable>] here??
+
 type BzProp<'Primitive> = 
     | ValidProp of 'Primitive
     | InvalidProp of 'Primitive * seq<ErrorMessage>
@@ -32,6 +43,13 @@ type BzProp<'Primitive> =
         member x.GetValidationErrors() = match x with 
                                              | ValidProp _ -> Seq.empty
                                              | InvalidProp (badPrimitive, errors) -> errors 
+        member x.ToPrimitive() = match x with 
+                                             | ValidProp validPrimitive -> Some validPrimitive
+                                             | InvalidProp (badPrimitive, errors) -> None  
+        override x.ToString() = match x with 
+                                             | ValidProp validPrimitive -> validPrimitive.ToString()
+                                             | InvalidProp (badPrimitive, errors) -> ""  
+        
         
 
 type PropFactoryMethod<'Primitive> =

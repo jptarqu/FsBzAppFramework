@@ -6,13 +6,19 @@
              xmlns:local="clr-namespace:FsCommonTypes.Views"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300" DataContextChanged="UserControl_DataContextChanged">
+             d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel >
         <local:RowsPanelView Margin="8" x:Name="fieldsContainer">
         </local:RowsPanelView>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Margin="16 8 16 8">
-            <Button Command="{Binding PrimaryCommand}" Content="{Binding PrimaryCommandName}" />
-        </StackPanel>
+        <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="16 8 16 8" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Command="{Binding CancelCommand}" Content="{Binding CancelCommandName}" Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Column="0" />
+            <Button Command="{Binding PrimaryCommand}" Content="{Binding PrimaryCommandName}" Grid.Column="2" />
+        </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

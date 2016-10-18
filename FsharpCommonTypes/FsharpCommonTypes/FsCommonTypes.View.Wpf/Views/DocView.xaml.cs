@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using FsCommonTypes.View.Wpf.Builders;
 
 namespace FsCommonTypes.View.Wpf.Views
 {
@@ -22,19 +23,26 @@ namespace FsCommonTypes.View.Wpf.Views
     /// </summary>
     public partial class DocView : UserControl
     {
+
         public DocView()
         {
             InitializeComponent();
         }
         
 
-        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    var newDoc = e.NewValue as IDocViewModel;
+        //    if (newDoc != null)
+        //    {
+        //        fieldsContainer.SetViewComponent(newDoc.GetRootView());
+        //    }
+        //}
+
+        internal void SetDoc(IDocViewModel docModel, ViewBuildersCollection _viewBuilders)
         {
-            var newDoc = e.NewValue as IDocViewModel;
-            if (newDoc != null)
-            {
-                fieldsContainer.SetViewComponent(newDoc.GetRootView());
-            }
+            fieldsContainer.SetViewComponent(docModel.GetRootView(), _viewBuilders);
+            this.DataContext = docModel;
         }
     }
 }

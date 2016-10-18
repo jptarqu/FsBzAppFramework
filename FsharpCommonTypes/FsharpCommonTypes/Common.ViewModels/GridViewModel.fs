@@ -8,21 +8,26 @@ type PivotDimensionDefinition =
     {Header:string; FieldName:string; TotalsHeader:string}
 
 type PivotFactDefinition =
-    {Header:string; FieldName:string; AggregationType: string}
+    {Header:string; FieldName:string; AggregationType: string; FactType: string}
 
 type PivotGridDefinition =
     { RowDimensionDefinitions: PivotDimensionDefinition seq; ColumnDimensionDefinitions: PivotDimensionDefinition seq; FactDefinitions: PivotFactDefinition seq; }
     
 type PivotGridPropDefinition<'ParentType,'RecordType> =
-    { PivotSettings: PivotGridDefinition; RefreshValFromDoc:'ParentType->seq<'RecordType>; OnSelectedItem: 'RecordType->unit; PropName:string}
+    { PivotSettings: PivotGridDefinition; RefreshValFromDoc:'ParentType->seq<'RecordType>; SelectedItemSetter: 'ParentType->'RecordType->'ParentType; PropName:string}
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module PivotGridDefinition =
+    module FactTypes =
+        let DateFact = "Date"
+        let NumericFact = "Numeric"
+        let TextFact = "Text"
+
     let CreatePivotDimension header fieldName =
         let headerTotals = header + " Totals"
         {Header = header;  FieldName =fieldName; TotalsHeader = headerTotals}
-    let CreateFactDimension header fieldName =
-        {Header = header;  FieldName =fieldName; AggregationType = "MAX"}
+    let CreateFactDimension header fieldName factType =
+        {Header = header;  FieldName =fieldName; AggregationType = "MAX"; FactType = factType}
         
 
 type IPivotGridViewModel =
@@ -32,10 +37,11 @@ type IPivotGridViewModel =
 
 type PivotGridViewModel<'RecordType, 'ParentType>(
                                                         refreshValFromDoc:'ParentType->seq<'RecordType>, 
-                                                        onSelectedItem: 'RecordType->unit,
+                                                        updateSelectedItem: 'RecordType->'ParentType,
+                                                        pushUpdatedDoc : CommonViewEditors.IViewComponent<'ParentType> -> 'ParentType -> unit,
                                                         propName: string,
                                                         pivotSettings: PivotGridDefinition,
-                                                        uiHint: string)  = 
+                                                        uiHint: string) as self = 
     inherit ViewModelBase()
         
         
@@ -46,6 +52,10 @@ type PivotGridViewModel<'RecordType, 'ParentType>(
         for item in rawList do
             dataCollection.Add item
             
+    let alertParentOfDocChg newVal = 
+        let newDoc = updateSelectedItem newVal
+        pushUpdatedDoc self newDoc
+
     member self.PivotSettings with get() = pivotSettings
     member self.DataCollection with get() = dataCollection
 
@@ -61,7 +71,7 @@ type PivotGridViewModel<'RecordType, 'ParentType>(
         member this.UiHint = uiHint 
     interface IPivotGridViewModel with 
         member this.PivotSettings = pivotSettings
-        member this.OnSelectedItem obj = onSelectedItem (obj :?> 'RecordType)
+        member this.OnSelectedItem obj = alertParentOfDocChg (obj :?> 'RecordType)
 
 
 
@@ -71,13 +81,14 @@ module PivotGridViewModel =
     module UIHints =
         let PivotGrid = "PivotGridList"
 
-    let AddGridViewModel uiHint 
-                        (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (pivotPropDef:PivotGridPropDefinition<'ParentType, 'RecordType>)  =
-        let txtInput = PivotGridViewModel(pivotPropDef.RefreshValFromDoc, pivotPropDef.OnSelectedItem, pivotPropDef.PropName, pivotPropDef.PivotSettings, uiHint )
-        intoPanelViewModel.AddChild(txtInput)
+//    let AddGridViewModel uiHint 
+//                        (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (pivotPropDef:PivotGridPropDefinition<'ParentType, 'RecordType>)  =
+//        let txtInput = PivotGridViewModel(pivotPropDef.RefreshValFromDoc, pivotPropDef.SelectedItemSetter, pivotPropDef.PropName, pivotPropDef.PivotSettings, uiHint )
+//        intoPanelViewModel.AddChild(txtInput)
 
-    let AddPivotGridViewModel  
+    let AddPivotGridViewModel  (docViewModel : #Interfaces.IDocViewModel<'ParentType>)
                         (intoPanelViewModel:#Interfaces.IPanelViewModel<'ParentType>) (pivotPropDef:PivotGridPropDefinition<'ParentType, 'RecordType>)  =
-        let txtInput = PivotGridViewModel(pivotPropDef.RefreshValFromDoc, pivotPropDef.OnSelectedItem, pivotPropDef.PropName, pivotPropDef.PivotSettings, UIHints.PivotGrid )
+        let docUpdateFunc = docViewModel.GetDocAccessor(pivotPropDef.SelectedItemSetter)
+        let txtInput = PivotGridViewModel(pivotPropDef.RefreshValFromDoc, docUpdateFunc, docViewModel.UpdateDoc, pivotPropDef.PropName, pivotPropDef.PivotSettings, UIHints.PivotGrid )
         intoPanelViewModel.AddChild(txtInput)
 
