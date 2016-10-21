@@ -35,9 +35,10 @@ namespace FsCommonTypes.View.Wpf.Builders
             _builders.AddLast(new ViewBuilder(SimpleChoicesViewModelModule.UIHints.SimpleChoices,
                 (childView) => CreateSetDataContext(() => new SimpleChoicesView(), childView)
             ));
-            _builders.AddLast(new ViewBuilder(SimpleChoicesViewModelModule.UIHints.SimpleChoices,
-                (childView) => CreateSetDataContext(() => new SimpleChoicesView(), childView)
+            _builders.AddLast(new ViewBuilder(SingleInputViewModelModule.UIHints.IntInput,
+                (childView) => CreateSetDataContext(() => new IntInputView(), childView)
             ));
+            
         }
 
         public void AddBuilderLast(ViewBuilder newBuilder)

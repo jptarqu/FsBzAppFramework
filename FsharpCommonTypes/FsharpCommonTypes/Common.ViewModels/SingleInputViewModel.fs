@@ -39,6 +39,7 @@ module SingleInputViewModel =
         let SingleTextInput = "SingleInput"
         let DateInput = "DateInput"
         let DateTimeInput = "DateTimeInput"
+        let IntInput = "IntInput"
     
     let AddSingleInputViewModel uiHint defVal (docViewModel : #Interfaces.IDocViewModel<'ParentType>) 
         (intoPanelViewModel : #Interfaces.IPanelViewModel<'ParentType>) 
@@ -51,7 +52,11 @@ module SingleInputViewModel =
     
     let AddTextInputViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel UIHints.SingleTextInput "" docViewModel intoPanelViewModel propDef
-    let AddDateInputViewModel docViewModel intoPanelViewModel propDef = 
+    let AddIntInputViewModel docViewModel intoPanelViewModel propDef = 
+        AddSingleInputViewModel UIHints.IntInput 0 docViewModel intoPanelViewModel propDef
+    let AddOptDateInputViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel UIHints.DateInput (None) docViewModel intoPanelViewModel propDef
+    let AddDateInputViewModel docViewModel intoPanelViewModel propDef = 
+        AddSingleInputViewModel UIHints.DateInput System.DateTime.Now docViewModel intoPanelViewModel propDef
     let AddDateTimeInputViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel UIHints.DateTimeInput System.DateTime.Now docViewModel intoPanelViewModel propDef

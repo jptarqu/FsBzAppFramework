@@ -22,8 +22,8 @@ module BusinessTypes =
          
 //    type PropNameValuePair =   
 
-    type PastDateTimeType =  BzProp<Option<System.DateTime>> 
-    let PastDateTime (newValue:Option<System.DateTime>) =
+    type OptPastDateTimeType =  BzProp<Option<System.DateTime>> 
+    let OptPastDateTime (newValue:Option<System.DateTime>) =
         let now = System.DateTime.Now
         match  newValue with
         | Some newDateVal ->
@@ -33,6 +33,13 @@ module BusinessTypes =
                 ValidProp newValue
         | None -> InvalidProp (newValue , ["date is required"])
             
+    type PastDateTimeType =  BzProp<System.DateTime>
+    let PastDateTime (newValue:System.DateTime) =
+        let now = System.DateTime.Now
+        if (newValue > now) then
+            InvalidProp (newValue , ["date is in the future"])
+        else
+            ValidProp newValue
 
     type ShortNameType =  BzProp<string> 
     let ShortName (newValue:string) =

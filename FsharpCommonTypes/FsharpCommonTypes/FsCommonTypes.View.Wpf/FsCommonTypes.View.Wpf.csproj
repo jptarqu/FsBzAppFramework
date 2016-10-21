@@ -100,6 +100,10 @@
     <Compile Include="Views\ExternalChoicesView.xaml.cs">
       <DependentUpon>ExternalChoicesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IntInputView.xaml.cs">
+      <DependentUpon>IntInputView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MaskedText.cs" />
     <Compile Include="Views\RowsPanelView.xaml.cs">
       <DependentUpon>RowsPanelView.xaml</DependentUpon>
     </Compile>
@@ -140,6 +144,10 @@
     <Page Include="Views\ExternalChoicesView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\IntInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RowsPanelView.xaml">
       <Generator>MSBuild:Compile</Generator>
