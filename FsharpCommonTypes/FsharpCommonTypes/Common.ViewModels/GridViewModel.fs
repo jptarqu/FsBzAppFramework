@@ -14,7 +14,7 @@ type PivotGridDefinition =
     { RowDimensionDefinitions: PivotDimensionDefinition seq; ColumnDimensionDefinitions: PivotDimensionDefinition seq; FactDefinitions: PivotFactDefinition seq; }
     
 type PivotGridPropDefinition<'ParentType,'RecordType> =
-    { PivotSettings: PivotGridDefinition; RefreshValFromDoc:'ParentType->seq<'RecordType>; SelectedItemSetter: 'ParentType->'RecordType->'ParentType; PropName:string}
+    { PivotSettings: PivotGridDefinition; RefreshValFromDoc:'ParentType->seq<'RecordType>; SelectedItemSetter: 'ParentType->'RecordType option->'ParentType; PropName:string}
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module PivotGridDefinition =
@@ -33,11 +33,13 @@ module PivotGridDefinition =
 type IPivotGridViewModel =
     abstract PivotSettings:PivotGridDefinition
     abstract OnSelectedItem:System.Object->unit
+    abstract OnUnselection:unit->unit
+    
 
 
 type PivotGridViewModel<'RecordType, 'ParentType>(
                                                         refreshValFromDoc:'ParentType->seq<'RecordType>, 
-                                                        updateSelectedItem: 'RecordType->'ParentType,
+                                                        updateSelectedItem: 'RecordType option->'ParentType,
                                                         pushUpdatedDoc : CommonViewEditors.IViewComponent<'ParentType> -> 'ParentType -> unit,
                                                         propName: string,
                                                         pivotSettings: PivotGridDefinition,
@@ -71,8 +73,9 @@ type PivotGridViewModel<'RecordType, 'ParentType>(
         member this.UiHint = uiHint 
     interface IPivotGridViewModel with 
         member this.PivotSettings = pivotSettings
-        member this.OnSelectedItem obj = alertParentOfDocChg (obj :?> 'RecordType)
-
+        member this.OnSelectedItem obj = alertParentOfDocChg (Some(obj :?> 'RecordType))
+        member this.OnUnselection ()= alertParentOfDocChg None
+        
 
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]

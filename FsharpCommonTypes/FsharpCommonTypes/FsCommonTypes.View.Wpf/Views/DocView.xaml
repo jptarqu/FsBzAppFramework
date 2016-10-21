@@ -7,7 +7,13 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+            <ColumnDefinition Width="90*"></ColumnDefinition>
+            <ColumnDefinition Width="5*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+    <StackPanel Grid.Column="1">
         <local:RowsPanelView Margin="8" x:Name="fieldsContainer">
         </local:RowsPanelView>
         <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="16 8 16 8" >
@@ -15,9 +21,25 @@
                 <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Command="{Binding CancelCommand}" Content="{Binding CancelCommandName}" Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Column="0" />
             <Button Command="{Binding PrimaryCommand}" Content="{Binding PrimaryCommandName}" Grid.Column="2" />
+                <ItemsControl ItemsSource="{Binding PrimaryCommands}" Grid.Column="3">
+                <!-- specify the panel that is the container for your items -->
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal">
+                    </StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <!-- specify the template used to render each item -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                            <Button Command="{Binding Cmd}" Content="{Binding Name}" Margin="8 2 8 2" Style="{StaticResource MaterialDesignRaisedAccentButton}" MinWidth="80"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
         </Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -50,5 +72,6 @@
             </ItemsControl>
             
         </Grid>
-    </StackPanel>
+        </StackPanel>
+    </Grid>
 </UserControl>

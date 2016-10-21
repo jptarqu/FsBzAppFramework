@@ -5,6 +5,9 @@ open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
 
+type ICommandViewModel =
+    abstract member Cmd : IAsyncNotifyCommand
+    abstract member Name : string
 
 type CommandViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(isValid, commandToExec : CommandDefinition<'ParentType>, onSuccess : 'ParentType -> CommandResult -> unit, onFailure : CommandResult -> unit, getLatestDoc) as self = 
     inherit ViewModelBase()
@@ -27,8 +30,18 @@ type CommandViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
     let primaryCmd = self.Factory.CommandAsyncChecked(execCmd, isValid)
     member self.Cmd = primaryCmd
     member self.Name = commandToExec.CmdName
+    with
+        interface ICommandViewModel with
+            member x.Cmd: IAsyncNotifyCommand = self.Cmd
+            member x.Name: string = self.Name
+            
 
-type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(intialDoc : 'ParentType, commandToExec : CommandDefinition<'ParentType>, onSuccess, cancelCommand : CommandDefinition<'ParentType>, onCancel)  = 
+type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(intialDoc : 'ParentType, 
+                                                                                commandToExec : CommandDefinition<'ParentType>, 
+                                                                                onSuccess, 
+                                                                                cancelCommand : CommandDefinition<'ParentType>, 
+                                                                                onCancel,
+                                                                                primaryCommands :  CommandDefinition<'ParentType> seq)  = 
     inherit ViewModelBase()
     let mutable myDoc = intialDoc
     let currEntityErrors = ObservableCollection<PropertyError>()
@@ -50,6 +63,9 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
     
     let primaryCmd = 
         CommandViewModel(isValid, commandToExec, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc))
+    let primaryCmds = 
+        primaryCommands
+        |> Seq.map (fun c -> CommandViewModel(isValid, c, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc)) :> ICommandViewModel)
     let cancelCmd = 
         CommandViewModel((fun _ -> true), cancelCommand, onCancel, updateEntityErrorsFromResult, (fun () -> myDoc))
 
@@ -76,6 +92,8 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
     member self.CurrEntityErrors = currEntityErrors
     member self.PrimaryCommand = primaryCmd.Cmd
     member self.PrimaryCommandName = primaryCmd.Name
+    member self.PrimaryCommands:ICommandViewModel seq = primaryCmds
+
     member self.CancelCommand = cancelCmd.Cmd
     member self.CancelCommandName = cancelCmd.Name
     member self.GetCurrentDoc = myDoc

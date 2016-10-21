@@ -54,7 +54,7 @@ module Sample =
         let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = SampleCmd}
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
-        let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel)
+        let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
         SingleInputViewModel.AddTextInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionName 
         SingleInputViewModel.AddDateInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesDate 
         SimpleChoicesViewModel.AddSimpleChoicesViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
@@ -92,10 +92,10 @@ module Sample =
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
 
-        let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel)
+        let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
         let loadList doc = doc.Docs
         let onSelectedItem doc item = 
-            {doc with SelectedItem = Some item}
+            {doc with SelectedItem = item}
         let pivotSettings = {
             PivotGridDefinition.RowDimensionDefinitions  = 
                 [
