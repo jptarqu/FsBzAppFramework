@@ -4,9 +4,10 @@ open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
 open Common.ViewModels.Interfaces
+open System.Threading.Tasks
 
 type IDialogService =
-    abstract PromptMessage : string->string->unit
+    abstract PromptMessage : string->string->Task
     
 type IScreen = 
     abstract ScreenId : string

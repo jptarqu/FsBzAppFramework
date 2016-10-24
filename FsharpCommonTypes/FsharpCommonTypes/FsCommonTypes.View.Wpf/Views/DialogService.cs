@@ -1,5 +1,6 @@
 ﻿using Common.ViewModels;
 using MahApps.Metro.Controls.Dialogs;
+using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,16 +14,27 @@ namespace FsCommonTypes.View.Wpf.Views
     {
         private ResourceDictionary DialogDictionary = new ResourceDictionary() { Source = new Uri("pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml") };
 
-        public void PromptMessage(string title, string message)
+        public async Task PromptMessage(string title, string message)
         {
-            var metroDialogSettings = new MetroDialogSettings
+            var view = new DialogMessage
             {
-                CustomResourceDictionary = DialogDictionary,
-                NegativeButtonText = "CANCEL",
-                SuppressDefaultResources = true
             };
+            view.Message.Text = message;
+            //show the dialog
+            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
 
-            DialogCoordinator.Instance.ShowMessageAsync(this, title, message, MessageDialogStyle.Affirmative,metroDialogSettings);
+            //var metroDialogSettings = new MetroDialogSettings
+            //{
+            //    CustomResourceDictionary = DialogDictionary,
+            //    NegativeButtonText = "CANCEL",
+            //    SuppressDefaultResources = true
+            //};
+
+            //DialogCoordinator.Instance.ShowMessageAsync(this, title, message, MessageDialogStyle.Affirmative,metroDialogSettings);
+        }
+        private void ClosingEventHandler(object sender, DialogClosingEventArgs eventArgs)
+        {
+
         }
     }
 }

@@ -106,6 +106,9 @@
     <Compile Include="Views\DateTimeInputView.xaml.cs">
       <DependentUpon>DateTimeInputView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DialogMessage.xaml.cs">
+      <DependentUpon>DialogMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DialogService.cs" />
     <Compile Include="Views\DocView.xaml.cs">
       <DependentUpon>DocView.xaml</DependentUpon>
@@ -150,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DateTimeInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DialogMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
