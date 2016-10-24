@@ -4,7 +4,7 @@ open FSharp.ViewModule
 open FsharpCommonTypes
 
 type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType : equality>(propFactory : PropFactoryMethod<'PrimitiveType>, refreshValFromDoc : 'ParentType -> BzProp<'PrimitiveType>, refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
-                                                                                                                                                                                                                                                             pushUpdatedDoc : CommonViewEditors.IViewComponent<'ParentType> -> 'ParentType -> unit, propName : string, defaultValue : 'PrimitiveType, uiHint : string) as self = 
+                                                                                                                                                                                                                                                             pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, propName : string, defaultValue : 'PrimitiveType, uiHint : string) as self = 
     inherit ViewModelBase()
     let getStrErrors = BusinessTypes.GetStrErrors propFactory
     let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue, getStrErrors)
@@ -23,7 +23,7 @@ type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType : equa
     
     member self.PropName = propName
     
-    interface CommonViewEditors.IViewComponent<'ParentType> with
+    interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         member this.Init<'ParentType> vm = self.Value <- BusinessTypes.ToPrimitive(refreshValFromDoc vm)
         member this.OnDocUpdated<'ParentType> vm = 
             self.Value <- BusinessTypes.ToPrimitive(refreshValFromDoc vm)
@@ -37,6 +37,7 @@ type SingleInputViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType : equa
 module SingleInputViewModel = 
     module UIHints = 
         let SingleTextInput = "SingleInput"
+        let ReadOnlyText = "ReadOnlyText"
         let DateInput = "DateInput"
         let DateTimeInput = "DateTimeInput"
         let IntInput = "IntInput"
@@ -52,6 +53,10 @@ module SingleInputViewModel =
     
     let AddTextInputViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel UIHints.SingleTextInput "" docViewModel intoPanelViewModel propDef
+
+    let AddReadOnlyTextViewModel docViewModel intoPanelViewModel propDef = 
+        AddSingleInputViewModel UIHints.ReadOnlyText "" docViewModel intoPanelViewModel propDef
+
     let AddIntInputViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel UIHints.IntInput 0 docViewModel intoPanelViewModel propDef
     let AddOptDateInputViewModel docViewModel intoPanelViewModel propDef = 

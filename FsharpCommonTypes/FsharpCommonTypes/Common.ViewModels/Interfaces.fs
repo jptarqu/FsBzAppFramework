@@ -1,12 +1,20 @@
 ﻿namespace Common.ViewModels.Interfaces
 
-open CommonViewEditors
-open FsharpCommonTypes
+
+
+type SimpleExternalChoicesQueryResult<'PrimitiveType> = {ResultId: 'PrimitiveType; ResultLabel: string; }
+
+type IExternalChoicesQry<'PrimitiveType when 'PrimitiveType: equality> =
+    abstract QueryExecutor:string->seq<SimpleExternalChoicesQueryResult<'PrimitiveType>>
 
 type IViewComponent =
     abstract Label:string
     abstract UiHint:string
     
+type IViewComponent<'ViewModel> =
+    abstract OnDocUpdated<'ViewModel> : 'ViewModel -> unit
+    abstract Init<'ViewModel> : 'ViewModel -> unit
+
 type IPanelViewModel =
     abstract GetChildren: unit->IViewComponent seq
 

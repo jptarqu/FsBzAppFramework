@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Dragablz, Version=0.0.3.173, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Repos\Common\CommonLists\WpfTest\packages\Dragablz.0.0.3.173\lib\net45\Dragablz.dll</HintPath>
+    <Reference Include="Dragablz, Version=0.0.3.175, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dragablz.0.0.3.175\lib\net45\Dragablz.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -44,8 +44,16 @@
       <HintPath>..\..\..\..\..\Repos\Common\CommonLists\WpfTest\packages\FSharp.ViewModule.Core.0.9.9.3\lib\portable-net45+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1\FSharp.ViewModule.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignColors, Version=1.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\Repos\Common\CommonLists\WpfTest\packages\MaterialDesignColors.1.1.2\lib\net45\MaterialDesignColors.dll</HintPath>
+    <Reference Include="MahApps.Metro, Version=1.3.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MaterialDesignThemes.MahApps, Version=0.0.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MaterialDesignThemes.MahApps.0.0.8\lib\net45\MaterialDesignThemes.MahApps.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MaterialDesignThemes.Wpf, Version=2.1.0.657, Culture=neutral, processorArchitecture=MSIL">
@@ -54,6 +62,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.3.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -94,6 +106,7 @@
     <Compile Include="Views\DateTimeInputView.xaml.cs">
       <DependentUpon>DateTimeInputView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DialogService.cs" />
     <Compile Include="Views\DocView.xaml.cs">
       <DependentUpon>DocView.xaml</DependentUpon>
     </Compile>
@@ -104,6 +117,9 @@
       <DependentUpon>IntInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MaskedText.cs" />
+    <Compile Include="Views\ReadOnlyTextView.xaml.cs">
+      <DependentUpon>ReadOnlyTextView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RowsPanelView.xaml.cs">
       <DependentUpon>RowsPanelView.xaml</DependentUpon>
     </Compile>
@@ -146,6 +162,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\IntInputView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ReadOnlyTextView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

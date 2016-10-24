@@ -5,10 +5,10 @@ open FsharpCommonTypes
 
 type RowsPanelViewModel<'ParentType >(groupName: string) = 
 
-    let mutable childViewModels:List<CommonViewEditors.IViewComponent<'ParentType>> = List.empty
+    let mutable childViewModels:List<Common.ViewModels.Interfaces.IViewComponent<'ParentType>> = List.empty
     
     interface Interfaces.IPanelViewModel<'ParentType> with
-        member this.AddChild( newChild:CommonViewEditors.IViewComponent<'ParentType>) =
+        member this.AddChild( newChild:Common.ViewModels.Interfaces.IViewComponent<'ParentType>) =
             childViewModels <- newChild :: childViewModels
         member this.GetTypedChildren () =
             childViewModels |> Seq.rev
@@ -17,7 +17,7 @@ type RowsPanelViewModel<'ParentType >(groupName: string) =
         member this.GetChildren () =
             childViewModels |> Seq.map (fun i -> i :?> Common.ViewModels.Interfaces.IViewComponent) |> Seq.rev
 
-    interface CommonViewEditors.IViewComponent<'ParentType> with
+    interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         member this.Init<'ParentType> vm = 
             childViewModels |> List.iter (fun i -> i.Init vm)
 

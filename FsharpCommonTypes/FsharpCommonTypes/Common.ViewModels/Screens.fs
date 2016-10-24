@@ -1,11 +1,13 @@
 ﻿namespace Common.ViewModels
 
-open CommonViewEditors
 open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
 open Common.ViewModels.Interfaces
 
+type IDialogService =
+    abstract PromptMessage : string->string->unit
+    
 type IScreen = 
     abstract ScreenId : string
     abstract DisplayName : string

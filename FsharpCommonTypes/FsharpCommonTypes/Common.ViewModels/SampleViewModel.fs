@@ -1,8 +1,8 @@
 ﻿namespace Common.ViewModels
 
-open CommonViewEditors
 open FsharpCommonTypes
-   
+open Common.ViewModels.Interfaces
+
 [<CLIMutable>]
 type SampleDoc = 
     {Name: BusinessTypes.LongNameType; SalesRegion: BusinessTypes.IdNumberType; SalesDate : BusinessTypes.PastDateTimeType} 
@@ -24,7 +24,7 @@ type SampleDoc =
                    SampleDoc.DefinitionSalesRegion.GetValidationErrors(this);
                    SampleDoc.DefinitionSalesDate.GetValidationErrors(this);
                    isObjValid(); ] 
-                |> Seq.collect (fun x -> x)
+                |> Seq.collect id
                 
 [<CLIMutable>]
 type SampleDocReadOnly = 

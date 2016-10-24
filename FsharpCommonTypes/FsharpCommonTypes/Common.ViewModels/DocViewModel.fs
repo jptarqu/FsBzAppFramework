@@ -1,6 +1,5 @@
 ﻿namespace Common.ViewModels
 
-open CommonViewEditors
 open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
@@ -84,7 +83,7 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
         primaryCmd.Cmd.RaiseCanExecuteChanged()
         ()
     
-    let choicesExecInt (qryExecutor : ExternalChoicesQueryExecutor<'ParentType, int>) = qryExecutor myDoc
+//    let choicesExecInt (qryExecutor : ExternalChoicesQueryExecutor<'ParentType, int>) = qryExecutor myDoc
     member this.AddMyDocToFunc funcNeedeingDoc = funcNeedeingDoc myDoc
     member this.GetChildViews() = root.GetTypedChildren() |> Seq.rev
     member this.Init() = root.GetTypedChildren() |> Seq.iter (fun x -> x.Init myDoc)

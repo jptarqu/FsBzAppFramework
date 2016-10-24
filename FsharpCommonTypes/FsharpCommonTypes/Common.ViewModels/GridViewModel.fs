@@ -40,7 +40,7 @@ type IPivotGridViewModel =
 type PivotGridViewModel<'RecordType, 'ParentType>(
                                                         refreshValFromDoc:'ParentType->seq<'RecordType>, 
                                                         updateSelectedItem: 'RecordType option->'ParentType,
-                                                        pushUpdatedDoc : CommonViewEditors.IViewComponent<'ParentType> -> 'ParentType -> unit,
+                                                        pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit,
                                                         propName: string,
                                                         pivotSettings: PivotGridDefinition,
                                                         uiHint: string) as self = 
@@ -61,7 +61,7 @@ type PivotGridViewModel<'RecordType, 'ParentType>(
     member self.PivotSettings with get() = pivotSettings
     member self.DataCollection with get() = dataCollection
 
-    interface CommonViewEditors.IViewComponent<'ParentType> with
+    interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         member this.Init<'ParentType> vm = 
             refreshObservableCollection vm
 

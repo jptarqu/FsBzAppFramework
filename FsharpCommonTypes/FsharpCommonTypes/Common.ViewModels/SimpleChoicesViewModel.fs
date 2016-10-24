@@ -1,12 +1,12 @@
 ﻿namespace Common.ViewModels
 
-open CommonViewEditors
 open FsharpCommonTypes
 open FSharp.ViewModule
 open System.Collections.ObjectModel
+open Common.ViewModels.Interfaces
 
 type SimpleChoicesViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType : equality>(propFactory : PropFactoryMethod<'PrimitiveType>, refreshValFromDoc : 'ParentType -> BzProp<'PrimitiveType>, refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
-                                                                                                                                                                                                                                                               pushUpdatedDoc : CommonViewEditors.IViewComponent<'ParentType> -> 'ParentType -> unit, choicesQry : 'ParentType -> list<SimpleExternalChoicesQueryResult<'PrimitiveType>>, propName : string, defaultValue : 'PrimitiveType) as self = 
+                                                                                                                                                                                                                                                               pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, choicesQry : 'ParentType -> list<SimpleExternalChoicesQueryResult<'PrimitiveType>>, propName : string, defaultValue : 'PrimitiveType) as self = 
     inherit ViewModelBase()
     let mutable currErrors : seq<PropertyError> = Seq.empty
     let mutable currPossibleChoicesRaw : list<SimpleExternalChoicesQueryResult<'PrimitiveType>> = List.empty
@@ -46,7 +46,7 @@ type SimpleChoicesViewModel<'PrimitiveType, 'ParentType when 'PrimitiveType : eq
     member self.PossibleChoices = possibleChoices
     member self.PropName = propName
     
-    interface CommonViewEditors.IViewComponent<'ParentType> with
+    interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         
         member this.Init<'ParentType> vm = 
             let primitiveVal = BusinessTypes.ToPrimitive(refreshValFromDoc vm)
