@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common.ViewModels;
+using FsCommonTypes.View.Wpf.Views;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,16 @@ namespace FsCommonTypes.Views
         public SingleTextInputView()
         {
             InitializeComponent();
+        }
+
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var input = e.NewValue as IMaskedInput;
+            if (input != null)
+            {
+                MaskedText.SetMask(ValueTextBox, input.Mask);
+                //MaskedText.SetPromptChar(ValueTextBox, '?');
+            }
         }
     }
 }

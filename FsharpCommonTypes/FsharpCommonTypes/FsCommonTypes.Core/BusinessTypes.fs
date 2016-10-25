@@ -14,6 +14,14 @@ module BusinessTypes =
         match propState with
         | ValidProp primitive -> primitive.ToString()
         | InvalidProp (badPrimitive, errors) -> badPrimitive.ToString()
+
+    let formatObj strFormat (obj:System.Object) =
+        System.String.Format(strFormat, obj)
+
+    let ToPrimitiveStrFormat (strFormat:string) propState =
+        match propState with
+        | ValidProp (primitive) -> formatObj strFormat primitive
+        | InvalidProp (badPrimitive, errors) -> formatObj strFormat badPrimitive
         
     let GetStrErrors (propFactory:PropFactoryMethod<'InputPrimitive, 'Primitive>) (newPrimitiveVal:'InputPrimitive) =
         let newPropState = propFactory newPrimitiveVal
@@ -45,6 +53,13 @@ module BusinessTypes =
             InvalidProp (newValue , ["date is in the future"])
         else
             ValidProp newValue
+    let PastDateTimeFromStr (newValue:string) =
+        match (ConversionHelpers.tryParseDate newValue) with
+        | Some d ->
+            PastDateTime d
+        | None ->  
+            let tomorrow = System.DateTime.Now.AddDays(float 1)
+            InvalidProp (tomorrow , ["invalid date string"])
 
     type ShortNameType =  BzProp<string> 
     let ShortName (newValue:string) =
@@ -69,7 +84,8 @@ module BusinessTypes =
         else
             ValidProp newValue
     let IdNumberFromStr (newValue:string) =
-        match (ConversionHelpers.tryParseInt newValue) with
+        let cleanMask = newValue.Replace("_","")
+        match (ConversionHelpers.tryParseInt cleanMask) with
         | Some i ->
             IdNumber i
         | None ->  InvalidProp (-1 , ["invalid number"])

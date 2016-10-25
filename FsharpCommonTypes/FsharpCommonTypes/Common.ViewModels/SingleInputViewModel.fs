@@ -3,6 +3,8 @@
 open FSharp.ViewModule
 open FsharpCommonTypes
 
+type IMaskedInput =
+    abstract Mask:string
 type SingleInputViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'PrimitiveType : equality  and 'InputPrimitive : equality>(
     propFactory : PropFactoryMethod<'InputPrimitive, 'PrimitiveType>, 
     propToInput: BzProp<'PrimitiveType>->'InputPrimitive, 
@@ -31,7 +33,10 @@ type SingleInputViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'Pri
     
     member self.PropName = propName
     member self.Mask = mask
-    
+
+    interface IMaskedInput with
+        member this.Mask = mask
+        
     interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         member this.Init<'ParentType> vm = updateInternalPrimitive (propToInput (refreshValFromDoc vm)) // go directly to field because we do not need to alert the doc model of the change
         member this.OnDocUpdated<'ParentType> vm = 
@@ -62,6 +67,9 @@ module SingleInputViewModel =
     
     let AddTextInputViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel "" UIHints.SingleTextInput "" docViewModel intoPanelViewModel propDef
+
+    let AddMaskedTextInputViewModel docViewModel intoPanelViewModel propDef mask = 
+        AddSingleInputViewModel mask UIHints.SingleTextInput "" docViewModel intoPanelViewModel propDef
 
     let AddReadOnlyTextViewModel docViewModel intoPanelViewModel propDef = 
         AddSingleInputViewModel "" UIHints.ReadOnlyText "" docViewModel intoPanelViewModel propDef

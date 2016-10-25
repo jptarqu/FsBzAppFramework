@@ -1,10 +1,10 @@
 ﻿namespace Common.ViewModels
 
-open FsharpCommonTypes
+open System.Threading.Tasks
+open Common.ViewModels.Interfaces
 open FSharp.ViewModule
 open System.Collections.ObjectModel
-open Common.ViewModels.Interfaces
-open System.Threading.Tasks
+open FsharpCommonTypes
 
 type IDialogService =
     abstract PromptMessage : string->string->string->Task

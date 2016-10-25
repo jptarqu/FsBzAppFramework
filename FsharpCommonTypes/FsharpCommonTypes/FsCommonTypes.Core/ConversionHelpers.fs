@@ -7,7 +7,9 @@ module ConversionHelpers =
 
     let tryParseInt    = tryParseWith FSharp.Core.int.TryParse
     let tryParseDecimal = tryParseWith FSharp.Core.decimal.TryParse
+    let tryParseDate = tryParseWith System.DateTime.TryParse
     
     let (|Int|_|)    = tryParseInt
     let (|Decimal|_|) = tryParseDecimal
+    let (|Date|_|) = tryParseDate
 

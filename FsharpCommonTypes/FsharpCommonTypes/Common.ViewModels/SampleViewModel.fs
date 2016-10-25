@@ -5,7 +5,12 @@ open Common.ViewModels.Interfaces
 
 [<CLIMutable>]
 type SampleDoc = 
-    {Name: BusinessTypes.LongNameType; SalesRegion: BusinessTypes.IdNumberType; SalesDate : BusinessTypes.PastDateTimeType} 
+    {
+        Name: BusinessTypes.LongNameType; 
+        SalesRegion: BusinessTypes.IdNumberType; 
+        SalesDate : BusinessTypes.PastDateTimeType;
+        QuantityId : BusinessTypes.IdNumberType;
+    } 
     with
         static member DefinitionName = 
             { PropDefinition.Name ="Name"; Factory = BusinessTypes.LongName; Setter = (fun d v -> {d with SampleDoc.Name = v }); Getter = (fun d -> d.Name ); 
@@ -17,6 +22,9 @@ type SampleDoc =
             { PropDefinition.Name ="Sales Date"; Factory = BusinessTypes.PastDateTime; Setter = (fun d v -> {d with SampleDoc.SalesDate = v }); Getter = (fun d -> d.SalesDate );
             PropToInput = BusinessTypes.ToPrimitive 
             }
+        static member DefinitionQuantityId = 
+            { PropDefinition.Name ="Quantity Id"; Factory = BusinessTypes.IdNumberFromStr; Setter = (fun d v -> {d with SampleDoc.QuantityId = v }); Getter = (fun d -> d.QuantityId );
+            PropToInput = BusinessTypes.ToPrimitiveStr }  
         interface InterfaceTypes.ICanValidate with 
             member this.GetValidationErrors () = 
                 let isObjValid () = 
@@ -27,6 +35,7 @@ type SampleDoc =
                 [ SampleDoc.DefinitionName.GetValidationErrors(this) ; 
                    SampleDoc.DefinitionSalesRegion.GetValidationErrors(this);
                    SampleDoc.DefinitionSalesDate.GetValidationErrors(this);
+                   SampleDoc.DefinitionQuantityId.GetValidationErrors(this);
                    isObjValid(); ] 
                 |> Seq.collect id
                 
@@ -44,7 +53,7 @@ module Sample =
     open System.Threading.Tasks
     let CreateSampleDoc () =
         let now = System.DateTime.Now
-        let model ={SampleDoc.Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1; SalesDate =  BusinessTypes.PastDateTime now} 
+        let model ={SampleDoc.Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1; SalesDate =  BusinessTypes.PastDateTime now; QuantityId = BusinessTypes.IdNumber -1} 
         model
     let DoNothingCmd  doc =
         async {
@@ -62,13 +71,14 @@ module Sample =
         let simpleChoices (doc:SampleDoc) = 
                                 let newRand = System.Random().Next(1,6).ToString()
                                 [ {ResultId= 1; ResultLabel= "Test 1";  };
-                                {ResultId= 2; ResultLabel= "Test " + newRand ;  } ;
+                                {ResultId= 2; ResultLabel= "Test " ;  } ;
                                 {ResultId= 3; ResultLabel= "Test 3 " + doc.Name.ToString();  }  ]
         let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = DoNothingCmd}
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
         let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
         SingleInputViewModel.AddTextInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionName 
+        SingleInputViewModel.AddMaskedTextInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionQuantityId "999999990"
         SingleInputViewModel.AddDateInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesDate 
         SimpleChoicesViewModel.AddSimpleChoicesViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
         doc
