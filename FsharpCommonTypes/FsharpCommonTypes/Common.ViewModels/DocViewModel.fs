@@ -86,7 +86,11 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
 //    let choicesExecInt (qryExecutor : ExternalChoicesQueryExecutor<'ParentType, int>) = qryExecutor myDoc
     member this.AddMyDocToFunc funcNeedeingDoc = funcNeedeingDoc myDoc
     member this.GetChildViews() = root.GetTypedChildren() |> Seq.rev
-    member this.Init() = root.GetTypedChildren() |> Seq.iter (fun x -> x.Init myDoc)
+    member this.Init() = 
+        root.GetTypedChildren() |> Seq.iter (fun x -> x.Init myDoc)
+        updateValidationErrors()
+        primaryCmd.Cmd.RaiseCanExecuteChanged()
+
     member this.GetRootView() = root
     member self.CurrEntityErrors = currEntityErrors
     member self.PrimaryCommand = primaryCmd.Cmd

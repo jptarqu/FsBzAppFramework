@@ -9,8 +9,8 @@
              
              
              d:DesignHeight="300" d:DesignWidth="300">
-    
-        <materialDesign:DialogHost x:Name="DialogHostContainer"  HorizontalAlignment="Center" VerticalAlignment="Center"
+
+    <materialDesign:DialogHost x:Name="DialogHostContainer"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                                           
                                            CloseOnClickAway="True">
         <Grid>
