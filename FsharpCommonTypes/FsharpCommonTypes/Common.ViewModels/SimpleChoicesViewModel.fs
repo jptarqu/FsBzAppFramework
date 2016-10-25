@@ -7,21 +7,24 @@ open Common.ViewModels.Interfaces
 
 type SimpleChoicesViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'PrimitiveType : equality  and 'InputPrimitive : equality>(
     propFactory : PropFactoryMethod<'InputPrimitive, 'PrimitiveType>, 
-    refreshValFromDoc : 'ParentType -> 'InputPrimitive, 
+    propToInput: BzProp<'PrimitiveType>->'InputPrimitive, 
+    refreshValFromDoc : 'ParentType -> BzProp<'PrimitiveType>, 
     refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
     pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, choicesQry : 'ParentType -> list<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
      propName : string, defaultValue : 'InputPrimitive) as self = 
     inherit ViewModelBase()
-    let mutable currErrors : seq<PropertyError> = Seq.empty
+    let inputInternal =
+            SingleInputViewModel
+                (propFactory, propToInput, refreshValFromDoc, refreshDocFromVal, pushUpdatedDoc, propName, defaultValue, "", "")
     let mutable currPossibleChoicesRaw : list<SimpleExternalChoicesQueryResult<'PrimitiveType>> = List.empty
-    let getStrErrors = BusinessTypes.GetStrErrors propFactory
-    let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue, getStrErrors)
-    let possibleChoices = ObservableCollection<SimpleExternalChoicesQueryResult<'PrimitiveType>>()
-    let isValueValid = currErrors |> Seq.isEmpty
     
-    let alertParentOfDocChg newVal = 
-        let newDoc = refreshDocFromVal newVal
-        pushUpdatedDoc self newDoc
+
+    let possibleChoices = ObservableCollection<SimpleExternalChoicesQueryResult<'PrimitiveType>>()
+    let isValueValid ()= inputInternal.IsValid 
+//    
+//    let alertParentOfDocChg newVal = 
+//        let newDoc = refreshDocFromVal newVal
+//        pushUpdatedDoc self newDoc
     
     let refreshObservableCollection() = 
         possibleChoices.Clear()
@@ -39,17 +42,11 @@ type SimpleChoicesViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'P
             currPossibleChoicesRaw <- newChoices
             refreshObservableCollection()
     
-    let updateInternalPrimitive newVal =
-        if (newVal <> txtValue.Value) then 
-                txtValue.Value <- newVal
 
     member self.Value 
-        with get () = txtValue.Value
+        with get () = inputInternal.Value 
         and set value = 
-            if (value <> txtValue.Value) then 
-                updateInternalPrimitive value
-                let newPropState = propFactory value
-                alertParentOfDocChg newPropState
+            inputInternal.Value <- value
     
     member self.PossibleChoices = possibleChoices
     member self.PropName = propName
@@ -57,11 +54,11 @@ type SimpleChoicesViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'P
     interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         
         member this.Init<'ParentType> vm = 
-            updateInternalPrimitive (refreshValFromDoc vm)
+            (inputInternal :> Common.ViewModels.Interfaces.IViewComponent<'ParentType>).Init vm
             refreshPossibleChoice vm
         
         member this.OnDocUpdated<'ParentType> vm = 
-            updateInternalPrimitive (refreshValFromDoc vm)
+            (inputInternal :> Common.ViewModels.Interfaces.IViewComponent<'ParentType>).OnDocUpdated vm
             refreshPossibleChoice vm
     
     interface Interfaces.IViewComponent with
@@ -79,5 +76,5 @@ module SimpleChoicesViewModel =
         let docUpdate = docViewModel.GetDocAccessor(propDef.Setter)
         let choicesInput = 
             SimpleChoicesViewModel
-                (propDef.Factory, propDef.InputPrimitiveGetter, docUpdate, docViewModel.UpdateDoc, simpleChoices, propDef.Name, 0)
+                (propDef.Factory, propDef.PropToInput, propDef.Getter, docUpdate, docViewModel.UpdateDoc, simpleChoices, propDef.Name, 0)
         intoPanelViewModel.AddChild(choicesInput)

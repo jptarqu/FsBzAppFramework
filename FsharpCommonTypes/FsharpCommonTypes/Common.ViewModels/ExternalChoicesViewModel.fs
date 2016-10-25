@@ -5,34 +5,26 @@ open FSharp.ViewModule
 open Common.ViewModels.Interfaces
 
 type ExternalChoicesViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'PrimitiveType : equality  and 'InputPrimitive : equality>(
-        propFactory : PropFactoryMethod<'InputPrimitive, 'PrimitiveType>, refreshValFromDoc : 'ParentType -> 'InputPrimitive, 
-        refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
+        propFactory : PropFactoryMethod<'InputPrimitive, 'PrimitiveType>, 
+        propToInput: BzProp<'PrimitiveType>->'InputPrimitive, 
+        refreshValFromDoc : 'ParentType -> BzProp<'PrimitiveType>, 
+        refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType,
         pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, 
         queryExecutor : string -> seq<SimpleExternalChoicesQueryResult<'PrimitiveType>>, labelLkup : 'InputPrimitive -> string, 
         propName : string, defaultValue : 'InputPrimitive) as self = 
     inherit ViewModelBase()
-    //    let mutable txtValue = defaultValue
-    let mutable currErrors : seq<PropertyError> = Seq.empty
-    let getStrErrors = BusinessTypes.GetStrErrors propFactory
-    let txtValue = self.Factory.Backing(<@ self.Value @>, defaultValue, getStrErrors)
+    let inputInternal =
+            SingleInputViewModel
+                (propFactory, propToInput, refreshValFromDoc, refreshDocFromVal, pushUpdatedDoc, propName, defaultValue, "", "")
+
     let txtLabel = self.Factory.Backing(<@ self.ResultLabel @>, "")
-    let isValueValid = currErrors |> Seq.isEmpty
+//    let isValueValid = currErrors |> Seq.isEmpty
     
-    let alertParentOfDocChg newVal = 
-        let newDoc = refreshDocFromVal newVal
-        pushUpdatedDoc self newDoc
-    
-    let updateInternalPrimitive newVal =
-        if (newVal <> txtValue.Value) then 
-                txtValue.Value <- newVal
 
     member self.Value 
-        with get () = txtValue.Value
+        with get () = inputInternal.Value 
         and set value = 
-            if (value <> txtValue.Value) then 
-                updateInternalPrimitive value
-                let newPropState = propFactory value
-                alertParentOfDocChg newPropState
+            inputInternal.Value <- value
     
     member self.ResultLabel 
         with get () = txtLabel.Value
@@ -44,12 +36,12 @@ type ExternalChoicesViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 
     interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
         
         member this.Init<'ParentType> vm = 
-            updateInternalPrimitive (refreshValFromDoc vm)
-            self.ResultLabel <- labelLkup txtValue.Value
+            (inputInternal :> Common.ViewModels.Interfaces.IViewComponent<'ParentType>).Init vm
+            self.ResultLabel <- labelLkup inputInternal.Value
         
         member this.OnDocUpdated<'ParentType> vm = 
-            updateInternalPrimitive (refreshValFromDoc vm)
-            self.ResultLabel <- labelLkup txtValue.Value
+            (inputInternal :> Common.ViewModels.Interfaces.IViewComponent<'ParentType>).OnDocUpdated vm
+            self.ResultLabel <- labelLkup inputInternal.Value
     
     interface Interfaces.IViewComponent with
         member this.Label = propName

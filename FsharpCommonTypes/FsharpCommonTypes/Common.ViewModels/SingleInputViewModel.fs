@@ -3,7 +3,10 @@
 open FSharp.ViewModule
 open FsharpCommonTypes
 
-type SingleInputViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'PrimitiveType : equality  and 'InputPrimitive : equality>(propFactory : PropFactoryMethod<'InputPrimitive, 'PrimitiveType>, refreshValFromDoc : 'ParentType -> 'InputPrimitive, 
+type SingleInputViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'PrimitiveType : equality  and 'InputPrimitive : equality>(
+    propFactory : PropFactoryMethod<'InputPrimitive, 'PrimitiveType>, 
+    propToInput: BzProp<'PrimitiveType>->'InputPrimitive, 
+    refreshValFromDoc : 'ParentType -> BzProp<'PrimitiveType>, 
     refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
                                                                                                                                                                                                                                                              pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, propName : string, defaultValue : 'InputPrimitive, mask: string, uiHint : string) as self = 
     inherit ViewModelBase()
@@ -30,9 +33,9 @@ type SingleInputViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'Pri
     member self.Mask = mask
     
     interface Common.ViewModels.Interfaces.IViewComponent<'ParentType> with
-        member this.Init<'ParentType> vm = updateInternalPrimitive (refreshValFromDoc vm) // go directly to field because we do not need to alert the doc model of the change
+        member this.Init<'ParentType> vm = updateInternalPrimitive (propToInput (refreshValFromDoc vm)) // go directly to field because we do not need to alert the doc model of the change
         member this.OnDocUpdated<'ParentType> vm = 
-            updateInternalPrimitive (refreshValFromDoc vm)
+            updateInternalPrimitive  (propToInput (refreshValFromDoc vm))
             ()
     
     interface Interfaces.IViewComponent with
@@ -54,7 +57,7 @@ module SingleInputViewModel =
         let docUpdateFunc = docViewModel.GetDocAccessor(propDef.Setter)
         let txtInput = 
             SingleInputViewModel
-                (propDef.Factory, propDef.InputPrimitiveGetter, docUpdateFunc, docViewModel.UpdateDoc, propDef.Name, defVal, mask, uiHint)
+                (propDef.Factory, propDef.PropToInput, propDef.Getter, docUpdateFunc, docViewModel.UpdateDoc, propDef.Name, defVal, mask, uiHint)
         intoPanelViewModel.AddChild(txtInput)
     
     let AddTextInputViewModel docViewModel intoPanelViewModel propDef = 

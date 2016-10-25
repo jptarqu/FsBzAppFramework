@@ -9,13 +9,13 @@ type SampleDoc =
     with
         static member DefinitionName = 
             { PropDefinition.Name ="Name"; Factory = BusinessTypes.LongName; Setter = (fun d v -> {d with SampleDoc.Name = v }); Getter = (fun d -> d.Name ); 
-            InputPrimitiveGetter = (fun d -> BusinessTypes.ToPrimitive d.Name ) }
+            PropToInput = BusinessTypes.ToPrimitive  }
         static member DefinitionSalesRegion = 
             { PropDefinition.Name ="Sales Region"; Factory = BusinessTypes.IdNumber; Setter = (fun d v -> {d with SampleDoc.SalesRegion = v }); Getter = (fun d -> d.SalesRegion );
-            InputPrimitiveGetter = (fun d -> BusinessTypes.ToPrimitive d.SalesRegion )}  
+            PropToInput = BusinessTypes.ToPrimitive }  
         static member DefinitionSalesDate = 
             { PropDefinition.Name ="Sales Date"; Factory = BusinessTypes.PastDateTime; Setter = (fun d v -> {d with SampleDoc.SalesDate = v }); Getter = (fun d -> d.SalesDate );
-            InputPrimitiveGetter = (fun d -> BusinessTypes.ToPrimitive d.SalesDate )
+            PropToInput = BusinessTypes.ToPrimitive 
             }
         interface InterfaceTypes.ICanValidate with 
             member this.GetValidationErrors () = 
