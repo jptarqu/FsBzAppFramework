@@ -39,8 +39,9 @@ namespace FsCommonTypes.View.Wpf.Views
         //    }
         //}
 
-        internal void SetDoc(IDocViewModel docModel, ViewBuildersCollection _viewBuilders)
+        internal void SetDoc(IDocViewModel docModel, ViewBuildersCollection _viewBuilders, string ScreenId)
         {
+            DialogHostContainer.Identifier = ScreenId;
             fieldsContainer.SetViewComponent(docModel.GetRootView(), _viewBuilders);
             this.DataContext = docModel;
         }

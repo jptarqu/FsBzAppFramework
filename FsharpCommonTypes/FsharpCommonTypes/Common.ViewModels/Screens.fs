@@ -7,7 +7,7 @@ open Common.ViewModels.Interfaces
 open System.Threading.Tasks
 
 type IDialogService =
-    abstract PromptMessage : string->string->Task
+    abstract PromptMessage : string->string->string->Task
     
 type IScreen = 
     abstract ScreenId : string

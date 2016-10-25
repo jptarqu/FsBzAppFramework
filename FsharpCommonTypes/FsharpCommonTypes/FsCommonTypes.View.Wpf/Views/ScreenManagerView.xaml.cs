@@ -45,7 +45,7 @@ namespace FsCommonTypes.View.Wpf.Views
                     newTab.Header = newScreen.DisplayName;
 
                     var docContainer = new DocView();
-                    docContainer.SetDoc(newScreen.DocModel, _viewBuilders);
+                    docContainer.SetDoc(newScreen.DocModel, _viewBuilders, newScreen.ScreenId);
 
                     newTab.Content = docContainer;
                     tabsManager.Items.Add(newTab);

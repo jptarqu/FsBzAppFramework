@@ -14,14 +14,14 @@ namespace FsCommonTypes.View.Wpf.Views
     {
         private ResourceDictionary DialogDictionary = new ResourceDictionary() { Source = new Uri("pack://application:,,,/MaterialDesignThemes.MahApps;component/Themes/MaterialDesignTheme.MahApps.Dialogs.xaml") };
 
-        public async Task PromptMessage(string title, string message)
+        public async Task PromptMessage(string screenId, string title, string message)
         {
             var view = new DialogMessage
             {
             };
             view.Message.Text = message;
             //show the dialog
-            var result = await DialogHost.Show(view, "RootDialog", ClosingEventHandler);
+            var result = await DialogHost.Show(view, screenId, ClosingEventHandler);
 
             //var metroDialogSettings = new MetroDialogSettings
             //{

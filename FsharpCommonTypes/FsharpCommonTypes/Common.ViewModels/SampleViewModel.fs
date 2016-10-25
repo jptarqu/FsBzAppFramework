@@ -37,12 +37,21 @@ type SampleDocList =
             member this.GetValidationErrors () = Seq.empty
 
 module Sample =
+    open System.Threading.Tasks
     let CreateSampleDoc () =
         let now = System.DateTime.Now
         let model ={SampleDoc.Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1; SalesDate =  BusinessTypes.PastDateTime now} 
         model
-    let SampleCmd doc =
+    let DoNothingCmd  doc =
         async {
+
+            return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
+        }
+    let SampleCmd screenId (dialogService:IDialogService) doc =
+        async {
+            let! resp =  (dialogService.PromptMessage screenId "Test" "Test")
+                        |> Async.AwaitIAsyncResult 
+
             return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
         }
     let BuildViewModels afterSuccess model  =
@@ -51,7 +60,7 @@ module Sample =
                                 [ {ResultId= 1; ResultLabel= "Test 1";  };
                                 {ResultId= 2; ResultLabel= "Test " + newRand ;  } ;
                                 {ResultId= 3; ResultLabel= "Test 3 " + doc.Name.ToString();  }  ]
-        let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = SampleCmd}
+        let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = DoNothingCmd}
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
         let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
@@ -86,9 +95,9 @@ module Sample =
             SelectedItem = None
         }
         
-    let BuildListViewModels afterSuccess model  =
+    let BuildListViewModels (dialogService:IDialogService) afterSuccess screenId model  =
         
-        let cmd = { CommandDefinition.CmdName = "Edit"; CommandDefinition.CmdExecuter = SampleCmd}
+        let cmd = { CommandDefinition.CmdName = "Edit"; CommandDefinition.CmdExecuter = SampleCmd screenId dialogService }
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
 
@@ -116,7 +125,7 @@ module Sample =
         PivotGridViewModel.AddPivotGridViewModel doc (doc.GetRootView())  pivotDef
         doc
 
-    let CreateSampleListScreen (screenManager:ScreenManager) =
+    let CreateSampleListScreen (dialogService:IDialogService) (screenManager:ScreenManager) =
         let screenName = "List Sales People" 
         let screenId = CommandScreen.GenerateId screenName
         let afterSuccess doc cmdResult =
@@ -125,7 +134,7 @@ module Sample =
             
         let afterFailure doc cmdResult =
             ()
-        let screen = CommandScreen.CreateScreen CreateSampleListDoc (BuildListViewModels afterSuccess) screenName screenId
+        let screen = CommandScreen.CreateScreen CreateSampleListDoc (BuildListViewModels dialogService afterSuccess screenId) screenName screenId
         screenManager.AddScreen screen // TODO should this be here or bootstrapper??
         (screen :> IScreen).Init()
         screen
