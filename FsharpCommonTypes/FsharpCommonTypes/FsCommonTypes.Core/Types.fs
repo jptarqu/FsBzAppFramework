@@ -52,14 +52,15 @@ type BzProp<'Primitive> =
         
         
 
-type PropFactoryMethod<'Primitive> =
-    'Primitive->BzProp<'Primitive>
+type PropFactoryMethod<'InputPrimitive, 'Primitive> =
+    'InputPrimitive->BzProp<'Primitive>
     
-type PropDefinition<'ParentType, 'Primitive> = 
+type PropDefinition<'ParentType, 'Primitive, 'InputPrimitive> = 
     {Name: string; 
-    Factory: PropFactoryMethod<'Primitive>; 
+    Factory: PropFactoryMethod<'InputPrimitive, 'Primitive>; 
     Setter: 'ParentType->BzProp<'Primitive>->'ParentType; 
-    Getter: 'ParentType -> BzProp<'Primitive>  }
+    Getter: 'ParentType -> BzProp<'Primitive>;
+    InputPrimitiveGetter: 'ParentType -> 'InputPrimitive  }
     with 
         member this.GetValidationErrors doc =
                 let prop = (this.Getter doc)

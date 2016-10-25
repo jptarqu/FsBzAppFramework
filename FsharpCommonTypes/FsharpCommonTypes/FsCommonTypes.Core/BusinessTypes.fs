@@ -10,7 +10,7 @@ module BusinessTypes =
         | ValidProp primitive -> primitive
         | InvalidProp (badPrimitive, errors) -> badPrimitive
         
-    let GetStrErrors (propFactory:PropFactoryMethod<'Primitive>) (newPrimitiveVal:'Primitive) =
+    let GetStrErrors (propFactory:PropFactoryMethod<'InputPrimitive, 'Primitive>) (newPrimitiveVal:'InputPrimitive) =
         let newPropState = propFactory newPrimitiveVal
         let strErrors = match newPropState with
                         | ValidProp primtive -> Seq.empty
@@ -63,6 +63,11 @@ module BusinessTypes =
             InvalidProp (newValue , ["invalid id"])
         else
             ValidProp newValue
+    let IdNumberFromStr (newValue:string) =
+        match (ConversionHelpers.tryParseInt newValue) with
+        | Some i ->
+            IdNumber i
+        | None ->  InvalidProp (-1 , ["invalid number"])
     // LongName wuld then be called by the ViewModel onChnage (maybe at the validation func passed to FSharp.ViewModule)
     //   where the validation would check if the creation method returned InvalidProp.
     //   SO, ViewModel needs to get passed the creation method as in creationMethod:'Primitive->BzProp<'Primitive>

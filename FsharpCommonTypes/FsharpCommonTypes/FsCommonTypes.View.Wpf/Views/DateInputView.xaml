@@ -10,7 +10,7 @@
     <StackPanel>
         <DatePicker Width="100" HorizontalAlignment="Left" Margin="0 16 0 0" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" >
             <DatePicker.SelectedDate>
-                <Binding Path="Value" UpdateSourceTrigger="PropertyChanged">
+                <Binding Path="Value" UpdateSourceTrigger="LostFocus">
                 </Binding>
             </DatePicker.SelectedDate>
         </DatePicker>
