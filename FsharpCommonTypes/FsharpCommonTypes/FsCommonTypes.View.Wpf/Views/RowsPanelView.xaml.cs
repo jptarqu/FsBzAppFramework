@@ -62,6 +62,10 @@ namespace FsCommonTypes.Views
                 {
                     Grid.SetRow(newCtrl, currRow);
                     Grid.SetColumn(newCtrl, 1);
+                    if (childView.UiHint == "PivotGridList")
+                    {
+                        Grid.SetColumnSpan(newCtrl, 4);
+                    }
                     ChildrenViewsContainer.Children.Add(newCtrl);
                 }
             }

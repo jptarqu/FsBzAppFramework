@@ -77,6 +77,13 @@ module BusinessTypes =
         else
             ValidProp newValue
     
+    type OptionalLongFilePathType =  BzProp<string> 
+    let OptionalLongFilePath (newValue:string) =
+        if (newValue.Length > 255) then
+            InvalidProp (newValue , ["too long"])
+        else
+            ValidProp newValue
+
     type IdNumberType = BzProp<int> 
     let IdNumber (newValue:int) =
         if (newValue < 0) then

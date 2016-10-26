@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "TypesPlayground", "TypesPlayground\TypesPlayground.fsproj", "{9DB3383C-280C-48F0-B742-F99841036734}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ConsolePlayground", "ConsolePlayground\ConsolePlayground.fsproj", "{B64513AA-2D4A-4F76-84EB-E3595A80405F}"
-EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonViewEditors.Js", "CommonViewEditors.Js\CommonViewEditors.Js.fsproj", "{C277E9DE-78D0-40D7-BA34-7F68B4CB7E7B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Presentation", "5 - Presentation", "{7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}"
@@ -29,20 +25,18 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Common.ViewModels", "Common
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsCommonTypes.View.Wpf", "FsCommonTypes.View.Wpf\FsCommonTypes.View.Wpf.csproj", "{D7B69FF3-1E49-4C5E-9501-67BAB168DB37}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonTaskWorkflowUtils", "CommonTaskWorkflowUtils\CommonTaskWorkflowUtils.fsproj", "{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonValidations", "CommonValidations\CommonValidations.fsproj", "{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsCommonValidations.Core", "FsCommonValidations.Core\FsCommonValidations.Core.fsproj", "{C56B0849-34FC-4A53-B612-447E3BA4444F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9DB3383C-280C-48F0-B742-F99841036734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DB3383C-280C-48F0-B742-F99841036734}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DB3383C-280C-48F0-B742-F99841036734}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DB3383C-280C-48F0-B742-F99841036734}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B64513AA-2D4A-4F76-84EB-E3595A80405F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B64513AA-2D4A-4F76-84EB-E3595A80405F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B64513AA-2D4A-4F76-84EB-E3595A80405F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B64513AA-2D4A-4F76-84EB-E3595A80405F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C277E9DE-78D0-40D7-BA34-7F68B4CB7E7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C277E9DE-78D0-40D7-BA34-7F68B4CB7E7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C277E9DE-78D0-40D7-BA34-7F68B4CB7E7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -75,6 +69,18 @@ Global
 		{D7B69FF3-1E49-4C5E-9501-67BAB168DB37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7B69FF3-1E49-4C5E-9501-67BAB168DB37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7B69FF3-1E49-4C5E-9501-67BAB168DB37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,5 +94,8 @@ Global
 		{5A30AFDB-F3A7-40E5-8E64-537FF2CA1746} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
 		{5E5BF92D-9586-40A4-9549-3BB8BFC87838} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
 		{D7B69FF3-1E49-4C5E-9501-67BAB168DB37} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
+		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
+		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
+		{C56B0849-34FC-4A53-B612-447E3BA4444F} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
 	EndGlobalSection
 EndGlobal

@@ -32,10 +32,17 @@ type ErrorMessage = string
     
 type IPropValidator<'ParentType> =
     abstract member GetValidationErrors : 'ParentType->seq<PropertyError>
-// with types like this, validation occurs at the moment of creation. A prop is either valid or invlid based on 
-//  the construction parameters
-// do we need     [<CLIMutable>] here??
 
+
+// TODO: maybe use these types inside BzProp for its internal states??
+//type BzProp<'Primitive> = 
+//    | ValidProp of ValidBzProp<'Primitive> 
+//    | InvalidProp of InvalidBzProp<'Primitive>
+
+type ValidBzProp<'Primitive> = 'Primitive
+
+type InvalidBzProp<'Primitive> = 'Primitive * seq<ErrorMessage>
+    
 type BzProp<'Primitive> = 
     | ValidProp of 'Primitive
     | InvalidProp of 'Primitive * seq<ErrorMessage>
