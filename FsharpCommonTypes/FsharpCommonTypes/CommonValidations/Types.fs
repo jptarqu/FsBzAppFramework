@@ -25,7 +25,7 @@ module ErrorHelpers =
                                                             | NoDataFound summaryError -> [ { ErrorCode = summaryError.ErrorCode; Description =summaryError.Description; PropertyName = ""; } ]
                                                             )
         flattenErrors
-
+        
 [<CLIMutableAttribute>]
 type ApiResultRendition<'a> = { Content : option<'a>; ReportableErrors: seq<PropertyError> }
 module ApiResultHelpers =

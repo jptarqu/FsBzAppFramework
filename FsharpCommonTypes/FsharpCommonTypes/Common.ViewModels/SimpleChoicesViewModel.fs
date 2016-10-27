@@ -10,7 +10,8 @@ type SimpleChoicesViewModel<'InputPrimitive, 'PrimitiveType, 'ParentType when 'P
     propToInput: BzProp<'PrimitiveType>->'InputPrimitive, 
     refreshValFromDoc : 'ParentType -> BzProp<'PrimitiveType>, 
     refreshDocFromVal : BzProp<'PrimitiveType> -> 'ParentType, // allow create new doc by sending the newly BzProp<'PrimitiveType>
-    pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, choicesQry : 'ParentType -> list<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
+    pushUpdatedDoc : Common.ViewModels.Interfaces.IViewComponent<'ParentType> -> 'ParentType -> unit, 
+    choicesQry : 'ParentType -> list<SimpleExternalChoicesQueryResult<'PrimitiveType>>,
      propName : string, defaultValue : 'InputPrimitive) as self = 
     inherit ViewModelBase()
     let inputInternal =

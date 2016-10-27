@@ -57,3 +57,10 @@ module CommandScreen =
         let viewModelDoc = viewModelBuilder initDoc
         CommandScreen(viewModelDoc, screenName, screenId)
 
+    let CreateScreenAsync asyncQueryForInitialization viewModelBuilder screenName screenId = 
+        async {
+            let! initDoc = asyncQueryForInitialization()
+            let viewModelDoc = viewModelBuilder initDoc
+            return CommandScreen(viewModelDoc, screenName, screenId)
+        }
+
