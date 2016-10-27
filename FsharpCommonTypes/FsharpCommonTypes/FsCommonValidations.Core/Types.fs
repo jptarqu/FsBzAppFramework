@@ -31,5 +31,5 @@ type ApiResultRendition<'a> = { Content : option<'a>; ReportableErrors: seq<Prop
 module ApiResultHelpers =
     let SuccessApiResult content =
         { Content =  Some content; ReportableErrors=  Seq.empty }
-    let FailureApiResult content errors =
+    let FailureApiResult errors =
         { Content =  None; ReportableErrors=  errors }

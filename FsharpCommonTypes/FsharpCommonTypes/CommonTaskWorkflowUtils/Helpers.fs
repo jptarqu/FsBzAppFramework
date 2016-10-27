@@ -34,7 +34,7 @@ module Helpers =
             let! result = resultAsync
             match result with
             | Pass goodContent -> return SuccessApiResult goodContent
-            | Fail errors -> return FailureApiResult ErrorHelpers.MapToPropErrors errors
-            | Warn (_,errors) -> return FailureApiResult ErrorHelpers.MapToPropErrors errors
+            | Fail errors -> return FailureApiResult (ErrorHelpers.MapToPropErrors errors)
+            | Warn (_,errors) -> return FailureApiResult (ErrorHelpers.MapToPropErrors errors)
             
         } |> ToTask
