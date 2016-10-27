@@ -33,39 +33,48 @@ namespace FsCommonTypes.View.Wpf.Views
             InitializeComponent();
         }
 
+        private void UpdateTabs(System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            
+        }
         private void CurrentScreens_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
-            {
-                var screensToOpen = e.NewItems;
-                foreach (IScreen newScreen in screensToOpen)
-                {
-                    var newTab = new TabItem();
-                    newTab.Tag = newScreen.ScreenId;
-                    newTab.Header = newScreen.DisplayName;
-
-                    var docContainer = new DocView();
-                    docContainer.SetDoc(newScreen.DocModel, _viewBuilders, newScreen.ScreenId);
-
-                    newTab.Content = docContainer;
-                    tabsManager.Items.Add(newTab);
-                    tabsManager.SelectedItem=(newTab);
-                }
-            }
-            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
-            {
-
-                var screensToClose = e.OldItems;
-
-                foreach (IScreen screenToClose in screensToClose)
-                {
-                    var foundIdx = FindTabToClose(tabsManager.Items, screenToClose);
-                    if (foundIdx >= 0)
+            this.Dispatcher.InvokeAsync( () =>
+                { 
+                    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                     {
-                        tabsManager.Items.RemoveAt(foundIdx);
+                        var screensToOpen = e.NewItems;
+                        foreach (IScreen newScreen in screensToOpen)
+                        {
+                            var newTab = new TabItem();
+                            newTab.Tag = newScreen.ScreenId;
+                            newTab.Header = newScreen.DisplayName;
+
+                            var docContainer = new DocView();
+                            docContainer.SetDoc(newScreen.DocModel, _viewBuilders, newScreen.ScreenId);
+
+                            newTab.Content = docContainer;
+                            tabsManager.Items.Add(newTab);
+                            tabsManager.SelectedItem = (newTab);
+                        }
+                    }
+                    else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                    {
+
+                        var screensToClose = e.OldItems;
+
+                        foreach (IScreen screenToClose in screensToClose)
+                        {
+                            var foundIdx = FindTabToClose(tabsManager.Items, screenToClose);
+                            if (foundIdx >= 0)
+                            {
+                                tabsManager.Items.RemoveAt(foundIdx);
+                            }
+                        }
                     }
                 }
-            }
+                );
+
         }
         private int FindTabToClose(ItemCollection items, IScreen screenToClose)
         { 
