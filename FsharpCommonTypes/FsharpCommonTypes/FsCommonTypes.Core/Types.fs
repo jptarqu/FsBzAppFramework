@@ -16,7 +16,7 @@ type CommandResult =
     { Message:string; Errors: PropertyError seq}
 
 type CommandDefinition<'ModelType>  =
-    { CmdName:string; CmdExecuter: 'ModelType->Async<CommandResult>}
+    { CmdName:string; CmdExecuter: 'ModelType->Async<CommandResult>; CanRunCheck:'ModelType->bool }
 
     
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
@@ -26,7 +26,7 @@ module CommandDefinition =
             return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
         }
     let CancelCmdDefinition = 
-        { CommandDefinition.CmdName = "Cancel"; CommandDefinition.CmdExecuter = AlwaysSucessCmd}
+        { CommandDefinition.CmdName = "Cancel"; CommandDefinition.CmdExecuter = AlwaysSucessCmd; CanRunCheck = (fun _ -> true)}
 
 type ErrorMessage = string
     

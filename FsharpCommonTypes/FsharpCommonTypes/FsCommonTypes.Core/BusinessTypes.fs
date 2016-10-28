@@ -33,6 +33,9 @@ module BusinessTypes =
     let GetValidationErrors doc (propDef:#seq<#IPropValidator<'ParentType>>) =
          propDef |> Seq.collect (fun p -> p.GetValidationErrors doc)
          
+    let IsValidModel (doc:#ICanValidate)  =
+         doc.GetValidationErrors() |> Seq.isEmpty
+         
 //    type PropNameValuePair =   
 
     type OptPastDateTimeType =  BzProp<Option<System.DateTime>> 

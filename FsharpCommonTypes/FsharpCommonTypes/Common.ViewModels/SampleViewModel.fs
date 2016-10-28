@@ -73,7 +73,7 @@ module Sample =
                                 [ {ResultId= 1; ResultLabel= "Test 1";  };
                                 {ResultId= 2; ResultLabel= "Test " ;  } ;
                                 {ResultId= 3; ResultLabel= "Test 3 " + doc.Name.ToString();  }  ]
-        let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = DoNothingCmd}
+        let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = DoNothingCmd; CanRunCheck = BusinessTypes.IsValidModel }
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
         let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
@@ -111,7 +111,7 @@ module Sample =
         
     let BuildListViewModels (dialogService:IDialogService) afterSuccess screenId model  =
         
-        let cmd = { CommandDefinition.CmdName = "Edit"; CommandDefinition.CmdExecuter = SampleCmd screenId dialogService }
+        let cmd = { CommandDefinition.CmdName = "Edit"; CommandDefinition.CmdExecuter = SampleCmd screenId dialogService; CanRunCheck = BusinessTypes.IsValidModel }
         let cancelCmd = CommandDefinition.CancelCmdDefinition
         let afterCancel = afterSuccess
 

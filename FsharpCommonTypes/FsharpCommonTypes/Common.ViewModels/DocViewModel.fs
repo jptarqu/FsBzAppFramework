@@ -61,12 +61,12 @@ type DocViewModel<'ParentType when 'ParentType :> InterfaceTypes.ICanValidate>(i
         docIsValid <- (result.Errors |> Seq.isEmpty)
     
     let primaryCmd = 
-        CommandViewModel(isValid, commandToExec, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc))
+        CommandViewModel((fun () -> commandToExec.CanRunCheck myDoc), commandToExec, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc))
     let primaryCmds = 
         primaryCommands
-        |> Seq.map (fun c -> CommandViewModel(isValid, c, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc)) :> ICommandViewModel)
+        |> Seq.map (fun c -> CommandViewModel((fun () -> c.CanRunCheck myDoc), c, onSuccess, updateEntityErrorsFromResult, (fun () -> myDoc)) :> ICommandViewModel)
     let cancelCmd = 
-        CommandViewModel((fun _ -> true), cancelCommand, onCancel, updateEntityErrorsFromResult, (fun () -> myDoc))
+        CommandViewModel((fun () -> cancelCommand.CanRunCheck myDoc), cancelCommand, onCancel, updateEntityErrorsFromResult, (fun () -> myDoc))
 
     let root : Interfaces.IPanelViewModel<'ParentType> = 
         RowsPanelViewModel("root") :> Interfaces.IPanelViewModel<'ParentType>
