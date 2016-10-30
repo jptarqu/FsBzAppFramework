@@ -1,0 +1,155 @@
+using Common.ViewModels;
+using FsCommonTypes.View.Wpf.SyncFusion.CustomSummary;
+using Microsoft.FSharp.Core;
+using Syncfusion.PivotAnalysis.Base;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace FsCommonTypes.View.Wpf.SyncFusion.Views
+{
+    public static class ToFSharpFuncConverterExtensions
+    {
+        private static readonly Unit Unit = (Unit) Activator.CreateInstance(typeof(Unit), true);
+
+        public static Func<T, Unit> ToFunc<T>(this Action<T> action)
+        {
+            return x => { action(x); return Unit; };
+        }
+        public static Func<Unit,Unit> ToFunc(this Action action)
+        {
+            return (x) => { action(); return Unit; };
+        }
+
+        public static FSharpFunc<T, Unit> ToFSharpFunc<T>(this Action<T> action)
+        {
+            return FSharpFunc<T, Unit>.FromConverter(new Converter<T, Unit>(action.ToFunc()));
+        }
+        public static FSharpFunc<Unit,Unit> ToFSharpFunc(this Action action)
+        {
+            return FSharpFunc<Unit, Unit>.FromConverter(new Converter<Unit, Unit>(action.ToFunc()));
+        }
+    }
+    /// <summary>
+    /// Interaction logic for MatrixView.xaml
+    /// </summary>
+    public partial class MatrixView : UserControl
+    {
+        private IPivotGridViewModel _newVm;
+
+        public MatrixView()
+        {
+            InitializeComponent();
+        }
+
+        public void InitPivotSettings(IPivotGridViewModel settings)
+        {
+            pivotGrid.ValueCellStyle.IsHyperlinkCell = true;
+            var pivotDimensionsCols = settings.PivotSettings.ColumnDimensionDefinitions;
+
+            foreach(var dimDef in pivotDimensionsCols)
+            {
+                PivotItem newPivotItem = new PivotItem()
+                {
+                    FieldHeader = dimDef.Header,
+                    FieldMappingName = dimDef.FieldName,
+                    TotalHeader = dimDef.TotalsHeader
+                };
+
+                pivotGrid.PivotColumns.Add(newPivotItem);
+            }
+            var pivotDimensionsRows = settings.PivotSettings.RowDimensionDefinitions;
+
+            foreach (var dimDef in pivotDimensionsRows)
+            {
+                PivotItem newPivotItem = new PivotItem()
+                {
+                    FieldHeader = dimDef.Header,
+                    FieldMappingName = dimDef.FieldName,
+                    TotalHeader = dimDef.TotalsHeader
+                };
+
+                pivotGrid.PivotRows.Add(newPivotItem);
+            }
+
+            var pivotFacts = settings.PivotSettings.FactDefinitions;
+            foreach (var factDef in pivotFacts)
+            {
+                var newPivotItem = new PivotComputationInfo()
+                {
+                    CalculationName = factDef.Header,
+                    FieldHeader = factDef.Header,
+                    FieldName = factDef.FieldName,
+                    CalculationType = CalculationType.NoCalculation
+                };
+
+                if (factDef.FactType == PivotGridDefinitionModule.FactTypes.DateFact)
+                {
+                    newPivotItem.SummaryType = SummaryType.Custom;
+                    newPivotItem.Summary = new OptionPrimitiveMax<DateTime>();
+                    newPivotItem.Format = "yyyy-MM-dd";
+                }
+                pivotGrid.PivotCalculations.Add(newPivotItem);
+            }
+
+        }
+
+        private void RefreshData()
+        {
+            pivotGrid.Refresh();
+        }
+
+        private void UserControl_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            _newVm = e.NewValue as IPivotGridViewModel;
+            if (_newVm != null)
+            {
+                InitPivotSettings(_newVm);
+                Action act = new Action(RefreshData);
+                _newVm.SetDataRefreshNeededCallback(act.ToFSharpFunc());
+            }
+        }
+
+        private void pivotGrid_SelectionChanged(object sender, Syncfusion.Windows.Controls.PivotGrid.PivotGridSelectionChangedEventArgs e)
+        {
+            var rawItems = pivotGrid.PivotEngine.GetRawItemsFor(e.CellRangeInfo.Top, e.CellRangeInfo.Left);
+            if (rawItems.Count > 0)
+            {
+                var firstItem = rawItems.First();
+                _newVm.OnSelectedItem(firstItem);
+            }
+            else
+            {
+                _newVm.OnUnselection();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var currItems = pivotGrid.ItemSource;
+
+
+        }
+
+        private void pivotGrid_HyperlinkCellClick(object sender, Syncfusion.Windows.Controls.PivotGrid.HyperlinkCellClickEventArgs e)
+        {
+            var rawItems = pivotGrid.PivotEngine.GetRawItemsFor(e.RowColumnIndex.RowIndex, e.RowColumnIndex.ColumnIndex);
+            if (rawItems.Count > 0)
+            {
+                var firstItem = rawItems.First();
+                _newVm.OnSelectedItem(firstItem);
+            }
+        }
+    }
+}
