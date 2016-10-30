@@ -31,6 +31,10 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonValidations", "Common
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsCommonValidations.Core", "FsCommonValidations.Core\FsCommonValidations.Core.fsproj", "{C56B0849-34FC-4A53-B612-447E3BA4444F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Business", "3 - Business", "{E7F12C61-FF2B-4A71-AEFE-02BF0D555EA1}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsharpCommonTypes.Business", "FsharpCommonTypes.Business\FsharpCommonTypes.Business.fsproj", "{92F08A01-E4CF-4644-8981-7450B1B0FA0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,10 @@ Global
 		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92F08A01-E4CF-4644-8981-7450B1B0FA0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92F08A01-E4CF-4644-8981-7450B1B0FA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92F08A01-E4CF-4644-8981-7450B1B0FA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92F08A01-E4CF-4644-8981-7450B1B0FA0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,5 +105,6 @@ Global
 		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
 		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
 		{C56B0849-34FC-4A53-B612-447E3BA4444F} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
+		{92F08A01-E4CF-4644-8981-7450B1B0FA0D} = {E7F12C61-FF2B-4A71-AEFE-02BF0D555EA1}
 	EndGlobalSection
 EndGlobal
