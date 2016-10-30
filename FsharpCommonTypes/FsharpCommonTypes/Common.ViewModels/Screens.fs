@@ -13,26 +13,28 @@ type IScreen =
     abstract ScreenId : string
     abstract DisplayName : string
     abstract DocModel : IDocViewModel
-    abstract Init : unit -> unit
+//    abstract Init : unit -> unit
 
 type CommandScreen<'ModelType  when 'ModelType :> InterfaceTypes.ICanValidate>(
-        docViewModel:DocViewModel<'ModelType>,   displayName, screenId)  =
+        docViewModel:IDocViewModel<'ModelType>,   displayName, screenId)  =
     member this.DocViewModel = docViewModel
     with
         interface IScreen with
             member this.DisplayName = displayName
             member this.ScreenId = screenId
-            member this.Init() = this.DocViewModel.Init()
+//            member this.Init() = this.DocViewModel.Init()
             member this.DocModel = this.DocViewModel :> IDocViewModel
             
 type ScreenManager() as self = 
     inherit ViewModelBase()
     let currScreens = ObservableCollection<IScreen>()
     member self.CurrentScreens = currScreens
-    member self.AddScreen newScreen = currScreens.Add(newScreen)
-    member self.RemoveScreen screenId = 
+    member self.GetScreenById screenId = 
         currScreens
         |> Seq.tryFind (fun i -> i.ScreenId = screenId)
+    member self.AddScreen newScreen = currScreens.Add(newScreen)
+    member self.RemoveScreen screenId = 
+        self.GetScreenById screenId
         |> Option.iter (currScreens.Remove >> ignore)  // (fun screenToRemove -> currScreens.Remove(screenToRemove) |> ignore)
 
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
@@ -41,11 +43,12 @@ module CommandScreen =
         let CloseAfterSuccess (screenManager:ScreenManager) screenId doc cmdResult = // TODO maybe add this to helper funcs in common?
                 screenManager.RemoveScreen screenId
                 ()
+
         let DoNothingAfterFailure doc cmdResult =
                 ()
         let AddAndInitScreen (screenManager:ScreenManager) screen =
             screenManager.AddScreen screen 
-            (screen :> IScreen).Init()
+//            (screen :> IScreen).Init()
             screen
 
     let GenerateId screenName = 

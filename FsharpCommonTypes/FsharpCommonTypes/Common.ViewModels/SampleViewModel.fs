@@ -48,6 +48,95 @@ type SampleDocList =
     with
         interface InterfaceTypes.ICanValidate with 
             member this.GetValidationErrors () = Seq.empty
+            
+type SampleEditDocViewModel(dialogService:IDialogService, screenManager:ScreenManager) =
+    let screenName = "Sales Person" 
+    let screenId = CommandScreen.GenerateId screenName
+    let afterSuccess doc cmdResult =
+        screenManager.RemoveScreen screenId
+        ()
+            
+    let afterFailure doc cmdResult =
+        ()
+type SampleDocListViewModel(dialogService:IDialogService, screenManager:ScreenManager) =
+    let screenName = "List Sales People" 
+    let screenId = CommandScreen.GenerateId screenName
+    let createSampleListDoc () =
+        let now =  Some System.DateTime.Now
+        { 
+            SampleDocList.Docs =
+                [
+                    {Name=  "Alabama" ; SalesRegion =   1; SalesDate =    now} 
+                    {Name=  "Alabama" ; SalesRegion =  2; SalesDate =    now} 
+                    {Name=  "Colorado" ; SalesRegion =  3; SalesDate =    now} 
+                    {Name=  "California" ; SalesRegion = 4; SalesDate =    now} 
+                ]
+            SelectedItem = None
+        }
+    let createAsyncSampleListDoc () =
+        async {
+            return createSampleListDoc()
+        }
+    let onEditCmd doc =
+        async {
+            let! resp =  (dialogService.PromptMessage screenId "Test" "Test")
+                        |> Async.AwaitIAsyncResult 
+
+            return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
+        }
+    let addCommands (baseDocVm:DocViewModelBase<SampleDocList>) docGetter =
+        let afterSuccess doc cmdResult =
+//            CreateSampleEditScreen screenManager |> ignore
+            ()
+        let afterFailure cmdResult =
+            ()
+        let cmdEditDef = { CommandDefinition.CmdName = "Edit"; CommandDefinition.CmdExecuter = onEditCmd; CanRunCheck = BusinessTypes.IsValidModel }
+        let cancelCmdDef = CommandDefinition.CancelCmdDefinition
+
+        let cmdEdit = CommandViewModel(cmdEditDef, afterSuccess, afterFailure,  docGetter)
+        let cancelCmd = CommandViewModel(cancelCmdDef, afterSuccess, afterFailure,  docGetter)
+        baseDocVm.PrimaryCommands.Add cmdEdit
+        baseDocVm.SecondaryCommands.Add cancelCmd
+    let addChildViews (baseDoc:DocViewModelBase<SampleDocList>) docGetter =
+        let loadList doc = doc.Docs
+        let onSelectedItem doc item = 
+            {doc with SelectedItem = item}
+        let pivotSettings = {
+            PivotGridDefinition.RowDimensionDefinitions  = 
+                [
+                   PivotGridDefinition.CreatePivotDimension "Sales Region" "SalesRegion"
+                ]
+                
+            PivotGridDefinition.ColumnDimensionDefinitions = 
+                [
+                   PivotGridDefinition.CreatePivotDimension "Name" "Name"
+                ]
+                
+            PivotGridDefinition.FactDefinitions = 
+                [
+                   PivotGridDefinition.CreateFactDimension "Sales Date" "SalesDate" PivotGridDefinition.FactTypes.DateFact
+                ]
+            }
+        let pivotDef = { PivotSettings = pivotSettings; RefreshValFromDoc = loadList; SelectedItemSetter = onSelectedItem; PropName ="Docs" }
+        PivotGridViewModel.AddPivotGridViewModel baseDoc (baseDoc.GetRootView())  pivotDef
+        
+    let intialDoc = createSampleListDoc()
+    let mutable baseDocViewModel = new DocViewModelBase<SampleDocList>(intialDoc)
+    let docGetter () = baseDocViewModel.GetCurrentDoc
+   
+    member this.Init () = 
+        async {
+            let! initialDoc = createAsyncSampleListDoc() //async in case op takes time (like fetching from server)
+            addChildViews baseDocViewModel docGetter
+            addCommands baseDocViewModel docGetter
+            baseDocViewModel.ReloadDoc initialDoc //maybe this makes more sense than Init
+            let screen = CommandScreen(baseDocViewModel, screenName, screenId)
+            screenManager.AddScreen screen // all we need to disaplay because the viewModel has been setup already and ready to go
+        }
+        
+    member this.StartUp () =
+        (this.Init ())
+        |> Async.Start
 
 module Sample =
     open System.Threading.Tasks
@@ -93,7 +182,7 @@ module Sample =
             ()
         let screen = CommandScreen.CreateScreen CreateSampleDoc (BuildViewModels afterSuccess) screenName screenId
         screenManager.AddScreen screen // TODO should this be here or bootstrapper??
-        (screen :> IScreen).Init()
+//        (screen :> IScreen).Init()
         screen
         
     let CreateSampleListDoc () =
@@ -109,46 +198,4 @@ module Sample =
             SelectedItem = None
         }
         
-    let BuildListViewModels (dialogService:IDialogService) afterSuccess screenId model  =
-        
-        let cmd = { CommandDefinition.CmdName = "Edit"; CommandDefinition.CmdExecuter = SampleCmd screenId dialogService; CanRunCheck = BusinessTypes.IsValidModel }
-        let cancelCmd = CommandDefinition.CancelCmdDefinition
-        let afterCancel = afterSuccess
-
-        let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
-        let loadList doc = doc.Docs
-        let onSelectedItem doc item = 
-            {doc with SelectedItem = item}
-        let pivotSettings = {
-            PivotGridDefinition.RowDimensionDefinitions  = 
-                [
-                   PivotGridDefinition.CreatePivotDimension "Sales Region" "SalesRegion"
-                ]
-                
-            PivotGridDefinition.ColumnDimensionDefinitions = 
-                [
-                   PivotGridDefinition.CreatePivotDimension "Name" "Name"
-                ]
-                
-            PivotGridDefinition.FactDefinitions = 
-                [
-                   PivotGridDefinition.CreateFactDimension "Sales Date" "SalesDate" PivotGridDefinition.FactTypes.DateFact
-                ]
-            }
-        let pivotDef = { PivotSettings = pivotSettings; RefreshValFromDoc = loadList; SelectedItemSetter = onSelectedItem; PropName ="Docs" }
-        PivotGridViewModel.AddPivotGridViewModel doc (doc.GetRootView())  pivotDef
-        doc
-
-    let CreateSampleListScreen (dialogService:IDialogService) (screenManager:ScreenManager) =
-        let screenName = "List Sales People" 
-        let screenId = CommandScreen.GenerateId screenName
-        let afterSuccess doc cmdResult =
-            CreateSampleEditScreen screenManager |> ignore
-            ()
-            
-        let afterFailure doc cmdResult =
-            ()
-        let screen = CommandScreen.CreateScreen CreateSampleListDoc (BuildListViewModels dialogService afterSuccess screenId) screenName screenId
-        screenManager.AddScreen screen // TODO should this be here or bootstrapper??
-        (screen :> IScreen).Init()
-        screen
+  

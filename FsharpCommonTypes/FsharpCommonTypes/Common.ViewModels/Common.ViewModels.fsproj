@@ -47,10 +47,12 @@
     <Compile Include="ExternalChoicesViewModel.fs" />
     <Compile Include="RowsPanelViewModel.fs" />
     <Compile Include="GridViewModel.fs" />
+    <Compile Include="CommandViewModel.fs" />
     <Compile Include="DocViewModel.fs" />
     <None Include="Script.fsx" />
     <Content Include="packages.config" />
     <Compile Include="Screens.fs" />
+    <Compile Include="DocViewModelBase.fs" />
     <Compile Include="SampleViewModel.fs" />
   </ItemGroup>
   <ItemGroup>

@@ -29,8 +29,23 @@
                         <ColumnDefinition Width="100"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button Command="{Binding CancelCommand}" Content="{Binding CancelCommandName}" Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Column="0" />
-                    <Button Command="{Binding PrimaryCommand}" Content="{Binding PrimaryCommandName}" Grid.Column="2" />
+                    <ItemsControl ItemsSource="{Binding SecondaryCommands}" Grid.Column="0">
+                        <!-- specify the panel that is the container for your items -->
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                </StackPanel>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <!-- specify the template used to render each item -->
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button Command="{Binding Cmd}" Content="{Binding Name}" Margin="8 2 8 2" Style="{StaticResource MaterialDesignRaisedLightButton}" MinWidth="80"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <!--<Button Command="{Binding CancelCommand}" Content="{Binding CancelCommandName}" Style="{StaticResource MaterialDesignRaisedLightButton}" Grid.Column="0" />-->
+                    <!--<Button Command="{Binding PrimaryCommand}" Content="{Binding PrimaryCommandName}" Grid.Column="2" />-->
                     <ItemsControl ItemsSource="{Binding PrimaryCommands}" Grid.Column="3">
                         <!-- specify the panel that is the container for your items -->
                         <ItemsControl.ItemsPanel>
