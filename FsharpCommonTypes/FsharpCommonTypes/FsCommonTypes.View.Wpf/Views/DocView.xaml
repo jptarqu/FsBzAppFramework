@@ -24,7 +24,7 @@
                 </local:RowsPanelView>
                 <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="16 8 16 8" >
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition Width="1*"></ColumnDefinition>
                         <ColumnDefinition Width="100"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>

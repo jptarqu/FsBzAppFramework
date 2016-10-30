@@ -34,6 +34,7 @@ type IPivotGridViewModel =
     abstract PivotSettings:PivotGridDefinition
     abstract OnSelectedItem:System.Object->unit
     abstract OnUnselection:unit->unit
+    abstract SetDataRefreshNeededCallback:(unit->unit)->unit
     
 
 
@@ -48,11 +49,16 @@ type PivotGridViewModel<'RecordType, 'ParentType>(
         
         
     let dataCollection = ObservableCollection<'RecordType>() //TODO, should we use ObServable COllections for large sets?
+    let mutable dataRefreshNeededCallback:((unit->unit) option) = None
+
     let refreshObservableCollection vm =
         dataCollection.Clear()
         let rawList = refreshValFromDoc vm
         for item in rawList do
             dataCollection.Add item
+        match dataRefreshNeededCallback with
+        | Some f -> f()
+        | None -> ()
             
     let alertParentOfDocChg newVal = 
         let newDoc = updateSelectedItem newVal
@@ -75,6 +81,8 @@ type PivotGridViewModel<'RecordType, 'ParentType>(
         member this.PivotSettings = pivotSettings
         member this.OnSelectedItem obj = alertParentOfDocChg (Some(obj :?> 'RecordType))
         member this.OnUnselection ()= alertParentOfDocChg None
+        member this.SetDataRefreshNeededCallback f = 
+            dataRefreshNeededCallback <- Some f
         
 
 

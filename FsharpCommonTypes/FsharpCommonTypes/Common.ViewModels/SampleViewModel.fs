@@ -38,7 +38,7 @@ type SampleDoc =
                    SampleDoc.DefinitionQuantityId.GetValidationErrors(this);
                    isObjValid(); ] 
                 |> Seq.collect id
-                
+     
 [<CLIMutable>]
 type SampleDocReadOnly = 
     {Name: string; SalesRegion: int; SalesDate : Option<System.DateTime>} 
@@ -48,15 +48,27 @@ type SampleDocList =
     with
         interface InterfaceTypes.ICanValidate with 
             member this.GetValidationErrors () = Seq.empty
-            
-type SampleEditDocViewModel(dialogService:IDialogService, screenManager:ScreenManager) =
+                       
+[<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
+module SampleDoc = 
+    let Empty =
+        let now = System.DateTime.Now
+        let model ={SampleDoc.Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1; SalesDate =  BusinessTypes.PastDateTime now; QuantityId = BusinessTypes.IdNumber -1} 
+        model
+    let ConvertFromReadOnly (readOnly:SampleDocReadOnly) =
+        let dt = defaultArg readOnly.SalesDate (System.DateTime.Today.AddDays(float 1))
+        {SampleDoc.Name= BusinessTypes.LongName readOnly.Name ; 
+        SalesRegion = BusinessTypes.IdNumber readOnly.SalesRegion; 
+        SalesDate =  BusinessTypes.PastDateTime dt; 
+        QuantityId = BusinessTypes.IdNumber readOnly.SalesRegion} 
+
+type SampleEditDocViewModel(dialogService:IDialogService, screenManager:ScreenManager, 
+                            docToEdit:SampleDoc option, onSaveFinished:SampleDoc->Async<unit>) =
 //TODo allow passing of existing model to this, well, just like LS
     let screenName = "Sales Person" 
     let screenId = CommandScreen.GenerateId screenName
     let createModel () =
-        let now = System.DateTime.Now
-        let model ={SampleDoc.Name= BusinessTypes.LongName "Alabama" ; SalesRegion = BusinessTypes.IdNumber 1; SalesDate =  BusinessTypes.PastDateTime now; QuantityId = BusinessTypes.IdNumber -1} 
-        model
+       SampleDoc.Empty
     let createModelAsync () =
         async {
             return createModel()
@@ -70,9 +82,10 @@ type SampleEditDocViewModel(dialogService:IDialogService, screenManager:ScreenMa
             let! resp =  (dialogService.PromptMessage screenId "Test" "Test")
                         |> Async.AwaitIAsyncResult 
             screenManager.RemoveScreen screenId
+            let! result = onSaveFinished doc
             return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
         }
-    let addCommands (baseDocVm:DocViewModelBase<SampleDocList>) docGetter =
+    let addCommands (baseDocVm:DocViewModelBase<SampleDoc>) docGetter =
         let afterSuccess doc cmdResult =
             ()
         let afterFailure cmdResult =
@@ -83,29 +96,28 @@ type SampleEditDocViewModel(dialogService:IDialogService, screenManager:ScreenMa
         let cancelCmd = CommandViewModel(cancelCmdDef, afterSuccess, afterFailure,  docGetter)
         baseDocVm.PrimaryCommands.Add cmdEdit
         baseDocVm.SecondaryCommands.Add cancelCmd
-    let addChildViews (baseDoc:DocViewModelBase<SampleDocList>) docGetter =
+    let addChildViews (baseDoc:DocViewModelBase<SampleDoc>) docGetter =
         let simpleChoices (doc:SampleDoc) = 
             let newRand = System.Random().Next(1,6).ToString()
             [ {ResultId= 1; ResultLabel= "Test 1";  };
             {ResultId= 2; ResultLabel= "Test " ;  } ;
             {ResultId= 3; ResultLabel= "Test 3 " + doc.Name.ToString();  }  ]
-        let cmd = { CommandDefinition.CmdName = "Save"; CommandDefinition.CmdExecuter = DoNothingCmd; CanRunCheck = BusinessTypes.IsValidModel }
-        let cancelCmd = CommandDefinition.CancelCmdDefinition
-        let afterCancel = afterSuccess
-        let doc = DocViewModel(model, cmd, afterSuccess,cancelCmd, afterCancel, Seq.empty)
-        SingleInputViewModel.AddTextInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionName 
-        SingleInputViewModel.AddMaskedTextInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionQuantityId "999999990"
-        SingleInputViewModel.AddDateInputViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesDate 
-        SimpleChoicesViewModel.AddSimpleChoicesViewModel doc (doc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
+        
+        SingleInputViewModel.AddTextInputViewModel baseDoc (baseDoc.GetRootView()) SampleDoc.DefinitionName 
+        SingleInputViewModel.AddMaskedTextInputViewModel baseDoc (baseDoc.GetRootView()) SampleDoc.DefinitionQuantityId "999999990"
+        SingleInputViewModel.AddDateInputViewModel baseDoc (baseDoc.GetRootView()) SampleDoc.DefinitionSalesDate 
+        SimpleChoicesViewModel.AddSimpleChoicesViewModel baseDoc (baseDoc.GetRootView()) SampleDoc.DefinitionSalesRegion simpleChoices 
         
     // TODO the rest of the class seems repeatable... try DRYing
-    let intialDoc = createModel()
-    let mutable baseDocViewModel = new DocViewModelBase<SampleDoc>(intialDoc)
+    let initialDoc = match docToEdit with
+                    | Some d -> d
+                    | None -> createModel()
+    let mutable baseDocViewModel = new DocViewModelBase<SampleDoc>(initialDoc)
     let docGetter () = baseDocViewModel.GetCurrentDoc
    
     member this.Init () = 
         async {
-            let! initialDoc = createModelAsync() //async in case op takes time (like fetching from server)
+
             addChildViews baseDocViewModel docGetter
             addCommands baseDocViewModel docGetter
             baseDocViewModel.ReloadDoc initialDoc //maybe this makes more sense than Init
@@ -116,8 +128,10 @@ type SampleEditDocViewModel(dialogService:IDialogService, screenManager:ScreenMa
 type SampleDocListViewModel(dialogService:IDialogService, screenManager:ScreenManager) =
     let screenName = "List Sales People" 
     let screenId = CommandScreen.GenerateId screenName
+    
     let createSampleListDoc () =
-        let now =  Some System.DateTime.Now
+        let randDays = -(System.Random().Next(1,10))
+        let now =  Some (System.DateTime.Now.AddDays(float randDays))
         { 
             SampleDocList.Docs =
                 [
@@ -132,16 +146,37 @@ type SampleDocListViewModel(dialogService:IDialogService, screenManager:ScreenMa
         async {
             return createSampleListDoc()
         }
+        
+    let intialDoc = createSampleListDoc()
+    let mutable baseDocViewModel = new DocViewModelBase<SampleDocList>(intialDoc)
+    let docGetter () = baseDocViewModel.GetCurrentDoc
+
+    let reloadDoc () =
+        async {
+            let! initialDoc = createAsyncSampleListDoc() //async in case op takes time (like fetching from server)
+            baseDocViewModel.ReloadDoc initialDoc // works but Pivot not refreshing, maybe need to refresh at wpf level
+        }
+    let onEditSaved editedDoc =
+        reloadDoc ()
     let onEditCmd doc =
         async {
             let! resp =  (dialogService.PromptMessage screenId "Test" "Test")
                         |> Async.AwaitIAsyncResult 
-
+                        
+            match  doc.SelectedItem  with
+            | Some item ->
+                let editDoc = Some (SampleDoc.ConvertFromReadOnly item)
+                let editViewModel = SampleEditDocViewModel(dialogService, screenManager, editDoc, onEditSaved)
+                let! result = editViewModel.Init()
+                result
+            | None -> ()
+            
             return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
         }
     let addCommands (baseDocVm:DocViewModelBase<SampleDocList>) docGetter =
         let afterSuccess doc cmdResult =
 //            CreateSampleEditScreen screenManager |> ignore
+            
             ()
         let afterFailure cmdResult =
             ()
@@ -175,16 +210,12 @@ type SampleDocListViewModel(dialogService:IDialogService, screenManager:ScreenMa
         let pivotDef = { PivotSettings = pivotSettings; RefreshValFromDoc = loadList; SelectedItemSetter = onSelectedItem; PropName ="Docs" }
         PivotGridViewModel.AddPivotGridViewModel baseDoc (baseDoc.GetRootView())  pivotDef
         
-    let intialDoc = createSampleListDoc()
-    let mutable baseDocViewModel = new DocViewModelBase<SampleDocList>(intialDoc)
-    let docGetter () = baseDocViewModel.GetCurrentDoc
    
     member this.Init () = 
         async {
-            let! initialDoc = createAsyncSampleListDoc() //async in case op takes time (like fetching from server)
             addChildViews baseDocViewModel docGetter
             addCommands baseDocViewModel docGetter
-            baseDocViewModel.ReloadDoc initialDoc //maybe this makes more sense than Init
+            let! r = reloadDoc()
             let screen = CommandScreen(baseDocViewModel, screenName, screenId)
             screenManager.AddScreen screen // all we need to disaplay because the viewModel has been setup already and ready to go
         }
