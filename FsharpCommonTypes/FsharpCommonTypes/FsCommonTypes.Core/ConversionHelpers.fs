@@ -13,3 +13,7 @@ module ConversionHelpers =
     let (|Decimal|_|) = tryParseDecimal
     let (|Date|_|) = tryParseDate
 
+    
+    let tryParseIntWithDefault x defaultVal= defaultArg (tryParseInt x) defaultVal
+    let tryParseDecimalWithDefault x defaultVal= defaultArg (tryParseDecimal x) defaultVal
+    let tryParseDateWithDefault x defaultVal= defaultArg (tryParseDate x) defaultVal
