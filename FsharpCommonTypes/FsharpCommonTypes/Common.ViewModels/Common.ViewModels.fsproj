@@ -54,6 +54,7 @@
     <Content Include="packages.config" />
     <Compile Include="Screens.fs" />
     <Compile Include="DocViewModelBase.fs" />
+    <Compile Include="TableSimpleViewModel.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

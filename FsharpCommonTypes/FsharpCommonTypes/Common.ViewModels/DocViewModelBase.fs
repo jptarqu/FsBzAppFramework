@@ -11,6 +11,7 @@ type DocViewModelBase<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
     let mutable myDoc = intialDoc
     let currEntityErrors = ObservableCollection<PropertyError>()
     let primaryCommands = ObservableCollection<ICommandViewModel>()
+    let secondaryCommands = ObservableCollection<ICommandViewModel>()
     let mutable docIsValid = true
     let isValid() = docIsValid
     
@@ -42,12 +43,14 @@ type DocViewModelBase<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
         root.GetTypedChildren() |> Seq.iter (fun x -> x.Init myDoc)
         updateValidationErrors()
         primaryCommands |> Seq.iter (fun c -> c.Cmd.RaiseCanExecuteChanged())
+        secondaryCommands |> Seq.iter (fun c -> c.Cmd.RaiseCanExecuteChanged())
 
     let updateDoc childView newDoc = 
         myDoc <- newDoc
         notifyChange childView myDoc
         updateValidationErrors()
         primaryCommands |> Seq.iter (fun c -> c.Cmd.RaiseCanExecuteChanged())
+        secondaryCommands |> Seq.iter (fun c -> c.Cmd.RaiseCanExecuteChanged())
         ()
     
 //    let choicesExecInt (qryExecutor : ExternalChoicesQueryExecutor<'ParentType, int>) = qryExecutor myDoc
@@ -57,6 +60,7 @@ type DocViewModelBase<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
         root.GetTypedChildren() |> Seq.iter (fun x -> x.Init myDoc)
         updateValidationErrors()
         primaryCommands |> Seq.iter (fun c -> c.Cmd.RaiseCanExecuteChanged())
+        secondaryCommands |> Seq.iter (fun c -> c.Cmd.RaiseCanExecuteChanged())
         
     member this.ReloadDoc = reloadDoc
     member this.GetRootView() = root
@@ -64,7 +68,7 @@ type DocViewModelBase<'ParentType when 'ParentType :> InterfaceTypes.ICanValidat
 
     member self.PrimaryCommands = primaryCommands
     
-    member self.SecondaryCommands:ObservableCollection<ICommandViewModel> = new ObservableCollection<ICommandViewModel>()
+    member self.SecondaryCommands = secondaryCommands
 
     member self.GetCurrentDoc = myDoc
     

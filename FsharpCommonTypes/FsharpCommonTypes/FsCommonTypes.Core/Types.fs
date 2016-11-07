@@ -21,6 +21,11 @@ type CommandDefinition<'ModelType>  =
     
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module CommandDefinition =
+    let WrapWithAlwaysSucessCmd asyncFun doc = 
+        async {
+            do! asyncFun ()
+            return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
+        }
     let AlwaysSucessCmd doc = 
         async {
             return { CommandResult.Errors = Seq.empty; CommandResult.Message = "Thanks!" }
