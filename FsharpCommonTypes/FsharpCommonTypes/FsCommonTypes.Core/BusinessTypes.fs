@@ -30,6 +30,9 @@ module BusinessTypes =
                         | InvalidProp (badPrimitive, errors) -> errors |> Seq.map string
         strErrors |> Seq.toList
        
+    let Errors doc (propDef:#IPropValidator<'ParentType>) =
+         propDef.GetValidationErrors doc
+
     let GetValidationErrors doc (propDef:#seq<#IPropValidator<'ParentType>>) =
          propDef |> Seq.collect (fun p -> p.GetValidationErrors doc)
          
@@ -65,7 +68,7 @@ module BusinessTypes =
             InvalidProp (tomorrow , ["invalid date string"])
 
     type ShortNameType =  BzProp<string> 
-    let ShortName (newValue:string) =
+    let ShortName (newValue:string) : ShortNameType=
         if (newValue.Length < 1) then
             InvalidProp (newValue , ["too short"])
         else if (newValue.Length > 30) then
@@ -74,7 +77,7 @@ module BusinessTypes =
             ValidProp newValue
 
     type LongNameType =  BzProp<string> 
-    let LongName (newValue:string) =
+    let LongName (newValue:string) : LongNameType =
         if (newValue.Length < 3) then
             InvalidProp (newValue , ["too short"])
         else

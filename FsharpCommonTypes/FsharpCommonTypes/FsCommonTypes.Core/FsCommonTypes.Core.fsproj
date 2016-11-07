@@ -52,6 +52,7 @@
     <Compile Include="DecimalTypes.fs" />
     <Compile Include="InterfaceTypes.fs" />
     <Compile Include="BusinessTypes.fs" />
+    <Compile Include="CollectionTypes.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">12</MinimumVisualStudioVersion>

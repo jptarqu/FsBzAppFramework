@@ -9,6 +9,13 @@ module Queries =
                 return rows |> List.toSeq
             }
 
+    let GetFromDataPullAndApply (dataPull:unit->Async<'RowType list>) (funcsToApply:('RowType list->'RowType list) seq) () =
+         asyncTrial {
+                let! rows = dataPull()
+                let rows = funcsToApply |> Seq.fold (fun prevRows currFunc -> currFunc prevRows)  rows 
+                return rows |> List.toSeq
+            }
+
 module Commands =
     open Chessie.ErrorHandling
     open CommonValidations

@@ -41,13 +41,14 @@ type SaleModel =
      
 [<CLIMutable>]
 type SaleModelReadOnly = 
-    {Name: string; SalesRegion: int; SalesDate : string} 
+    {Name: string; SalesRegion: BusinessTypes.IdNumberType; SalesDate : string} 
+
 [<CLIMutable>]
-type SaleListModel = 
-    {Docs: SaleModelReadOnly seq; SelectedItem: Option<SaleModelReadOnly>} 
-    with
-        interface InterfaceTypes.ICanValidate with 
-            member this.GetValidationErrors () = Seq.empty
+type SaleListModel = SelectableList<SaleModelReadOnly>
+//    {Docs: SaleModelReadOnly seq; SelectedItem: Option<SaleModelReadOnly>} 
+//    with
+//        interface InterfaceTypes.ICanValidate with 
+//            member this.GetValidationErrors () = Seq.empty
                        
 [<CompilationRepresentation(CompilationRepresentationFlags.ModuleSuffix)>]
 module SaleModel = 
@@ -65,7 +66,7 @@ module SaleModel =
 //        let dt = ifNull readOnly.SalesDate (System.DateTime.Today.AddDays(float 1))
         let dt = ConversionHelpers.tryParseDateWithDefault readOnly.SalesDate  (System.DateTime.Today.AddDays(float 1))
         {SaleModel.Name= BusinessTypes.LongName readOnly.Name ; 
-        SalesRegion = BusinessTypes.IdNumber readOnly.SalesRegion; 
+        SalesRegion =  readOnly.SalesRegion; 
         SalesDate =  BusinessTypes.PastDateTime dt; 
-        QuantityId = BusinessTypes.IdNumber readOnly.SalesRegion} 
+        QuantityId = readOnly.SalesRegion} 
 

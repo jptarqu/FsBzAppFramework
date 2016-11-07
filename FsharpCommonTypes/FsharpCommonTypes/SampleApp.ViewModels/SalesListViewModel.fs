@@ -12,14 +12,15 @@ type SalesListViewModel(dialogService:IDialogService, screenManager:ScreenManage
         let now = ( (System.DateTime.Now.AddDays(float randDays)) ).ToString("yyyy-MM-dd")
 //        let dt = ConversionHelpers.tryParseDateWithDefault readOnly.SalesDate  (System.DateTime.Today.AddDays(float 1))
         { 
-            SaleListModel.Docs =
+            Rows =
                 [
-                    {Name=  "Alabama" ; SalesRegion =   1; SalesDate =    now} 
-                    {Name=  "Alabama" ; SalesRegion =  2; SalesDate =    now} 
-                    {Name=  "Colorado" ; SalesRegion =  3; SalesDate =    now} 
-                    {Name=  "California" ; SalesRegion = 4; SalesDate =    now} 
+                    {SaleModelReadOnly.Name=  "Alabama" ; SalesRegion =   BusinessTypes.IdNumber 1; SalesDate =    now} 
+                    {Name=  "Alabama" ; SalesRegion =  BusinessTypes.IdNumber 2; SalesDate =    now} 
+                    {Name=  "Colorado" ; SalesRegion =  BusinessTypes.IdNumber 3; SalesDate =    now} 
+                    {Name=  "California" ; SalesRegion = BusinessTypes.IdNumber 4; SalesDate =    now} 
                 ]
             SelectedItem = None
+            ApiErrorMessages = Seq.empty
         }
     let createAsyncSampleListDoc () =
         async {
@@ -65,7 +66,7 @@ type SalesListViewModel(dialogService:IDialogService, screenManager:ScreenManage
         baseDocVm.PrimaryCommands.Add cmdEdit
         baseDocVm.SecondaryCommands.Add cancelCmd
     let addChildViewsAsPivot (baseDoc:DocViewModelBase<SaleListModel>) docGetter =
-        let loadList doc = doc.Docs
+        let loadList doc = doc.Rows
         let onSelectedItem doc item = 
             {doc with SelectedItem = item}
         let pivotSettings = {
@@ -87,7 +88,7 @@ type SalesListViewModel(dialogService:IDialogService, screenManager:ScreenManage
         let pivotDef = { PivotSettings = pivotSettings; RefreshValFromDoc = loadList; SelectedItemSetter = onSelectedItem; PropName ="Docs" }
         PivotGridViewModel.AddPivotGridViewModel baseDoc (baseDoc.GetRootView())  pivotDef
     let addChildViewsAsTable (baseDoc:DocViewModelBase<SaleListModel>) docGetter =
-        let loadList doc = doc.Docs
+        let loadList doc = doc.Rows
         let onSelectedItem doc item = 
             {doc with SelectedItem = item}
         
