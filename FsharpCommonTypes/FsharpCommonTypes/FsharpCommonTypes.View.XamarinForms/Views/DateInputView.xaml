@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<StackLayout  xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FsharpCommonTypes.View.XamarinForms.Views.DateInputView">
+  <DatePicker Width="100" HorizontalAlignment="Left" Margin="0 16 0 0" 
+              >
+            <DatePicker.SelectedDate>
+                <Binding Path="Value" UpdateSourceTrigger="LostFocus">
+                </Binding>
+            </DatePicker.SelectedDate>
+        </DatePicker>
+</StackLayout>

@@ -1,5 +1,5 @@
 ﻿using Common.ViewModels;
-using CommonViewEditors;
+using Common.ViewModels.Interfaces;
 using FsCommonTypes.View.Wpf;
 using System;
 using System.Collections.Generic;

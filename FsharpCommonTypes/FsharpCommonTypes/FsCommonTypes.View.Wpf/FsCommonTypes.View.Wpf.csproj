@@ -202,10 +202,6 @@
       <Project>{2b69a3c1-3f5b-42c2-89d9-1529ecb70b84}</Project>
       <Name>FsCommonTypes.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FsCommonTypes.View\FsCommonTypes.View.fsproj">
-      <Project>{5a30afdb-f3a7-40e5-8e64-537ff2ca1746}</Project>
-      <Name>FsCommonTypes.View</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

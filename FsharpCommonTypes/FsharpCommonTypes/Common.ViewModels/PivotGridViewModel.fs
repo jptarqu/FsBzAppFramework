@@ -20,6 +20,7 @@ type PivotGridPropDefinition<'ParentType,'RecordType> =
 module PivotGridDefinition =
     module FactTypes =
         let DateFact = "Date"
+        let NullableDateFact = "NullableDate"
         let NumericFact = "Numeric"
         let TextFact = "Text"
 

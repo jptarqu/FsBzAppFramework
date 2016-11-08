@@ -1,4 +1,4 @@
-﻿using CommonViewEditors;
+﻿
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WpfControls;
 using Microsoft.FSharp.Core;
+using Common.ViewModels.Interfaces;
 
 namespace FsCommonTypes.View.Wpf
 {
