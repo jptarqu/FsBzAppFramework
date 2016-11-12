@@ -1,16 +1,16 @@
 ﻿using Common.ViewModels;
 using Common.ViewModels.Interfaces;
-using FsCommonTypes.View.Wpf.Views;
-using FsCommonTypes.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
+using FsCommonTypes.View.XamarinForms.Builders;
+using Xamarin.Forms;
+using FsharpCommonTypes.View.XamarinForms.Views;
 
-namespace FsCommonTypes.View.Wpf.Builders
+namespace FsCommonTypes.View.XamarinForms.Builders
 {
     public class ViewBuildersCollection
     {
@@ -29,18 +29,18 @@ namespace FsCommonTypes.View.Wpf.Builders
             _builders.AddLast(new ViewBuilder(SingleInputViewModelModule.UIHints.DateInput,
                 (childView) => CreateSetDataContext(() => new DateInputView(), childView)
             ));
-            _builders.AddLast(new ViewBuilder(ExternalChoicesViewModelModule.UIHints.ExternalChoices,
-                (childView) => CreateSetDataContext(() => new ExternalChoicesView(), childView)
-            ));
-            _builders.AddLast(new ViewBuilder(SimpleChoicesViewModelModule.UIHints.SimpleChoices,
-                (childView) => CreateSetDataContext(() => new SimpleChoicesView(), childView)
-            ));
-            _builders.AddLast(new ViewBuilder(SingleInputViewModelModule.UIHints.IntInput,
-                (childView) => CreateSetDataContext(() => new IntInputView(), childView)
-            ));
-            _builders.AddLast(new ViewBuilder(SingleInputViewModelModule.UIHints.ReadOnlyText,
-                (childView) => CreateSetDataContext(() => new ReadOnlyTextView(), childView)
-            ));
+            //_builders.AddLast(new ViewBuilder(ExternalChoicesViewModelModule.UIHints.ExternalChoices,
+            //    (childView) => CreateSetDataContext(() => new ExternalChoicesView(), childView)
+            //));
+            //_builders.AddLast(new ViewBuilder(SimpleChoicesViewModelModule.UIHints.SimpleChoices,
+            //    (childView) => CreateSetDataContext(() => new SimpleChoicesView(), childView)
+            //));
+            //_builders.AddLast(new ViewBuilder(SingleInputViewModelModule.UIHints.IntInput,
+            //    (childView) => CreateSetDataContext(() => new IntInputView(), childView)
+            //));
+            //_builders.AddLast(new ViewBuilder(SingleInputViewModelModule.UIHints.ReadOnlyText,
+            //    (childView) => CreateSetDataContext(() => new ReadOnlyTextView(), childView)
+            //));
 
         }
 
@@ -57,18 +57,18 @@ namespace FsCommonTypes.View.Wpf.Builders
             return _builders.FirstOrDefault(b => b.UiHint == uiHint);
         }
 
-        private UserControl CreateSetDataContext<TView>(Type viewType, IViewComponent childView) where TView : UserControl
+        private Xamarin.Forms.View CreateSetDataContext<TView>(Type viewType, IViewComponent childView) where TView : Xamarin.Forms.View
         {
 
-            var newCtrl = Activator.CreateInstance< TView>() ;
-            newCtrl.DataContext = childView;
-            return  newCtrl;
+            var newCtrl = Activator.CreateInstance<TView>();
+            newCtrl.BindingContext = childView;
+            return newCtrl;
         }
-        private UserControl CreateSetDataContext<TView>(Func<TView> constructor, IViewComponent childView) where TView : UserControl
+        private Xamarin.Forms.View CreateSetDataContext<TView>(Func<TView> constructor, IViewComponent childView) where TView : Xamarin.Forms.View
         {
 
             var newCtrl = constructor();
-            newCtrl.DataContext = childView;
+            newCtrl.BindingContext = childView;
             return newCtrl;
         }
     }

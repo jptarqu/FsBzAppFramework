@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonViewEditors.Js", "CommonViewEditors.Js\CommonViewEditors.Js.fsproj", "{C277E9DE-78D0-40D7-BA34-7F68B4CB7E7B}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CommonViewEditors.Js", "CommonViewEditors.Js\CommonViewEditors.Js.fsproj", "{C277E9DE-78D0-40D7-BA34-7F68B4CB7E7B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5 - Presentation", "5 - Presentation", "{7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}"
 EndProject
@@ -11,35 +11,33 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Core", "1 - Core", "{F9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7 - Tests", "7 - Tests", "{3CC87B6B-BE8F-4C9B-9566-33DC32045097}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SampleModel.Core", "SampleModel.Core\SampleModel.Core.fsproj", "{39815D25-C33C-4E8B-8F87-B76CFE75221E}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "SampleModel.Core", "SampleModel.Core\SampleModel.Core.fsproj", "{39815D25-C33C-4E8B-8F87-B76CFE75221E}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SampleModel.View", "SampleModel.View\SampleModel.View.fsproj", "{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "SampleModel.View", "SampleModel.View\SampleModel.View.fsproj", "{3EBBF7A0-5FD1-4BA6-BB92-A75C17EA3BA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleModel.WpfApp", "SampleModel.WpfApp\SampleModel.WpfApp.csproj", "{15B5E753-3992-4D7E-A97A-58E4876A479A}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsCommonTypes.Core", "FsCommonTypes.Core\FsCommonTypes.Core.fsproj", "{2B69A3C1-3F5B-42C2-89D9-1529ECB70B84}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "FsCommonTypes.Core", "FsCommonTypes.Core\FsCommonTypes.Core.fsproj", "{2B69A3C1-3F5B-42C2-89D9-1529ECB70B84}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Common.ViewModels", "Common.ViewModels\Common.ViewModels.fsproj", "{5E5BF92D-9586-40A4-9549-3BB8BFC87838}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Common.ViewModels", "Common.ViewModels\Common.ViewModels.fsproj", "{5E5BF92D-9586-40A4-9549-3BB8BFC87838}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsCommonTypes.View.Wpf", "FsCommonTypes.View.Wpf\FsCommonTypes.View.Wpf.csproj", "{D7B69FF3-1E49-4C5E-9501-67BAB168DB37}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonTaskWorkflowUtils", "CommonTaskWorkflowUtils\CommonTaskWorkflowUtils.fsproj", "{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "CommonTaskWorkflowUtils", "CommonTaskWorkflowUtils\CommonTaskWorkflowUtils.fsproj", "{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "CommonValidations", "CommonValidations\CommonValidations.fsproj", "{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsCommonValidations.Core", "FsCommonValidations.Core\FsCommonValidations.Core.fsproj", "{C56B0849-34FC-4A53-B612-447E3BA4444F}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "FsCommonValidations.Core", "FsCommonValidations.Core\FsCommonValidations.Core.fsproj", "{C56B0849-34FC-4A53-B612-447E3BA4444F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Business", "3 - Business", "{E7F12C61-FF2B-4A71-AEFE-02BF0D555EA1}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "FsharpCommonTypes.Business", "FsharpCommonTypes.Business\FsharpCommonTypes.Business.fsproj", "{92F08A01-E4CF-4644-8981-7450B1B0FA0D}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "FsharpCommonTypes.Business", "FsharpCommonTypes.Business\FsharpCommonTypes.Business.fsproj", "{92F08A01-E4CF-4644-8981-7450B1B0FA0D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SampleApp.ViewModels", "SampleApp.ViewModels\SampleApp.ViewModels.fsproj", "{0D11690F-61A2-485D-A691-428EAA9EDE67}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "SampleApp.ViewModels", "SampleApp.ViewModels\SampleApp.ViewModels.fsproj", "{0D11690F-61A2-485D-A691-428EAA9EDE67}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Xamarin", "Xamarin", "{CD6BBB3E-1D73-4945-9854-23CA8E22DB33}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wpf", "Wpf", "{4288DD16-F4E4-4656-A43C-98F6EB2B73EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FsharpCommonTypes.View.XamarinForms", "FsharpCommonTypes.View.XamarinForms\FsharpCommonTypes.View.XamarinForms.csproj", "{67F9D3A8-F71E-4428-913F-C37AE82CDB24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XamarinView", "XamarinView\XamarinView.csproj", "{467520B0-B9DC-419C-B4EB-AEB66AB942BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,10 +77,6 @@ Global
 		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C56B0849-34FC-4A53-B612-447E3BA4444F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,10 +89,10 @@ Global
 		{0D11690F-61A2-485D-A691-428EAA9EDE67}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D11690F-61A2-485D-A691-428EAA9EDE67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D11690F-61A2-485D-A691-428EAA9EDE67}.Release|Any CPU.Build.0 = Release|Any CPU
-		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67F9D3A8-F71E-4428-913F-C37AE82CDB24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467520B0-B9DC-419C-B4EB-AEB66AB942BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467520B0-B9DC-419C-B4EB-AEB66AB942BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{467520B0-B9DC-419C-B4EB-AEB66AB942BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{467520B0-B9DC-419C-B4EB-AEB66AB942BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,12 +106,11 @@ Global
 		{5E5BF92D-9586-40A4-9549-3BB8BFC87838} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
 		{D7B69FF3-1E49-4C5E-9501-67BAB168DB37} = {4288DD16-F4E4-4656-A43C-98F6EB2B73EC}
 		{AA79C0B9-8B6A-47F4-B5D2-4D720BDDF529} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
-		{9C29EEEF-84C9-4C18-98AF-9A52E69FA755} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
 		{C56B0849-34FC-4A53-B612-447E3BA4444F} = {F9EDB926-0FFE-4AFF-9829-412D7D5B28F8}
 		{92F08A01-E4CF-4644-8981-7450B1B0FA0D} = {E7F12C61-FF2B-4A71-AEFE-02BF0D555EA1}
 		{0D11690F-61A2-485D-A691-428EAA9EDE67} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
 		{CD6BBB3E-1D73-4945-9854-23CA8E22DB33} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
 		{4288DD16-F4E4-4656-A43C-98F6EB2B73EC} = {7C145A02-7C37-4FFC-8B8F-9AFCC1B6FA4A}
-		{67F9D3A8-F71E-4428-913F-C37AE82CDB24} = {CD6BBB3E-1D73-4945-9854-23CA8E22DB33}
+		{467520B0-B9DC-419C-B4EB-AEB66AB942BD} = {CD6BBB3E-1D73-4945-9854-23CA8E22DB33}
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Common.ViewModels.Interfaces;
+using FsCommonTypes.View.XamarinForms.Builders;
 using Xamarin.Forms;
 
 namespace FsharpCommonTypes.View.XamarinForms.Views
@@ -16,7 +17,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
         }
         public void SetViewComponent(IPanelViewModel panelView, ViewBuildersCollection viewBuilders)
         {
-            this.DataContext = panelView;
+            this.BindingContext = panelView;
             var children = panelView.GetChildren();
             int currRow = 0;
             foreach (var childView in children)
@@ -34,7 +35,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
             if (childView.UiHint == "RowsPanel")
             {
                 var newCtrl = new RowsPanelView();
-                newCtrl.SetViewComponent((IPanelViewModel) childView, viewBuilders);
+                newCtrl.SetViewComponent((IPanelViewModel)childView, viewBuilders);
                 Grid.SetRow(newCtrl, currRow);
                 Grid.SetColumn(newCtrl, 1);
                 Grid.SetColumnSpan(newCtrl, 4);
@@ -42,7 +43,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
             }
             else
             {
-                UserControl newCtrl = viewBuilders.GetBuilder(childView.UiHint).ViewFactory(childView);
+                var newCtrl = viewBuilders.GetBuilder(childView.UiHint).ViewFactory(childView);
                 if (newCtrl != null)
                 {
                     Grid.SetRow(newCtrl, currRow);
@@ -68,7 +69,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
             ChildrenViewsContainer.Children.Add(label);
         }
 
-       
+
         private void AddRow()
         {
             RowDefinition gridRow1 = new RowDefinition();

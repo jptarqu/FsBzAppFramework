@@ -1,13 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentView xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="FsharpCommonTypes.View.XamarinForms.Views.RowsPanelView">
-  <Grid  Margin="16" VerticalAlignment="Top"  x:Name="ChildrenViewsContainer" x:FieldModifier="private">
-    <Grid.ColumnDefinitions>
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="5*" />
-      <ColumnDefinition Width="Auto" />
-      <ColumnDefinition Width="1*" />
-    </Grid.ColumnDefinitions>
-  </Grid>
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:FsharpCommonTypes.View.XamarinForms.Views" x:Class="FsharpCommonTypes.View.XamarinForms.Views.RowsPanelView">
+	<Grid Margin="16" VerticalAlignment="Top" x:Name="ChildrenViewsContainer" x:FieldModifier="private">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="5*" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="1*" />
+		</Grid.ColumnDefinitions>
+	</Grid>
 </ContentView>

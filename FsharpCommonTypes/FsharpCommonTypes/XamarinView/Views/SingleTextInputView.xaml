@@ -1,18 +1,9 @@
-﻿<UserControl x:Class="FsCommonTypes.Views.SingleTextInputView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:FsCommonTypes.Views"
-             mc:Ignorable="d" DataContextChanged="UserControl_DataContextChanged"
-             d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel>
-        <TextBox Margin="0 8 0 8"
-				    x:Name="ValueTextBox" >
-            <TextBox.Text>
-                <Binding Path="Value" UpdateSourceTrigger="LostFocus">
-                </Binding>
-            </TextBox.Text>
-        </TextBox>
-    </StackPanel>
-</UserControl>
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<StackLayout xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="FsharpCommonTypes.View.XamarinForms.Views.SingleTextInputView">
+	<TextBox Margin="0 8 0 8" x:Name="ValueTextBox">
+		<TextBox.Text>
+			<Binding Path="Value" UpdateSourceTrigger="LostFocus">
+			</Binding>
+		</TextBox.Text>
+	</TextBox>
+</StackLayout>
