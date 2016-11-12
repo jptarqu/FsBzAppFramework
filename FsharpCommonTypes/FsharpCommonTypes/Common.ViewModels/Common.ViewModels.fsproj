@@ -67,13 +67,6 @@
       <Private>True</Private>
     </Reference>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\FsCommonTypes.Core\FsCommonTypes.Core.fsproj">
-      <Name>FsCommonTypes.Core</Name>
-      <Project>{2b69a3c1-3f5b-42c2-89d9-1529ecb70b84}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
