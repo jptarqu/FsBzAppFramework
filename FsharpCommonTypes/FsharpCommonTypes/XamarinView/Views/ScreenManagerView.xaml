@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="FsCommonTypes.View.Wpf.Views.ScreenManagerView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:FsCommonTypes.View.Wpf.Views"
+             mc:Ignorable="d" 
+                      xmlns:dragablz="clr-namespace:Dragablz;assembly=Dragablz"
+                      xmlns:dockablz="clr-namespace:Dragablz.Dockablz;assembly=Dragablz"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <StackPanel>
+        <dockablz:Layout>
+
+            <dragablz:TabablzControl x:Name="tabsManager" BorderThickness="0" 
+                                 Margin="0,-1,0,1"  >
+                <dragablz:TabablzControl.InterTabController >
+                    <dragablz:InterTabController />
+                </dragablz:TabablzControl.InterTabController>
+                <!--<dragablz:TabablzControl.ContentTemplate >
+                    <DataTemplate>
+                        <local:DocView DataContext="{Binding DocViewModel}" />
+                    </DataTemplate>
+                </dragablz:TabablzControl.ContentTemplate>-->
+            </dragablz:TabablzControl>
+        </dockablz:Layout>
+    </StackPanel>
+</UserControl>
