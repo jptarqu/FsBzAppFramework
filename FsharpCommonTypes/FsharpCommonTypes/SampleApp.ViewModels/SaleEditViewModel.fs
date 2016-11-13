@@ -2,6 +2,16 @@
 
 open FsharpCommonTypes
 open Common.ViewModels.Interfaces
+open System.Threading;
+open System.Threading.Tasks;
+
+    //type dummyDialogService() =
+    //    interface IDialogService with
+    //        member this.PromptMessage _ msg _ =
+    //            async {   
+    //                "jfr".ToString() |> ignore
+    //            }
+    //            |> Async.
 
 type SaleEditViewModel(dialogService:IDialogService, screenManager:ScreenManager, 
                             docToEdit:SaleModel option, onSaveFinished:SaleModel->Async<unit>) =
@@ -64,3 +74,19 @@ type SaleEditViewModel(dialogService:IDialogService, screenManager:ScreenManager
             let screen = CommandScreen(baseDocViewModel, screenName, screenId)
             screenManager.AddScreen screen // all we need to disaplay because the viewModel has been setup already and ready to go
         }
+    member this.InitNoScreen () = 
+        addChildViews baseDocViewModel docGetter
+        addCommands baseDocViewModel docGetter
+        baseDocViewModel.ReloadDoc initialDoc //maybe this makes more sense than Init
+        baseDocViewModel
+
+module SalesHelpers = 
+    let doNothing _ =
+        async {
+            "jfr".ToString() |> ignore
+        }
+    let doNothingFunc =
+        doNothing 
+    
+    let SampleModelEmpty = Some SaleModel.Empty
+    let SampleViewModel dialogService  screenManager = SaleEditViewModel(dialogService, screenManager, SampleModelEmpty, doNothing )

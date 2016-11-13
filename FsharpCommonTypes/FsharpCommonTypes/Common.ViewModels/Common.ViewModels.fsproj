@@ -74,4 +74,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <ItemGroup>
+    <ProjectReference Include="..\FsCommonTypes.Core\FsCommonTypes.Core.fsproj">
+      <Project>{2B69A3C1-3F5B-42C2-89D9-1529ECB70B84}</Project>
+      <Name>FsCommonTypes.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

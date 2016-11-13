@@ -8,8 +8,8 @@
     <OutputType>Library</OutputType>
     <RootNamespace>XamarinView</RootNamespace>
     <AssemblyName>XamarinView</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile44</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +43,7 @@
     <Compile Include="Views\SingleTextInputView.xaml.cs">
       <DependentUpon>SingleTextInputView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DialogService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FsCommonTypes.Core\FsCommonTypes.Core.fsproj">
