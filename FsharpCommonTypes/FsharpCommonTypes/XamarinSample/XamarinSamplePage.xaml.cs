@@ -14,6 +14,7 @@ namespace XamarinSample
             InitializeComponent();
 
             _viewBuilders = new ViewBuildersCollection();
+            _viewBuilders.AddDefaultViewBuilders();
             var screenManager = new ScreenManager();
             var dialogService = new DialogService();
 
