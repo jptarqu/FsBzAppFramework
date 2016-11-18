@@ -13,6 +13,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
     {
         public RowsPanelView()
         {
+			this.InitializeComponent();
 
         }
         public void SetViewComponent(IPanelViewModel panelView, ViewBuildersCollection viewBuilders)
@@ -43,17 +44,21 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
             }
             else
             {
-                var newCtrl = viewBuilders.GetBuilder(childView.UiHint).ViewFactory(childView);
-                if (newCtrl != null)
-                {
-                    Grid.SetRow(newCtrl, currRow);
-                    Grid.SetColumn(newCtrl, 1);
-                    if (childView.UiHint == "PivotGridList")
-                    {
-                        Grid.SetColumnSpan(newCtrl, 4);
-                    }
-                    ChildrenViewsContainer.Children.Add(newCtrl);
-                }
+				var viewBuilder = viewBuilders.GetBuilder(childView.UiHint);
+				if (viewBuilder != null)
+				{
+					var newCtrl = viewBuilder.ViewFactory(childView);
+					if (newCtrl != null)
+					{
+						Grid.SetRow(newCtrl, currRow);
+						Grid.SetColumn(newCtrl, 1);
+						if (childView.UiHint == "PivotGridList")
+						{
+							Grid.SetColumnSpan(newCtrl, 4);
+						}
+						ChildrenViewsContainer.Children.Add(newCtrl);
+					}
+				}
             }
 
         }

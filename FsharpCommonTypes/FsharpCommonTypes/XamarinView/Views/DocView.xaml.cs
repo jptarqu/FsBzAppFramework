@@ -14,7 +14,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
     {
         public DocView()
         {
-
+			this.InitializeComponent();
         }
 
         public void SetDoc(IDocViewModel docModel, ViewBuildersCollection _viewBuilders, string ScreenId)

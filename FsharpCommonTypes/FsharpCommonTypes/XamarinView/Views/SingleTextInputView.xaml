@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <StackLayout xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="FsharpCommonTypes.View.XamarinForms.Views.SingleTextInputView">
-	<TextBox Margin="0 8 0 8" x:Name="ValueTextBox">
-		<TextBox.Text>
-			<Binding Path="Value" UpdateSourceTrigger="LostFocus">
+	<Entry Margin="4" x:Name="ValueTextBox">
+		<Entry.Text>
+			<Binding Path="Value" Mode="TwoWay">
 			</Binding>
-		</TextBox.Text>
-	</TextBox>
+		</Entry.Text>
+	</Entry>
 </StackLayout>

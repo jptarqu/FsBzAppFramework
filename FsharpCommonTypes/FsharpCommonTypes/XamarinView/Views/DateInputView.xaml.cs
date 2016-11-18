@@ -12,6 +12,7 @@ namespace FsharpCommonTypes.View.XamarinForms.Views
     {
         public DateInputView()
         {
+			this.InitializeComponent();
 
         }
     }

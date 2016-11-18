@@ -22,6 +22,8 @@ namespace XamarinSample
             var viewModelBase = viewModel.InitNoScreen();
             var docContainer = new DocView();
             docContainer.SetDoc(viewModelBase, _viewBuilders, "FirstScreenDummy");
+
+			//stackContainer.Children.Add(docContainer);
         }
     }
 }
