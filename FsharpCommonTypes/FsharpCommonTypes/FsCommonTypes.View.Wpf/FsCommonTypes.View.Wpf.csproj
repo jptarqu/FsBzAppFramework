@@ -100,6 +100,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="ViewModels\ChoiceItemsFuncProvider.cs" />
+    <Compile Include="Views\ColumnsPanelView.xaml.cs">
+      <DependentUpon>ColumnsPanelView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DateInputView.xaml.cs">
       <DependentUpon>DateInputView.xaml</DependentUpon>
     </Compile>
@@ -120,6 +123,7 @@
       <DependentUpon>IntInputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MaskedText.cs" />
+    <Compile Include="Views\PanelHelper.cs" />
     <Compile Include="Views\ReadOnlyTextView.xaml.cs">
       <DependentUpon>ReadOnlyTextView.xaml</DependentUpon>
     </Compile>
@@ -148,6 +152,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Views\ColumnsPanelView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DateInputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

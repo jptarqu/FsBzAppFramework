@@ -39,38 +39,39 @@ namespace FsCommonTypes.Views
                 AddRow();
                 AddRow();
                 AddLabelView(currRow, childView);
-                AddFieldView(currRow, childView, viewBuilders);
+                PanelHelper.AddFieldViewAsRow(currRow, childView, viewBuilders, ChildrenViewsContainer);
+                //AddFieldView(currRow, childView, viewBuilders);
                 currRow += 2;
             }
         }
-        private void AddFieldView(int currRow, IViewComponent childView, ViewBuildersCollection viewBuilders)
-        {
+        //private void AddFieldView(int currRow, IViewComponent childView, ViewBuildersCollection viewBuilders)
+        //{
             
-            if (childView.UiHint == "RowsPanel")
-            {
-                var newCtrl = new RowsPanelView();
-                newCtrl.SetViewComponent((IPanelViewModel) childView, viewBuilders);
-                Grid.SetRow(newCtrl, currRow);
-                Grid.SetColumn(newCtrl, 1);
-                Grid.SetColumnSpan(newCtrl, 4);
-                ChildrenViewsContainer.Children.Add(newCtrl);
-            }
-            else
-            {
-                UserControl newCtrl = viewBuilders.GetBuilder(childView.UiHint).ViewFactory(childView);
-                if (newCtrl != null)
-                {
-                    Grid.SetRow(newCtrl, currRow);
-                    Grid.SetColumn(newCtrl, 1);
-                    if (childView.UiHint == "PivotGridList")
-                    {
-                        Grid.SetColumnSpan(newCtrl, 4);
-                    }
-                    ChildrenViewsContainer.Children.Add(newCtrl);
-                }
-            }
+        //    if (childView.UiHint == "RowsPanel")
+        //    {
+        //        var newCtrl = new RowsPanelView();
+        //        newCtrl.SetViewComponent((IPanelViewModel) childView, viewBuilders);
+        //        Grid.SetRow(newCtrl, currRow);
+        //        Grid.SetColumn(newCtrl, 1);
+        //        Grid.SetColumnSpan(newCtrl, 4);
+        //        ChildrenViewsContainer.Children.Add(newCtrl);
+        //    }
+        //    else
+        //    {
+        //        UserControl newCtrl = viewBuilders.GetBuilder(childView.UiHint).ViewFactory(childView);
+        //        if (newCtrl != null)
+        //        {
+        //            Grid.SetRow(newCtrl, currRow);
+        //            Grid.SetColumn(newCtrl, 1);
+        //            if (childView.UiHint == "PivotGridList")
+        //            {
+        //                Grid.SetColumnSpan(newCtrl, 4);
+        //            }
+        //            ChildrenViewsContainer.Children.Add(newCtrl);
+        //        }
+        //    }
 
-        }
+        //}
 
         private void AddLabelView(int currRow, IViewComponent childView)
         {
