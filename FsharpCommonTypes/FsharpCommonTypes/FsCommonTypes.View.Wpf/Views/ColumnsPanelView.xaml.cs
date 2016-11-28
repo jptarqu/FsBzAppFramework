@@ -32,11 +32,11 @@ namespace FsCommonTypes.View.Wpf.Views
         {
             this.DataContext = panelView;
             var children = panelView.GetChildren();
-            int currCol = 0;
+            int currCol = 1;
             AddPadColumn(3);
             foreach (var childView in children)
             {
-                if (currCol > 0)
+                if (currCol > 1)
                 {
                     AddPadColumn(1);
                 }
@@ -50,10 +50,10 @@ namespace FsCommonTypes.View.Wpf.Views
 
             
 
-        private void AddLabelView(int currRow, IViewComponent childView)
+        private void AddLabelView(int currCol, IViewComponent childView)
         {
             var label = new TextBlock() { Text = childView.Label };
-            Grid.SetColumn(label, currRow);
+            Grid.SetColumn(label, currCol);
             Grid.SetRow(label, 0);
 
             label.VerticalAlignment = VerticalAlignment.Center;

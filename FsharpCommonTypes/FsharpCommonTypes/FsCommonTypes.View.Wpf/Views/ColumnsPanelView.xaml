@@ -9,7 +9,7 @@
     <Grid  Margin="16" VerticalAlignment="Top"  x:Name="ChildrenViewsContainer" x:FieldModifier="private">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="1*"></RowDefinition>
+            <RowDefinition Height="1*" MaxHeight="600"></RowDefinition>
         </Grid.RowDefinitions>
     </Grid>
 </UserControl>

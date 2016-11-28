@@ -11,7 +11,7 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="1*" />
+            
         </Grid.ColumnDefinitions>
     </Grid>
 </UserControl>

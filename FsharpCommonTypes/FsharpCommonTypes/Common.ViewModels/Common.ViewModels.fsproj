@@ -56,6 +56,7 @@
     <Compile Include="DocViewModelBase.fs" />
     <Compile Include="TableSimpleViewModel.fs" />
     <Compile Include="ColumnsPanelViewModel.fs" />
+    <Compile Include="ScatterPlotViewModel.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core">

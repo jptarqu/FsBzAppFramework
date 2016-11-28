@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SampleModel.WpfApp.Properties
+namespace FsCommonTypes.Properties
 {
 
 
